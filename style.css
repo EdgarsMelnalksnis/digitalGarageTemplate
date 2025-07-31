@@ -1,0 +1,578 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+:root {
+  --primary-color: #00d2ff;
+  --text-color: #fff;
+  --dark-bg: #0f2027;
+  --medium-bg: #203a43;
+  --light-bg: #2c5364;
+  --gradient-bg: linear-gradient(135deg, var(--dark-bg), var(--medium-bg), var(--light-bg));
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --light-text-opacity: 0.9;
+  --dimmed-text-color: #bbbbbb; /* For better contrast on some elements */
+}
+body {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--text-color);
+}
+#tsparticles { /* Renamed from #particles-js to match script.js */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: var(--gradient-bg);
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px; /* Increased vertical padding and horizontal */
+  height: 70px;
+  background-color: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+}
+.nav-group {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* 🔽 reduce this value for tighter spacing */
+}
+nav a {
+  margin-left: 20px; /* optional: reduce to 15px or even 10px */
+}
+html {
+  scroll-behavior: smooth;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.header-logo {
+  height: 100%;      /* keep this value to control vertical height */
+  width: auto;       /* let width scale proportionally */
+  max-height: 250px;  /* ensures it never stretches header */
+}
+nav a {
+  margin-left: 30px; /* Increased spacing */
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: 500;
+  transition: color 0.3s;
+}
+nav a:hover {
+  color: var(--primary-color);
+}
+
+/* --- Hero Section --- */
+.hero {
+  display: flex;
+  justify-content: center; /* Changed from space-between to center */
+  align-items: center;
+  text-align: center; /* Added to center text content within the hero section */
+  padding: 80px 60px; /* Increased horizontal padding */
+  z-index: 1;
+  /* Removed gap: 40px; as it interferes with centering a single main item */
+}
+.hero-text {
+  max-width: 800px; /* Adjusted max-width to a fixed value for consistent centering */
+  margin: 0 auto; /* Added to center the block itself within the flex container */
+}
+.hero-text h1 {
+  font-size: 3.2rem; /* Slightly larger */
+  margin-bottom: 20px;
+}
+.hero-text p {
+  font-size: 1.25rem; /* Slightly larger */
+  margin-bottom: 30px;
+  opacity: var(--light-text-opacity);
+}
+.cta-button {
+  padding: 14px 28px; /* Slightly larger button */
+  background: var(--primary-color);
+  color: #000;
+  font-weight: 600;
+  font-size: 1.05rem; /* Slightly larger font */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s;
+}
+.cta-button:hover {
+  transform: scale(1.05);
+  background-color: #00b0e0; /* Slightly darker hover color */
+}
+.secondary-cta {
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  margin-top: 30px;
+}
+.secondary-cta:hover {
+  background: var(--primary-color);
+  color: #000;
+}
+.hero-image {
+  max-width: 40%;
+  background: var(--card-bg);
+  padding: 50px; /* Increased padding */
+  border-radius: 30px;
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Center vertically */
+  min-width: 250px; /* Ensure it doesn't get too small */
+}
+.hero-image img {
+  width: 150px; /* Increased image size */
+}
+
+/* --- Global Section Styling --- */
+section {
+  padding: 80px 60px; /* Consistent padding for sections */
+  text-align: center;
+  z-index: 1;
+  position: relative; /* Ensure sections are above particles */
+}
+section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+/* --- Services Section --- */
+.services-section {
+  background: rgba(255, 255, 255, 0.03); /* Subtle background for distinction */
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.service-item {
+  background: var(--card-bg);
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+  backdrop-filter: blur(5px);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: 1px solid var(--border-color);
+  cursor: pointer; /* Ensure the pointer cursor is applied to the entire box */
+}
+.service-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 210, 255, 0.15);
+}
+.service-icon {
+  width: 70px; /* Icon size */
+  height: 70px;
+  margin-bottom: 20px;
+}
+.service-item h3 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  color: var(--primary-color);
+}
+.service-item p {
+  font-size: 1.05rem;
+  opacity: var(--light-text-opacity);
+  line-height: 1.6;
+}
+
+/* --- Testimonials Section --- */
+.testimonials-section {
+  background: transparent; /* No specific background to let particles show through */
+}
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.testimonial-item {
+  background: var(--card-bg);
+  border-radius: 15px;
+  padding: 30px;
+  text-align: left;
+  backdrop-filter: blur(5px);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pushes client info to bottom */
+}
+.testimonial-item p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  font-style: italic;
+  opacity: var(--light-text-opacity);
+}
+.testimonial-item .client-info {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  text-align: right;
+  margin-top: auto; /* Pushes to bottom */
+}
+
+/* --- Technologies Section --- */
+.technologies-section {
+    background: rgba(255, 255, 255, 0.03);
+}
+.tech-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+.tech-logos img {
+    height: 60px; /* Adjust size as needed */
+    filter: grayscale(100%) brightness(150%) opacity(0.7); /* Subtle effect */
+    transition: filter 0.3s;
+}
+.tech-logos img:hover {
+    filter: grayscale(0%) brightness(100%) opacity(1); /* Color on hover */
+}
+.technologies-section p {
+    font-size: 1.1rem;
+    opacity: var(--light-text-opacity);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+/* --- Projects Section --- */
+.projects {
+  padding: 80px 60px; /* Consistent padding */
+  background: transparent; /* Let particles show */
+  display: grid;
+  grid-template-columns: 1fr 1.2fr; /* Adjusted for more detail space */
+  gap: 50px; /* Increased gap */
+  text-align: left; /* Align text within columns */
+}
+.project-list h2 {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  text-align: left; /* Align to left */
+}
+.project-list ul {
+  list-style: none;
+}
+.project-list li {
+  padding: 15px 0; /* More padding */
+  font-size: 1.15rem; /* Slightly larger */
+  color: var(--dimmed-text-color); /* Better contrast */
+  border-bottom: 1px solid var(--border-color);
+  transition: color 0.3s;
+}
+.project-list li:hover {
+    color: var(--primary-color);
+    cursor: pointer;
+}
+.project-detail {
+  font-size: 1rem;
+  line-height: 1.6;
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 30px; /* More padding */
+  backdrop-filter: blur(5px);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 5px 15px rgba(0, 210, 255, 0.1); /* Subtle glow */
+}
+.project-detail h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+.project-detail p {
+    opacity: var(--light-text-opacity);
+}
+
+/* --- Footer --- */
+footer {
+  text-align: center;
+  padding: 30px; /* More padding */
+  font-size: 0.95rem;
+  opacity: 0.8; /* Increased opacity for readability */
+  background-color: var(--card-bg);
+  border-top: 1px solid var(--border-color);
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 992px) {
+  header, .hero, .projects, section {
+    padding: 20px 30px; /* Adjust padding for smaller screens */
+  }
+  .hero {
+    flex-direction: column;
+    text-align: center;
+  }
+  .hero-text, .hero-image {
+    max-width: 100%;
+  }
+  .hero-image {
+    padding: 40px;
+  }
+  .projects {
+    grid-template-columns: 1fr; /* Stack columns */
+  }
+  .project-list h2, .project-detail h3 {
+    text-align: center; /* Center project titles */
+  }
+  .service-item h3 {
+    font-size: 1.4rem;
+  }
+  .testimonial-item p {
+    font-size: 1rem;
+  }
+  .tech-logos img {
+      height: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 1.3rem;
+  }
+  nav {
+    display: none; /* Consider a hamburger menu for mobile */
+  }
+  .hero-text h1 {
+    font-size: 2.5rem;
+  }
+  .hero-text p {
+    font-size: 1rem;
+  }
+  section h2 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+  }
+  .services-grid, .testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+  .tech-logos img {
+      height: 40px;
+  }
+
+  /* ADDED FOR MOBILE VIEW TO PREVENT CONTENT OVERLAP WITH FIXED HEADER */
+  #mainContent {
+    padding-top: 70px; /* Matches your header's height */
+  }
+}
+
+
+/* === Popup Form Styles === */
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.5s ease-in-out;
+}
+.popup-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 30px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+  animation: slideIn 0.4s ease-out;
+}
+.popup-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #00d2ff;
+}
+.popup-card input,
+.popup-card select,
+.popup-card textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+.popup-card textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+.close-button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  float: right;
+  cursor: pointer;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideIn {
+  from { transform: translateY(-30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+
+/* Header Get Started button */
+.header-cta {
+  margin-left: 30px;
+}
+@media (max-width: 768px) {
+  .header-cta {
+    display: none;
+  }
+  /* Ensuring hamburger is visible */
+  .hamburger {
+    display: block; /* */
+  }
+}
+
+
+/* === Mobile Header === */
+.hamburger {
+  display: none;
+  font-size: 26px;
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  margin-left: auto;
+}
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  background: var(--card-bg);
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  z-index: 1001;
+  border-top: 1px solid var(--border-color);
+}
+.mobile-nav.active {
+  display: flex;
+}
+@media (max-width: 768px) {
+  nav {
+    display: none;
+  }
+  .hamburger {
+    display: block;
+  }
+}
+
+
+/* === Enhanced Mobile Nav === */
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  position: fixed; /* Changed from absolute to fixed */
+  top: 70px;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  z-index: 1001;
+  border-top: 1px solid var(--border-color);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease-in-out;
+}
+.mobile-nav.active {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+.mobile-nav a,
+.mobile-nav button {
+  margin: 10px 0;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+
+body.menu-open #mainContent {
+  filter: blur(8px);
+  transition: filter 0.3s ease;
+}
+
+
+/* Ensure mobile menu stays just below header even on scroll */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+/* Original mobile-nav positioning was within this block and conflicting */
+/* Moved mobile-nav styles to the general .mobile-nav block above and set to fixed */
+
+
+/* Contact Popup Styling */
+#contactPopup {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+}
+
+#contactPopup.show {
+  display: flex;
+}
+
+#contactPopup .popup-content {
+  background-color: #1a1a1a;
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 500px;
+  text-align: left;
+}
+
+#contactPopup .popup-content .close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
+}

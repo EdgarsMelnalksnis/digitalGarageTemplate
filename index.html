@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>{{WEBSITE_TITLE}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+    <link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+    <div id="tsparticles"></div>
+
+    <header>
+        <div class="logo">
+            <a class="logo-link" href="#top" onclick="closeAllPopups(); closeMobileMenu()">
+                <img alt="{{LOGO_ALT_TEXT}}" class="header-logo" src="{{LOGO_IMAGE_PATH}}"/>
+            </a>
+        </div>
+        <div class="nav-group">
+            <nav>
+                <a href="#top" onclick="closeAllPopups(); closeMobileMenu()">Home</a>
+                <a href="javascript:void(0);" onclick="toggleAbout();">About</a>
+                <a href="#services" onclick="closeAllPopups(); closeMobileMenu()">Services</a>
+                <a href="javascript:void(0);" onclick="toggleContactPopup();">Contact</a>
+            </nav>
+            <button class="hamburger" onclick="toggleMobileMenu()">☰</button>
+            <button class="cta-button header-cta" onclick="togglePopup()">{{HEADER_CTA_BUTTON_TEXT}}</button>
+        </div>
+    </header>
+
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#top" onclick="closeAllPopups(); closeMobileMenu()">Home</a>
+        <a href="javascript:void(0);" onclick="toggleAbout(); closeMobileMenu()">About</a>
+        <a href="#services" onclick="closeAllPopups(); closeMobileMenu()">Services</a>
+        <a href="javascript:void(0);" onclick="toggleContactPopup(); closeMobileMenu()">Contact</a>
+        <button class="cta-button" onclick="togglePopup(); closeMobileMenu()">{{MOBILE_NAV_CTA_BUTTON_TEXT}}</button>
+    </div>
+
+    <div id="mainContent">
+        <section class="hero">
+            <div class="hero-text">
+                <h1>{{HERO_HEADING}}</h1>
+                <p>{{HERO_PARAGRAPH}}</p>
+                <button class="cta-button" onclick="togglePopup();">{{HERO_CTA_BUTTON_TEXT}}</button>
+            </div>
+        </section>
+
+        <section class="services-section" id="services">
+            <h2>{{SERVICES_SECTION_HEADING}}</h2>
+            <div class="services-grid">
+                <div class="service-item" onclick="launchProjectType('Custom Software Development')" style="cursor: pointer;">
+                    <img alt="{{SERVICE_1_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_1_ICON_PATH}}"/>
+                    <h3>{{SERVICE_1_TITLE}}</h3>
+                    <p>{{SERVICE_1_DESCRIPTION}}</p>
+                </div>
+                <div class="service-item" onclick="launchProjectType('Embedded Systems &amp; IoT')" style="cursor: pointer;">
+                    <img alt="{{SERVICE_2_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_2_ICON_PATH}}"/>
+                    <h3>{{SERVICE_2_TITLE}}</h3>
+                    <p>{{SERVICE_2_DESCRIPTION}}</p>
+                </div>
+                <div class="service-item" onclick="launchProjectType('AI &amp; Data Analytics')" style="cursor: pointer;">
+                    <img alt="{{SERVICE_3_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_3_ICON_PATH}}"/>
+                    <h3>{{SERVICE_3_TITLE}}</h3>
+                    <p>{{SERVICE_3_DESCRIPTION}}</p>
+                </div>
+            </div>
+            <button class="cta-button secondary-cta">{{EXPLORE_SERVICES_BUTTON_TEXT}}</button>
+        </section>
+
+        <section class="testimonials-section">
+            <h2>{{TESTIMONIALS_SECTION_HEADING}}</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-item">
+                    <p>"{{TESTIMONIAL_1_QUOTE}}"</p>
+                    <p class="client-info">- {{TESTIMONIAL_1_CLIENT_INFO}}</p>
+                </div>
+                <div class="testimonial-item">
+                    <p>"{{TESTIMONIAL_2_QUOTE}}"</p>
+                    <p class="client-info">- {{TESTIMONIAL_2_CLIENT_INFO}}</p>
+                </div>
+                <div class="testimonial-item">
+                    <p>"{{TESTIMONIAL_3_QUOTE}}"</p>
+                    <p class="client-info">- {{TESTIMONIAL_3_CLIENT_INFO}}</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            {{FOOTER_TEXT}}
+        </footer>
+    </div>
+
+    <div class="popup-overlay" id="popupForm" onclick="if (event.target === this) togglePopup()">
+        <div class="popup-card">
+            <button class="close-button" onclick="togglePopup()">✖</button>
+            <h2 id="popupTitle">{{POPUP_FORM_TITLE}}</h2>
+            <form>
+                <input placeholder="{{FORM_INPUT_PLACEHOLDER_NAME}}" required="" type="text"/>
+                <input placeholder="{{FORM_INPUT_PLACEHOLDER_EMAIL}}" required="" type="email"/>
+                <select id="projectType" required="">
+                    <option value="">{{FORM_SELECT_DEFAULT_OPTION}}</option>
+                    <option value="Custom Software Development">{{FORM_SELECT_OPTION_1}}</option>
+                    <option value="Embedded Systems &amp; IoT">{{FORM_SELECT_OPTION_2}}</option>
+                    <option value="AI &amp; Data Analytics">{{FORM_SELECT_OPTION_3}}</option>
+                    <option value="Cloud Solutions &amp; DevOps">{{FORM_SELECT_OPTION_4}}</option>
+                    <option value="Cybersecurity &amp; Compliance">{{FORM_SELECT_OPTION_5}}</option>
+                    <option value="Tech Strategy &amp; Consulting">{{FORM_SELECT_OPTION_6}}</option>
+                </select>
+                <textarea placeholder="{{FORM_TEXTAREA_PLACEHOLDER_DESCRIPTION}}" required=""></textarea>
+                <button class="cta-button" type="submit">{{FORM_SUBMIT_BUTTON_TEXT}}</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="aboutPopup" onclick="if (event.target === this) toggleAbout()">
+        <div class="popup-card">
+            <button class="close-button" onclick="toggleAbout()">✖</button>
+            <h2>{{ABOUT_POPUP_HEADING}}</h2>
+            <p>{{ABOUT_POPUP_PARAGRAPH}}</p>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="contactPopup" onclick="if (event.target === this) toggleContactPopup()">
+        <div class="popup-card">
+            <button class="close-button" onclick="toggleContactPopup()">✖</button>
+            <h2>{{CONTACT_POPUP_HEADING}}</h2>
+            <p><strong>Email:</strong> {{CONTACT_EMAIL}}</p>
+            <p><strong>Phone:</strong> {{CONTACT_PHONE}}</p>
+            <p><strong>Address:</strong> {{CONTACT_ADDRESS}}</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

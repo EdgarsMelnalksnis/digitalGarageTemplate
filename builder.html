@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Builder</title>
+    <style>
+        body {
+            font-family: 'Inter', Arial, sans-serif; /* Use Inter for a modern look */
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 30px auto;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2.5em;
+            font-weight: 600;
+        }
+        h2 {
+            color: #0056b3;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        h3 {
+            color: #0056b3;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95em;
+        }
+        input[type="text"],
+        input[type="url"],
+        input[type="email"],
+        input[type="number"],
+        textarea,
+        select {
+            width: calc(100% - 22px);
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #cce0ff;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+            background-color: #f8fcff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input[type="text"]:focus,
+        input[type="url"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+            outline: none;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        button[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        .section-separator {
+            border-top: 1px solid #e0e0e0;
+            margin: 40px 0;
+            padding-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BitWorksLab Website Content Builder</h1>
+        <p>Fill in the fields below to customize your website. A ZIP file containing your new `index.html`, `style.css`, and `script.js` will be generated for download.</p>
+        <form action="generate_website.php" method="post">
+
+            <h2>General Settings</h2>
+            <label for="website_title">Website Title:</label>
+            <input type="text" id="website_title" name="WEBSITE_TITLE" required value="BitWorksLab - Digital Solutions">
+
+            <h2>Header & Navigation</h2>
+            <label for="logo_alt_text">Logo Alt Text:</label>
+            <input type="text" id="logo_alt_text" name="LOGO_ALT_TEXT" required value="BitWorksLab Logo">
+
+            <label for="logo_image_path">Logo Image Path (e.g., logo.png or images/logo.png):</label>
+            <input type="text" id="logo_image_path" name="LOGO_IMAGE_PATH" required value="logo.png">
+
+            <label for="header_cta_button_text">Header CTA Button Text:</label>
+            <input type="text" id="header_cta_button_text" name="HEADER_CTA_BUTTON_TEXT" required value="✨ Book Online">
+
+            <label for="mobile_nav_cta_button_text">Mobile Navigation CTA Button Text:</label>
+            <input type="text" id="mobile_nav_cta_button_text" name="MOBILE_NAV_CTA_BUTTON_TEXT" required value="✨ Get Started">
+
+            <div class="section-separator"></div>
+
+            <h2>Hero Section</h2>
+            <label for="hero_heading">Hero Heading (e.g., "🚀 Insert text1 here"):</label>
+            <input type="text" id="hero_heading" name="HERO_HEADING" required value="🚀 Innovate, Build, Transform.">
+
+            <label for="hero_paragraph">Hero Paragraph (e.g., "Insert Text2 here"):</label>
+            <textarea id="hero_paragraph" name="HERO_PARAGRAPH" required>Your partner in custom software, IoT, and AI solutions. Bringing your boldest ideas to life.</textarea>
+
+            <label for="hero_cta_button_text">Hero CTA Button Text:</label>
+            <input type="text" id="hero_cta_button_text" name="HERO_CTA_BUTTON_TEXT" required value="✨ Book Online">
+
+            <div class="section-separator"></div>
+
+            <h2>Services Section</h2>
+            <label for="services_section_heading">Services Section Heading:</label>
+            <input type="text" id="services_section_heading" name="SERVICES_SECTION_HEADING" required value="💡 Our Expertise & Services">
+
+            <h3>Service 1: Custom Software Development</h3>
+            <label for="service_1_icon_alt_text">Service 1 Icon Alt Text:</label>
+            <input type="text" id="service_1_icon_alt_text" name="SERVICE_1_ICON_ALT_TEXT" required value="Software Development Icon">
+            <label for="service_1_icon_path">Service 1 Icon Path:</label>
+            <input type="text" id="service_1_icon_path" name="SERVICE_1_ICON_PATH" required value="images/icon-software.png">
+            <label for="service_1_title">Service 1 Title (e.g., "Insert text4 here"):</label>
+            <input type="text" id="service_1_title" name="SERVICE_1_TITLE" required value="Custom Software Development">
+            <label for="service_1_description">Service 1 Description (e.g., "Insert text5 here"):</label>
+            <textarea id="service_1_description" name="SERVICE_1_DESCRIPTION" required>Tailored software solutions designed to meet your unique business challenges and drive efficiency.</textarea>
+
+            <h3>Service 2: Embedded Systems & IoT</h3>
+            <label for="service_2_icon_alt_text">Service 2 Icon Alt Text:</label>
+            <input type="text" id="service_2_icon_alt_text" name="SERVICE_2_ICON_ALT_TEXT" required value="IoT Icon">
+            <label for="service_2_icon_path">Service 2 Icon Path:</label>
+            <input type="text" id="service_2_icon_path" name="SERVICE_2_ICON_PATH" required value="images/icon-iot.png">
+            <label for="service_2_title">Service 2 Title (e.g., "Insert text6 here"):</label>
+            <input type="text" id="service_2_title" name="SERVICE_2_TITLE" required value="Embedded Systems & IoT">
+            <label for="service_2_description">Service 2 Description (e.g., "Insert text7 here"):</label>
+            <textarea id="service_2_description" name="SERVICE_2_DESCRIPTION" required>Connecting your world with intelligent, integrated embedded systems and IoT solutions for smart operations.</textarea>
+
+            <h3>Service 3: AI & Data Analytics</h3>
+            <label for="service_3_icon_alt_text">Service 3 Icon Alt Text:</label>
+            <input type="text" id="service_3_icon_alt_text" name="SERVICE_3_ICON_ALT_TEXT" required value="AI Icon">
+            <label for="service_3_icon_path">Service 3 Icon Path:</label>
+            <input type="text" id="service_3_icon_path" name="SERVICE_3_ICON_PATH" required value="images/icon-ai.png">
+            <label for="service_3_title">Service 3 Title (e.g., "insert text8 here"):</label>
+            <input type="text" id="service_3_title" name="SERVICE_3_TITLE" required value="AI & Data Analytics">
+            <label for="service_3_description">Service 3 Description (e.g., "insert text9 here"):</label>
+            <textarea id="service_3_description" name="SERVICE_3_DESCRIPTION" required>Leveraging artificial intelligence and big data to provide actionable insights and automated solutions.</textarea>
+
+            <label for="explore_services_button_text">Explore All Services Button Text:</label>
+            <input type="text" id="explore_services_button_text" name="EXPLORE_SERVICES_BUTTON_TEXT" required value="Explore All Services">
+
+            <div class="section-separator"></div>
+
+            <h2>Testimonials Section</h2>
+            <label for="testimonials_section_heading">Testimonials Section Heading:</label>
+            <input type="text" id="testimonials_section_heading" name="TESTIMONIALS_SECTION_HEADING" required value="🌟 What Our Clients Say">
+
+            <h3>Testimonial 1</h3>
+            <label for="testimonial_1_quote">Quote:</label>
+            <textarea id="testimonial_1_quote" name="TESTIMONIAL_1_QUOTE" required>"BitWorksLab transformed our outdated system into a modern, efficient platform. Their attention to detail and innovative approach were exceptional!"</textarea>
+            <label for="testimonial_1_client_info">Client Info:</label>
+            <input type="text" id="testimonial_1_client_info" name="TESTIMONIAL_1_CLIENT_INFO" required value="- Jane Doe, CEO of Tech Innovations Inc.">
+
+            <h3>Testimonial 2</h3>
+            <label for="testimonial_2_quote">Quote:</label>
+            <textarea id="testimonial_2_quote" name="TESTIMONIAL_2_QUOTE" required>"The team at BitWorksLab delivered our IoT project ahead of schedule and beyond expectations. Highly recommend their expertise!"</textarea>
+            <label for="testimonial_2_client_info">Client Info:</label>
+            <input type="text" id="testimonial_2_client_info" name="TESTIMONIAL_2_CLIENT_INFO" required value="- John Smith, Operations Manager at Global Logistics">
+
+            <h3>Testimonial 3</h3>
+            <label for="testimonial_3_quote">Quote:</label>
+            <textarea id="testimonial_3_quote" name="TESTIMONIAL_3_QUOTE" required>"Truly groundbreaking work! Their AI solutions provided us with insights we never thought possible, giving us a significant market edge."</textarea>
+            <label for="testimonial_3_client_info">Client Info:</label>
+            <input type="text" id="testimonial_3_client_info" name="TESTIMONIAL_3_CLIENT_INFO" required value="- Emily White, Head of Data at FutureCorp">
+
+            <div class="section-separator"></div>
+
+            <h2>Footer</h2>
+            <label for="footer_text">Footer Text:</label>
+            <textarea id="footer_text" name="FOOTER_TEXT" required>© 2025 BitWorksLab. Built with ❤️ and innovation.</textarea>
+
+            <div class="section-separator"></div>
+
+            <h2>Popup Forms Content</h2>
+
+            <h3>Booking/Project Popup</h3>
+            <label for="popup_form_title">Popup Form Title:</label>
+            <input type="text" id="popup_form_title" name="POPUP_FORM_TITLE" required value="🚀 Start Your Project">
+            <label for="form_input_placeholder_name">Form Name Placeholder:</label>
+            <input type="text" id="form_input_placeholder_name" name="FORM_INPUT_PLACEHOLDER_NAME" required value="Your Name">
+            <label for="form_input_placeholder_email">Form Email Placeholder:</label>
+            <input type="text" id="form_input_placeholder_email" name="FORM_INPUT_PLACEHOLDER_EMAIL" required value="Your Email">
+            <label for="form_select_default_option">Project Type Default Option:</label>
+            <input type="text" id="form_select_default_option" name="FORM_SELECT_DEFAULT_OPTION" required value="Select Project Type">
+            <label for="form_select_option_1">Project Type Option 1:</label>
+            <input type="text" id="form_select_option_1" name="FORM_SELECT_OPTION_1" required value="Custom Software Development">
+            <label for="form_select_option_2">Project Type Option 2:</label>
+            <input type="text" id="form_select_option_2" name="FORM_SELECT_OPTION_2" required value="Embedded Systems & IoT">
+            <label for="form_select_option_3">Project Type Option 3:</label>
+            <input type="text" id="form_select_option_3" name="FORM_SELECT_OPTION_3" required value="AI & Data Analytics">
+            <label for="form_select_option_4">Project Type Option 4:</label>
+            <input type="text" id="form_select_option_4" name="FORM_SELECT_OPTION_4" required value="Cloud Solutions & DevOps">
+            <label for="form_select_option_5">Project Type Option 5:</label>
+            <input type="text" id="form_select_option_5" name="FORM_SELECT_OPTION_5" required value="Cybersecurity & Compliance">
+            <label for="form_select_option_6">Project Type Option 6:</label>
+            <input type="text" id="form_select_option_6" name="FORM_SELECT_OPTION_6" required value="Tech Strategy & Consulting">
+            <label for="form_textarea_placeholder_description">Project Description Placeholder:</label>
+            <textarea id="form_textarea_placeholder_description" name="FORM_TEXTAREA_PLACEHOLDER_DESCRIPTION" required>Brief project description...</textarea>
+            <label for="form_submit_button_text">Form Submit Button Text:</label>
+            <input type="text" id="form_submit_button_text" name="FORM_SUBMIT_BUTTON_TEXT" required value="Submit Project">
+
+            <h3>About Us Popup</h3>
+            <label for="about_popup_heading">About Popup Heading:</label>
+            <input type="text" id="about_popup_heading" name="ABOUT_POPUP_HEADING" required value="👋 About BitWorksLab">
+            <label for="about_popup_paragraph">About Popup Paragraph:</label>
+            <textarea id="about_popup_paragraph" name="ABOUT_POPUP_PARAGRAPH" required>At BitWorksLab, we are a team of dedicated innovators passionate about crafting cutting-edge digital solutions. From custom software and robust IoT systems to advanced AI and data analytics, we empower businesses to thrive in the modern technological landscape. Our commitment to excellence and client-centric approach ensures that every project transforms your vision into reality. We believe in building strong partnerships, delivering impactful results, and continuously pushing the boundaries of what's possible.</textarea>
+
+            <h3>Contact Popup</h3>
+            <label for="contact_popup_heading">Contact Popup Heading:</label>
+            <input type="text" id="contact_popup_heading" name="CONTACT_POPUP_HEADING" required value="📬 Get in Touch">
+            <label for="contact_email">Contact Email:</label>
+            <input type="email" id="contact_email" name="CONTACT_EMAIL" required value="info@bitworkslab.com">
+            <label for="contact_phone">Contact Phone:</label>
+            <input type="text" id="contact_phone" name="CONTACT_PHONE" required value="+1 (555) 123-4567">
+            <label for="contact_address">Contact Address:</label>
+            <textarea id="contact_address" name="CONTACT_ADDRESS" required>123 Tech Avenue, Innovation City, CA 90210</textarea>
+
+            <button type="submit">Generate Website ZIP</button>
+	    <button type="submit" formaction="preview_website.php" formtarget="_blank" style="background-color: #6c757d; margin-top: 15px;">Show Preview</button>
+        </form>
+    </div>
+</body>
+</html>
