@@ -55,18 +55,10 @@ const indexHtmlTemplate = `
         {{MAP_SECTION}}
         {{SERVICES_SECTION}}
         {{TESTIMONIALS_SECTION}}
-
-        <section class="social-section">
-            <h2>📱 Follow Us</h2>
-            <div class="social-icons">
-                <a href="{{FACEBOOK_URL}}" target="_blank"><img src="images/facebook.svg" alt="Facebook"/></a>
-                <a href="{{INSTAGRAM_URL}}" target="_blank"><img src="images/instagram.svg" alt="Instagram"/></a>
-                <a href="{{TIKTOK_URL}}" target="_blank"><img src="images/tiktok.svg" alt="TikTok"/></a>
-            </div>
-        </section>
+        {{SOCIAL_MEDIA_SECTION}}
 
         <footer>
-            <p>&copy; 2024 {{WEBSITE_TITLE}}. All rights reserved.</p>
+            <p>© 2024 {{WEBSITE_TITLE}}. All rights reserved.</p>
         </footer>
     </div>
 
@@ -214,6 +206,18 @@ const testimonialsSection = `
             <p>"{{TESTIMONIAL_3_QUOTE}}"</p>
             <p class="client-info">- {{TESTIMONIAL_3_CLIENT_INFO}}</p>
         </div>
+    </div>
+</section>
+`;
+
+// Social Media Section HTML
+const socialMediaSection = `
+<section class="social-section">
+    <h2>📱 Follow Us</h2>
+    <div class="social-icons">
+        <a href="{{FACEBOOK_URL}}" target="_blank"><img src="images/facebook.svg" alt="Facebook"/></a>
+        <a href="{{INSTAGRAM_URL}}" target="_blank"><img src="images/instagram.svg" alt="Instagram"/></a>
+        <a href="{{TIKTOK_URL}}" target="_blank"><img src="images/tiktok.svg" alt="TikTok"/></a>
     </div>
 </section>
 `;
@@ -633,6 +637,7 @@ function updatePreview() {
     const mapEnabled = document.getElementById('mapToggle').checked;
     const servicesEnabled = document.getElementById('servicesToggle').checked;
     const testimonialsEnabled = document.getElementById('testimonialsToggle').checked;
+    const socialMediaEnabled = document.getElementById('socialMediaToggle').checked;
     
     let htmlContent = indexHtmlTemplate;
 
@@ -664,6 +669,13 @@ function updatePreview() {
         htmlContent = htmlContent.replace('{{TESTIMONIALS_SECTION}}', '');
     }
 
+    // Conditionally include the Social Media section
+    if (socialMediaEnabled) {
+        htmlContent = htmlContent.replace('{{SOCIAL_MEDIA_SECTION}}', socialMediaSection);
+    } else {
+        htmlContent = htmlContent.replace('{{SOCIAL_MEDIA_SECTION}}', '');
+    }
+
     // Use the global variables for paths, which are updated by the file inputs
     formData.set('LOGO_IMAGE_PATH', logoImagePath);
     formData.set('BACKGROUND_IMAGE_URL', backgroundImageURL);
@@ -688,6 +700,12 @@ function updatePreview() {
         htmlContent = htmlContent.replace(/{{TESTIMONIAL_3_QUOTE}}/g, '');
         htmlContent = htmlContent.replace(/{{TESTIMONIAL_3_CLIENT_INFO}}/g, '');
         htmlContent = htmlContent.replace(/{{TESTIMONIALS_SECTION_HEADING}}/g, '');
+    }
+
+    if (!socialMediaEnabled) {
+        htmlContent = htmlContent.replace(/{{FACEBOOK_URL}}/g, '');
+        htmlContent = htmlContent.replace(/{{INSTAGRAM_URL}}/g, '');
+        htmlContent = htmlContent.replace(/{{TIKTOK_URL}}/g, '');
     }
     
     // Replace all placeholders in the template with form data
@@ -752,6 +770,15 @@ function toggleTestimonialsOptions() {
     }
 }
 
+function toggleSocialMediaOptions() {
+    const socialMediaOptions = document.getElementById('socialMediaOptions');
+    const socialMediaToggle = document.getElementById('socialMediaToggle');
+    if (socialMediaOptions && socialMediaToggle) {
+        socialMediaOptions.style.display = socialMediaToggle.checked ? 'block' : 'none';
+    }
+}
+
+
 // Function to handle logo file upload
 document.getElementById('logoUpload').addEventListener('change', function(event) {
     const file = event.target.files[0];
@@ -802,6 +829,7 @@ function generateJsonConfig(event) {
     data['MAP_TOGGLE'] = document.getElementById('mapToggle').checked;
     data['SERVICES_TOGGLE'] = document.getElementById('servicesToggle').checked;
     data['TESTIMONIALS_TOGGLE'] = document.getElementById('testimonialsToggle').checked;
+    data['SOCIAL_MEDIA_TOGGLE'] = document.getElementById('socialMediaToggle').checked;
 
     const jsonString = JSON.stringify(data, null, 2);
     const blob = new Blob([jsonString], { type: 'application/json' });
@@ -843,6 +871,7 @@ function handleFileUpload(event) {
             toggleMapOptions();
             toggleServicesOptions();
             toggleTestimonialsOptions();
+            toggleSocialMediaOptions();
             updatePreview();
         } catch (error) {
             alert('Error parsing JSON file. Please ensure it is a valid JSON file.');
@@ -871,11 +900,16 @@ if (form) {
         toggleTestimonialsOptions();
         updatePreview();
     });
+    document.getElementById('socialMediaToggle').addEventListener('change', function() {
+        toggleSocialMediaOptions();
+        updatePreview();
+    });
     window.addEventListener('load', () => {
         toggleAiAssistantOptions();
         toggleMapOptions();
         toggleServicesOptions();
         toggleTestimonialsOptions();
+        toggleSocialMediaOptions();
         updatePreview();
     });
 }
