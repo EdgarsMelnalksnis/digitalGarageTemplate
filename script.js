@@ -50,14 +50,9 @@ const indexHtmlTemplate = `
                 <button class="cta-button" onclick="toggleBookingPopup()">📅 {{HERO_CTA_BUTTON_TEXT}}</button>
             </div>
         </section>
-        <section class="chatbot-section">
-            <h2>🤖 Ask Our Assistant</h2>
-            <div class="chatbot-box">
-                <p>Chat with our virtual assistant to get service help or quick quotes.</p>
-                <input type="text" placeholder="Ask a question..." />
-                <button class="cta-button">Send</button>
-            </div>
-        </section>
+        
+        {{AI_ASSISTANT_SECTION}}
+
         <section class="map-section">
             <h2>📍 Find Our Workshop</h2>
             <iframe
@@ -196,6 +191,18 @@ const indexHtmlTemplate = `
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </body>
 </html>
+`;
+
+// AI Assistant Section HTML
+const aiAssistantSection = `
+<section class="chatbot-section">
+    <h2>{{AI_ASSISTANT_HEADING}}</h2>
+    <div class="chatbot-box">
+        <p>{{AI_ASSISTANT_PARAGRAPH}}</p>
+        <input type="text" placeholder="Ask a question..." />
+        <button class="cta-button">Send</button>
+    </div>
+</section>
 `;
 
 // Define the color schemes as a JavaScript object
@@ -608,7 +615,16 @@ function updatePreview() {
     const backgroundType = formData.get('BACKGROUND_TYPE');
     const colorSchemeName = formData.get('COLOR_SCHEME');
     const selectedColorScheme = colorSchemes[colorSchemeName];
+    const aiAssistantEnabled = document.getElementById('aiAssistantToggle').checked;
+    
     let htmlContent = indexHtmlTemplate;
+
+    // Conditionally include the AI Assistant section
+    if (aiAssistantEnabled) {
+        htmlContent = htmlContent.replace('{{AI_ASSISTANT_SECTION}}', aiAssistantSection);
+    } else {
+        htmlContent = htmlContent.replace('{{AI_ASSISTANT_SECTION}}', '');
+    }
 
     // Use the global variables for paths, which are updated by the file inputs
     formData.set('LOGO_IMAGE_PATH', logoImagePath);
@@ -641,6 +657,14 @@ function updatePreview() {
                  });
              }
         };
+    }
+}
+
+function toggleAiAssistantOptions() {
+    const aiAssistantOptions = document.getElementById('aiAssistantOptions');
+    const aiAssistantToggle = document.getElementById('aiAssistantToggle');
+    if (aiAssistantOptions && aiAssistantToggle) {
+        aiAssistantOptions.style.display = aiAssistantToggle.checked ? 'block' : 'none';
     }
 }
 
@@ -689,6 +713,9 @@ function generateJsonConfig(event) {
         data[key] = value;
     });
 
+    // Add the AI assistant toggle state to the config
+    data['AI_ASSISTANT_TOGGLE'] = document.getElementById('aiAssistantToggle').checked;
+
     const jsonString = JSON.stringify(data, null, 2);
     const blob = new Blob([jsonString], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -715,11 +742,17 @@ function handleFileUpload(event) {
                 if (config.hasOwnProperty(key)) {
                     const input = form.querySelector(`[name="${key}"]`);
                     if (input) {
-                        input.value = config[key];
+                        if (input.type === 'checkbox') {
+                            input.checked = config[key];
+                        } else {
+                            input.value = config[key];
+                        }
                     }
                 }
             }
             alert('Configuration loaded successfully!');
+            // After loading, update the visibility of the AI assistant options
+            toggleAiAssistantOptions();
             updatePreview();
         } catch (error) {
             alert('Error parsing JSON file. Please ensure it is a valid JSON file.');
@@ -732,6 +765,12 @@ function handleFileUpload(event) {
 const form = document.getElementById('builderForm');
 if (form) {
     form.addEventListener('input', updatePreview);
-    form.addEventListener('change', updatePreview);
-    window.addEventListener('load', updatePreview);
+    document.getElementById('aiAssistantToggle').addEventListener('change', function() {
+        toggleAiAssistantOptions();
+        updatePreview();
+    });
+    window.addEventListener('load', () => {
+        toggleAiAssistantOptions();
+        updatePreview();
+    });
 }

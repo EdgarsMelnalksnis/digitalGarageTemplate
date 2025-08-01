@@ -153,6 +153,22 @@
             color: #bbb;
         }
 
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-bottom: 0;
+        }
+        .checkbox-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+
+
         @media (max-width: 900px) {
             body {
                 flex-direction: column;
@@ -232,7 +248,24 @@
                     <label for="HERO_CTA_BUTTON_TEXT">Hero CTA Button Text</label>
                     <input type="text" id="HERO_CTA_BUTTON_TEXT" name="HERO_CTA_BUTTON_TEXT" value="Book a Consultation">
                 </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="aiAssistantToggle" name="AI_ASSISTANT_TOGGLE">
+                    <label for="aiAssistantToggle">Add AI Assistant Section</label>
+                </div>
                 
+                <div id="aiAssistantOptions" style="display: none;">
+                    <h2>AI Assistant Section</h2>
+                    <div class="form-group">
+                        <label for="AI_ASSISTANT_HEADING">Heading</label>
+                        <input type="text" id="AI_ASSISTANT_HEADING" name="AI_ASSISTANT_HEADING" value="🤖 Ask Our Assistant">
+                    </div>
+                    <div class="form-group">
+                        <label for="AI_ASSISTANT_PARAGRAPH">Paragraph</label>
+                        <textarea id="AI_ASSISTANT_PARAGRAPH" name="AI_ASSISTANT_PARAGRAPH">Chat with our virtual assistant to get service help or quick quotes.</textarea>
+                    </div>
+                </div>
+
                 <h2>Services Section</h2>
                 <div class="form-group">
                     <label for="SERVICES_SECTION_HEADING">Heading</label>
