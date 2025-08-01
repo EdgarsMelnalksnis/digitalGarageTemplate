@@ -102,8 +102,8 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 60px; /* Increased vertical padding and horizontal */
-  height: 70px;
+  padding: 10px 60px; /* Adjusted vertical padding */
+  min-height: 50px; /* Use min-height for flexibility */
   background-color: var(--card-bg);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border-color);
@@ -127,9 +127,8 @@ html {
   font-weight: 600;
 }
 .header-logo {
-  height: 100%;      /* keep this value to control vertical height */
-  width: auto;       /* let width scale proportionally */
-  max-height: 250px;  /* ensures it never stretches header */
+  height: 40px;      /* Fixed height for the logo */
+  width: auto;       /* Let width scale proportionally */
 }
 nav a {
   margin-left: 30px; /* Increased spacing */

@@ -255,6 +255,9 @@ const colorSchemes = {
     }
 };
 
+let logoImagePath = "images/logo.png"; // Default logo
+let backgroundImageURL = ""; // Default background image is empty
+
 // This is the entire JavaScript content that will be embedded inside the iframe.
 const embeddedScript = `
     // Helper function to update the body's blur state
@@ -564,7 +567,7 @@ const embeddedScript = `
                 createPerlinNoiseBackground();
             }
         } else if (backgroundType === 'image') {
-            const imageUrl = document.querySelector('input[name="BACKGROUND_IMAGE_URL"]').value;
+            const imageUrl = document.body.getAttribute('data-background-image-url');
             if (imageUrl) {
                 body.style.backgroundImage = 'url(' + imageUrl + ')';
             }
@@ -588,6 +591,12 @@ const embeddedScript = `
                 root.style.setProperty(key, value);
             }
         }
+        // Set the background image URL on the body element for retrieval in updateBackground
+        if (config.backgroundImageUrl) {
+            document.body.setAttribute('data-background-image-url', config.backgroundImageUrl);
+        } else {
+            document.body.removeAttribute('data-background-image-url');
+        }
         updateBackground(config.backgroundType, config.colorScheme);
     }
 `;
@@ -597,10 +606,13 @@ function updatePreview() {
     const form = document.getElementById('builderForm');
     const formData = new FormData(form);
     const backgroundType = formData.get('BACKGROUND_TYPE');
-    const imageUrl = formData.get('BACKGROUND_IMAGE_URL');
     const colorSchemeName = formData.get('COLOR_SCHEME');
     const selectedColorScheme = colorSchemes[colorSchemeName];
     let htmlContent = indexHtmlTemplate;
+
+    // Use the global variables for paths, which are updated by the file inputs
+    formData.set('LOGO_IMAGE_PATH', logoImagePath);
+    formData.set('BACKGROUND_IMAGE_URL', backgroundImageURL);
 
     // Replace all placeholders in the template with form data
     formData.forEach((value, key) => {
@@ -625,12 +637,47 @@ function updatePreview() {
                  iframe.contentWindow.applyConfiguration({
                      colorScheme: selectedColorScheme,
                      backgroundType: backgroundType,
-                     backgroundImageUrl: imageUrl
+                     backgroundImageUrl: backgroundImageURL // Pass the image URL
                  });
              }
         };
     }
 }
+
+// Function to handle logo file upload
+document.getElementById('logoUpload').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            logoImagePath = e.target.result; // Use Data URL for the logo
+            updatePreview();
+        };
+        reader.readAsDataURL(file);
+    } else {
+        logoImagePath = "images/logo.png"; // Revert to default if no file selected
+        updatePreview();
+    }
+});
+
+// Function to handle background file upload
+document.getElementById('backgroundUpload').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            backgroundImageURL = e.target.result; // Use Data URL for the background
+            document.getElementById('BACKGROUND_IMAGE_URL').value = backgroundImageURL;
+            document.getElementById('BACKGROUND_TYPE').value = 'image'; // Automatically switch to image background
+            updatePreview();
+        };
+        reader.readAsDataURL(file);
+    } else {
+        backgroundImageURL = ""; // Clear if no file selected
+        document.getElementById('BACKGROUND_IMAGE_URL').value = "";
+        updatePreview();
+    }
+});
 
 
 function generateJsonConfig(event) {
