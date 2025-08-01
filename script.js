@@ -215,9 +215,9 @@ const socialMediaSection = `
 <section class="social-section">
     <h2>📱 Follow Us</h2>
     <div class="social-icons">
-        <a href="{{FACEBOOK_URL}}" target="_blank"><img src="images/facebook.svg" alt="Facebook"/></a>
-        <a href="{{INSTAGRAM_URL}}" target="_blank"><img src="images/instagram.svg" alt="Instagram"/></a>
-        <a href="{{TIKTOK_URL}}" target="_blank"><img src="images/tiktok.svg" alt="TikTok"/></a>
+        {{FACEBOOK_LINK}}
+        {{INSTAGRAM_LINK}}
+        {{TIKTOK_LINK}}
     </div>
 </section>
 `;
@@ -668,10 +668,36 @@ function updatePreview() {
     } else {
         htmlContent = htmlContent.replace('{{TESTIMONIALS_SECTION}}', '');
     }
-
-    // Conditionally include the Social Media section
+    
+    // Conditionally include the Social Media section and populate links
     if (socialMediaEnabled) {
-        htmlContent = htmlContent.replace('{{SOCIAL_MEDIA_SECTION}}', socialMediaSection);
+        let finalSocialMediaSection = socialMediaSection;
+        const facebookEnabled = document.getElementById('facebookToggle').checked;
+        const instagramEnabled = document.getElementById('instagramToggle').checked;
+        const tiktokEnabled = document.getElementById('tiktokToggle').checked;
+        
+        let facebookLink = '';
+        if (facebookEnabled && document.getElementById('FACEBOOK_USERNAME').value) {
+            const username = document.getElementById('FACEBOOK_USERNAME').value;
+            facebookLink = `<a href="https://facebook.com/${username}" target="_blank"><img src="images/facebook.svg" alt="Facebook"/></a>`;
+        }
+        finalSocialMediaSection = finalSocialMediaSection.replace('{{FACEBOOK_LINK}}', facebookLink);
+
+        let instagramLink = '';
+        if (instagramEnabled && document.getElementById('INSTAGRAM_USERNAME').value) {
+            const username = document.getElementById('INSTAGRAM_USERNAME').value;
+            instagramLink = `<a href="https://instagram.com/${username}" target="_blank"><img src="images/instagram.svg" alt="Instagram"/></a>`;
+        }
+        finalSocialMediaSection = finalSocialMediaSection.replace('{{INSTAGRAM_LINK}}', instagramLink);
+
+        let tiktokLink = '';
+        if (tiktokEnabled && document.getElementById('TIKTOK_USERNAME').value) {
+            const username = document.getElementById('TIKTOK_USERNAME').value;
+            tiktokLink = `<a href="https://tiktok.com/${username.replace('@', '')}" target="_blank"><img src="images/tiktok.svg" alt="TikTok"/></a>`;
+        }
+        finalSocialMediaSection = finalSocialMediaSection.replace('{{TIKTOK_LINK}}', tiktokLink);
+
+        htmlContent = htmlContent.replace('{{SOCIAL_MEDIA_SECTION}}', finalSocialMediaSection);
     } else {
         htmlContent = htmlContent.replace('{{SOCIAL_MEDIA_SECTION}}', '');
     }
@@ -680,8 +706,7 @@ function updatePreview() {
     formData.set('LOGO_IMAGE_PATH', logoImagePath);
     formData.set('BACKGROUND_IMAGE_URL', backgroundImageURL);
     
-    // Add default values for Services and Testimonials if they are not enabled
-    // This prevents errors if the user disables a section.
+    // Add default values for sections if they are not enabled
     if (!servicesEnabled) {
         htmlContent = htmlContent.replace(/{{SERVICE_1_TITLE}}/g, '');
         htmlContent = htmlContent.replace(/{{SERVICE_1_DESCRIPTION}}/g, '');
@@ -700,12 +725,6 @@ function updatePreview() {
         htmlContent = htmlContent.replace(/{{TESTIMONIAL_3_QUOTE}}/g, '');
         htmlContent = htmlContent.replace(/{{TESTIMONIAL_3_CLIENT_INFO}}/g, '');
         htmlContent = htmlContent.replace(/{{TESTIMONIALS_SECTION_HEADING}}/g, '');
-    }
-
-    if (!socialMediaEnabled) {
-        htmlContent = htmlContent.replace(/{{FACEBOOK_URL}}/g, '');
-        htmlContent = htmlContent.replace(/{{INSTAGRAM_URL}}/g, '');
-        htmlContent = htmlContent.replace(/{{TIKTOK_URL}}/g, '');
     }
     
     // Replace all placeholders in the template with form data
@@ -775,6 +794,38 @@ function toggleSocialMediaOptions() {
     const socialMediaToggle = document.getElementById('socialMediaToggle');
     if (socialMediaOptions && socialMediaToggle) {
         socialMediaOptions.style.display = socialMediaToggle.checked ? 'block' : 'none';
+        // Also ensure individual options are toggled if the main one is checked
+        if (socialMediaToggle.checked) {
+            toggleFacebookOptions();
+            toggleInstagramOptions();
+            toggleTiktokOptions();
+        }
+    } else {
+        socialMediaOptions.style.display = 'none';
+    }
+}
+
+function toggleFacebookOptions() {
+    const facebookOptions = document.getElementById('facebookOptions');
+    const facebookToggle = document.getElementById('facebookToggle');
+    if (facebookOptions && facebookToggle) {
+        facebookOptions.style.display = facebookToggle.checked ? 'block' : 'none';
+    }
+}
+
+function toggleInstagramOptions() {
+    const instagramOptions = document.getElementById('instagramOptions');
+    const instagramToggle = document.getElementById('instagramToggle');
+    if (instagramOptions && instagramToggle) {
+        instagramOptions.style.display = instagramToggle.checked ? 'block' : 'none';
+    }
+}
+
+function toggleTiktokOptions() {
+    const tiktokOptions = document.getElementById('tiktokOptions');
+    const tiktokToggle = document.getElementById('tiktokToggle');
+    if (tiktokOptions && tiktokToggle) {
+        tiktokOptions.style.display = tiktokToggle.checked ? 'block' : 'none';
     }
 }
 
@@ -824,12 +875,16 @@ function generateJsonConfig(event) {
         data[key] = value;
     });
 
-    // Add the AI assistant and Map toggle states to the config
+    // Add the toggle states to the config
     data['AI_ASSISTANT_TOGGLE'] = document.getElementById('aiAssistantToggle').checked;
     data['MAP_TOGGLE'] = document.getElementById('mapToggle').checked;
     data['SERVICES_TOGGLE'] = document.getElementById('servicesToggle').checked;
     data['TESTIMONIALS_TOGGLE'] = document.getElementById('testimonialsToggle').checked;
     data['SOCIAL_MEDIA_TOGGLE'] = document.getElementById('socialMediaToggle').checked;
+    data['FACEBOOK_TOGGLE'] = document.getElementById('facebookToggle').checked;
+    data['INSTAGRAM_TOGGLE'] = document.getElementById('instagramToggle').checked;
+    data['TIKTOK_TOGGLE'] = document.getElementById('tiktokToggle').checked;
+
 
     const jsonString = JSON.stringify(data, null, 2);
     const blob = new Blob([jsonString], { type: 'application/json' });
@@ -872,6 +927,9 @@ function handleFileUpload(event) {
             toggleServicesOptions();
             toggleTestimonialsOptions();
             toggleSocialMediaOptions();
+            toggleFacebookOptions();
+            toggleInstagramOptions();
+            toggleTiktokOptions();
             updatePreview();
         } catch (error) {
             alert('Error parsing JSON file. Please ensure it is a valid JSON file.');
@@ -904,12 +962,27 @@ if (form) {
         toggleSocialMediaOptions();
         updatePreview();
     });
+    document.getElementById('facebookToggle').addEventListener('change', function() {
+        toggleFacebookOptions();
+        updatePreview();
+    });
+    document.getElementById('instagramToggle').addEventListener('change', function() {
+        toggleInstagramOptions();
+        updatePreview();
+    });
+    document.getElementById('tiktokToggle').addEventListener('change', function() {
+        toggleTiktokOptions();
+        updatePreview();
+    });
     window.addEventListener('load', () => {
         toggleAiAssistantOptions();
         toggleMapOptions();
         toggleServicesOptions();
         toggleTestimonialsOptions();
         toggleSocialMediaOptions();
+        toggleFacebookOptions();
+        toggleInstagramOptions();
+        toggleTiktokOptions();
         updatePreview();
     });
 }
