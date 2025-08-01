@@ -90,3 +90,38 @@ header('Content-Type: text/html; charset=UTF-8');
 echo $generated_html_content;
 exit;
 ?>
+
+
+$encodedAddress = urlencode($workshopAddress);
+
+$mapSection = <<<HTML
+<section class="map-section">
+    <h2>📍 Find Our Workshop</h2>
+    <iframe
+        src="https://maps.google.com/maps?q={$encodedAddress}&t=&z=13&ie=UTF8&iwloc=&output=embed"
+        frameborder="0"
+        style="width:100%; height:300px; border-radius:10px;"
+        allowfullscreen>
+    </iframe>
+    <div class="waze-button-wrapper">
+        <a class="cta-button" href="https://waze.com/ul?q={$encodedAddress}&navigate=yes" target="_blank">
+            🚗 Navigate with Waze
+        </a>
+    </div>
+</section>
+HTML;
+
+$socialSection = <<<HTML
+<section class="social-section">
+    <h2>📱 Follow Us</h2>
+    <div class="social-icons">
+        <a href="{$facebookUrl}" target="_blank"><img src="images/facebook.svg" alt="Facebook"/></a>
+        <a href="{$instagramUrl}" target="_blank"><img src="images/instagram.svg" alt="Instagram"/></a>
+        <a href="{$tiktokUrl}" target="_blank"><img src="images/tiktok.svg" alt="TikTok"/></a>
+    </div>
+</section>
+HTML;
+
+$injectionPoint = '</section>';
+$injection = $injectionPoint . "\n" . $mapSection . "\n" . $socialSection;
+$indexTemplate = preg_replace('/<\/section>/', $injection, $indexTemplate, 1);

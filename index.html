@@ -6,6 +6,10 @@
     <title>{{WEBSITE_TITLE}}</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
     <link href="style.css" rel="stylesheet"/>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 </head>
 <body>
     <div id="tsparticles"></div>
@@ -15,6 +19,7 @@
             <a class="logo-link" href="#top" onclick="closeAllPopups(); closeMobileMenu()">
                 <img alt="{{LOGO_ALT_TEXT}}" class="header-logo" src="{{LOGO_IMAGE_PATH}}"/>
             </a>
+</div>
         </div>
         <div class="nav-group">
             <nav>
@@ -41,9 +46,39 @@
             <div class="hero-text">
                 <h1>{{HERO_HEADING}}</h1>
                 <p>{{HERO_PARAGRAPH}}</p>
-                <button class="cta-button" onclick="togglePopup();">{{HERO_CTA_BUTTON_TEXT}}</button>
+                <button class="cta-button" onclick="toggleBookingPopup()">📅 {{HERO_CTA_BUTTON_TEXT}}</button>
             </div>
         </section>
+        <section class="chatbot-section">
+            <h2>🤖 Ask Our Assistant</h2>
+            <div class="chatbot-box">
+                <p>Chat with our virtual assistant to get service help or quick quotes.</p>
+                <input type="text" placeholder="Ask a question..." />
+                <button class="cta-button">Send</button>
+            </div>
+        </section>
+        <section class="map-section">
+            <h2>📍 Find Our Workshop</h2>
+            <iframe
+                src="https://maps.google.com/maps?q=Riga&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                frameborder="0"
+                style="width:100%; height:300px; border-radius:10px;"
+                allowfullscreen>
+            </iframe>
+            <div class="waze-button-wrapper">
+<a class="cta-button" href="https://waze.com/ul?ll=56.9496,24.1052&navigate=yes" target="_blank">
+                🚗 Navigate with Waze
+            </a>
+        </section>
+        <section class="social-section">
+            <h2>📱 Follow Us</h2>
+            <div class="social-icons">
+                <a href="https://facebook.com/example" target="_blank"><img src="images/facebook.svg" alt="Facebook"/></a>
+                <a href="https://instagram.com/example" target="_blank"><img src="images/instagram.svg" alt="Instagram"/></a>
+                <a href="https://tiktok.com/@example" target="_blank"><img src="images/tiktok.svg" alt="TikTok"/></a>
+            </div>
+        </section>
+
 
         <section class="services-section" id="services">
             <h2>{{SERVICES_SECTION_HEADING}}</h2>
@@ -132,5 +167,32 @@
 
     <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
     <script src="script.js"></script>
+
+<div class="popup-overlay" id="bookingPopup" onclick="if (event.target === this) toggleBookingPopup()">
+  <div class="popup-card" style="max-width: 800px;">
+    <button class="close-button" onclick="toggleBookingPopup()">✖</button>
+    <h2 style="text-align: center;">📅 Select Your Appointment</h2>
+    <div class="calendar-time-grid">
+      <div class="calendar-column">
+        <div id="flatpickrCalendar"></div>
+      </div>
+      <div class="time-column">
+<div class="time-grid">
+  <button class="cta-button">9:00 AM</button>
+  <button class="cta-button">10:00 AM</button>
+  <button class="cta-button">11:00 AM</button>
+  <button class="cta-button">12:00 PM</button>
+  <button class="cta-button">1:00 PM</button>
+  <button class="cta-button">2:00 PM</button>
+  <button class="cta-button">3:00 PM</button>
+  <button class="cta-button">4:00 PM</button>
+  <button class="cta-button">5:00 PM</button>
+  <button class="cta-button">6:00 PM</button>
+</div>
+</div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
+

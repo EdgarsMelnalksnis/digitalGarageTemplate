@@ -576,3 +576,115 @@ header {
   cursor: pointer;
   color: white;
 }
+
+/* Chatbot Section */
+.chatbot-section {
+  background: rgba(255, 255, 255, 0.02);
+}
+.chatbot-box {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  backdrop-filter: blur(5px);
+}
+.chatbot-box input {
+  padding: 12px;
+  width: 70%;
+  border-radius: 8px;
+  border: none;
+  margin-right: 10px;
+}
+.chatbot-box button {
+  padding: 12px 20px;
+}
+
+/* Social Icons Section */
+.social-section .social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+.social-icons img {
+  height: 40px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s;
+}
+.social-icons img:hover {
+  transform: scale(1.2);
+}
+
+/* Fix spacing for Waze button */
+.waze-button-wrapper {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Ensure iframe is responsive */
+.map-section iframe {
+  width: 100%;
+  height: 300px;
+  border-radius: 10px;
+}
+
+/* Responsive map and chatbot tweaks */
+@media (max-width: 768px) {
+  .chatbot-box input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .chatbot-box button {
+    width: 100%;
+  }
+  .map-section iframe {
+    height: 250px;
+  }
+}
+
+.calendar-time-wrapper {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.time-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.time-grid .cta-button {
+  min-width: 120px;
+}
+
+.calendar-time-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+.calendar-column {
+  text-align: left;
+}
+.time-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.time-column .cta-button {
+  width: 100%;
+}
+
+.time-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.time-grid .cta-button {
+  width: 100%;
+}
