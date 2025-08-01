@@ -1,551 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>
-   Website Builder
-  </title>
-  <style>
-   body {
-            font-family: 'Inter', Arial, sans-serif; /* Use Inter for a modern look */
-            background-color: #f4f7f6;
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Website Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-color: #00d2ff;
+            --text-color: #fff;
+            --dark-bg: #0f2027;
+            --medium-bg: #203a43;
+            --light-bg: #2c5364;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #121212;
+            color: var(--text-color);
             margin: 0;
             padding: 20px;
-            color: #333;
-            line-height: 1.6;
             display: flex;
             gap: 20px;
-            height: 95vh;
-        }
-        .container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            margin: 0;
-            flex: 1;
+            height: 100vh;
+            overflow: hidden;
             box-sizing: border-box;
-            overflow-y: auto; /* Allow form to scroll if it's too long */
+        }
+        .builder-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            gap: 20px;
+        }
+        .builder-form {
+            flex: 0 0 350px;
+            background: var(--dark-bg);
+            border-radius: 15px;
+            padding: 20px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
         .preview-pane {
             flex: 1;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: var(--dark-bg);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
             overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
         }
-        .preview-pane iframe {
+        iframe {
             width: 100%;
             height: 100%;
             border: none;
         }
         h1 {
-            color: #007bff;
+            color: var(--primary-color);
+            margin-bottom: 20px;
             text-align: center;
-            margin-bottom: 25px;
-            font-size: 2.5em;
-            font-weight: 600;
         }
         h2 {
-            color: #0056b3;
-            margin-top: 30px;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 10px;
-        }
-        h3 {
-            color: #0056b3;
-            margin-top: 25px;
-            margin-bottom: 15px;
-            font-size: 1.4em;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
         }
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-            font-size: 0.95em;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #ddd;
         }
         input[type="text"],
         input[type="url"],
-        input[type="email"],
-        input[type="number"],
         textarea,
         select {
-            width: calc(100% - 22px);
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #cce0ff;
-            border-radius: 6px;
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            margin-bottom: 15px;
             box-sizing: border-box;
-            font-size: 1em;
-            background-color: #f8fcff;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        input[type="text"]:focus,
-        input[type="url"]:focus,
-        input[type="email"]:focus,
-        input[type="number"]:focus,
-        textarea:focus,
-        select:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
-            outline: none;
         }
         textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 80px;
         }
-        button[type="submit"] {
-            background-color: #28a745;
-            color: white;
-            padding: 15px 25px;
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .cta-button {
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: #000;
             border: none;
-            border-radius: 6px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 1.2em;
             font-weight: 600;
-            display: block;
-            width: 100%;
-            box-sizing: border-box;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: background 0.3s, transform 0.3s;
         }
-        button[type="submit"]:hover {
-            background-color: #218838;
-            transform: translateY(-2px);
+        .cta-button:hover {
+            background: #00b0e0;
+            transform: scale(1.02);
         }
-        .section-separator {
-            border-top: 1px solid #e0e0e0;
-            margin: 40px 0;
-            padding-top: 30px;
-        }
-        .json-options {
+        .file-input-wrapper {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
         }
-        .json-options .json-button {
-            flex-grow: 1;
-            padding: 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+        .file-input-wrapper label.cta-button {
+            flex: 1;
+            text-align: center;
+            line-height: 1;
+            padding: 12px 0;
         }
-        .json-options .json-button:hover {
-            background-color: #0056b3;
-            transform: translateY(-1px);
+        #fileInput {
+            display: none;
         }
-        @media (max-width: 1024px) {
+        .builder-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        @media (max-width: 900px) {
             body {
                 flex-direction: column;
+                height: auto;
+                overflow: auto;
             }
-            .container {
-                max-width: 100%;
+            .builder-container {
+                flex-direction: column;
+                height: auto;
+            }
+            .builder-form {
+                flex: none;
+                width: 100%;
+                height: 50vh;
             }
             .preview-pane {
+                flex: none;
+                width: 100%;
                 height: 50vh;
             }
         }
-  </style>
- </head>
- <body>
-  <div class="container">
-   <h1>
-    BitWorksLab Website Content Builder
-   </h1>
-   <p>
-    Fill in the fields below to customize your website. A ZIP file containing your new `index.html`, `style.css`, and `script.js` will be generated for download.
-   </p>
-   <form action="generate_website.php" method="post">
-    <div class="json-options">
-     <button class="json-button" onclick="generateJsonConfig(event)">
-      Generate JSON
-     </button>
-     <button class="json-button" onclick="document.getElementById('json-upload').click(); return false;">
-      Upload JSON Config
-     </button>
-     <input id="json-upload" onchange="handleFileUpload(event)" style="display:none;" type="file"/>
+    </style>
+</head>
+<body>
+    <div class="builder-container">
+        <div class="builder-form">
+            <h1>Website Builder</h1>
+            <form id="builderForm">
+                <h2>General</h2>
+                <div class="form-group">
+                    <label for="WEBSITE_TITLE">Website Title</label>
+                    <input type="text" id="WEBSITE_TITLE" name="WEBSITE_TITLE" value="Tech Solutions">
+                </div>
+                <div class="form-group">
+                    <label for="LOGO_IMAGE_PATH">Logo Image Path</label>
+                    <input type="text" id="LOGO_IMAGE_PATH" name="LOGO_IMAGE_PATH" value="images/logo.png">
+                </div>
+
+                <h2>Hero Section</h2>
+                <div class="form-group">
+                    <label for="HERO_HEADING">Hero Heading</label>
+                    <input type="text" id="HERO_HEADING" name="HERO_HEADING" value="Innovate, Integrate, Inspire">
+                </div>
+                <div class="form-group">
+                    <label for="HERO_PARAGRAPH">Hero Paragraph</label>
+                    <textarea id="HERO_PARAGRAPH" name="HERO_PARAGRAPH">We specialize in developing cutting-edge software and IoT solutions that drive innovation and empower businesses to thrive in the digital age.</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="HERO_CTA_BUTTON_TEXT">Hero CTA Button Text</label>
+                    <input type="text" id="HERO_CTA_BUTTON_TEXT" name="HERO_CTA_BUTTON_TEXT" value="Book a Consultation">
+                </div>
+
+                <h2>Services Section</h2>
+                <div class="form-group">
+                    <label for="SERVICES_SECTION_HEADING">Heading</label>
+                    <input type="text" id="SERVICES_SECTION_HEADING" name="SERVICES_SECTION_HEADING" value="Our Expertise">
+                </div>
+                <div class="form-group">
+                    <label for="SERVICE_1_TITLE">Service 1 Title</label>
+                    <input type="text" id="SERVICE_1_TITLE" name="SERVICE_1_TITLE" value="Custom Software Development">
+                </div>
+                <div class="form-group">
+                    <label for="SERVICE_1_DESCRIPTION">Service 1 Description</label>
+                    <textarea id="SERVICE_1_DESCRIPTION" name="SERVICE_1_DESCRIPTION">Building tailored software from the ground up to meet your unique business needs.</textarea>
+                </div>
+
+                <h2>Testimonials</h2>
+                <div class="form-group">
+                    <label for="TESTIMONIALS_SECTION_HEADING">Heading</label>
+                    <input type="text" id="TESTIMONIALS_SECTION_HEADING" name="TESTIMONIALS_SECTION_HEADING" value="What Our Clients Say">
+                </div>
+                <div class="form-group">
+                    <label for="TESTIMONIAL_1_QUOTE">Testimonial 1 Quote</label>
+                    <textarea id="TESTIMONIAL_1_QUOTE" name="TESTIMONIAL_1_QUOTE">Their innovative solutions transformed our business. Highly recommend!</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="TESTIMONIAL_1_CLIENT_INFO">Testimonial 1 Client Info</label>
+                    <input type="text" id="TESTIMONIAL_1_CLIENT_INFO" name="TESTIMONIAL_1_CLIENT_INFO" value="Jane Doe, CEO">
+                </div>
+
+                <h2>Contact Info</h2>
+                <div class="form-group">
+                    <label for="CONTACT_EMAIL">Contact Email</label>
+                    <input type="email" id="CONTACT_EMAIL" name="CONTACT_EMAIL" value="contact@techsolutions.com">
+                </div>
+                <div class="form-group">
+                    <label for="CONTACT_PHONE">Contact Phone</label>
+                    <input type="text" id="CONTACT_PHONE" name="CONTACT_PHONE" value="+1 (555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label for="CONTACT_ADDRESS">Contact Address</label>
+                    <input type="text" id="CONTACT_ADDRESS" name="CONTACT_ADDRESS" value="123 Tech Avenue, Silicon Valley, CA 90210">
+                </div>
+
+                <h2>Social Media</h2>
+                <div class="form-group">
+                    <label for="FACEBOOK_URL">Facebook URL</label>
+                    <input type="url" id="FACEBOOK_URL" name="FACEBOOK_URL" value="#">
+                </div>
+                <div class="form-group">
+                    <label for="INSTAGRAM_URL">Instagram URL</label>
+                    <input type="url" id="INSTAGRAM_URL" name="INSTAGRAM_URL" value="#">
+                </div>
+                <div class="form-group">
+                    <label for="TIKTOK_URL">TikTok URL</label>
+                    <input type="url" id="TIKTOK_URL" name="TIKTOK_URL" value="#">
+                </div>
+
+                <h2>Theme and Background</h2>
+                <div class="form-group">
+                    <label for="COLOR_SCHEME">Color Scheme</label>
+                    <select id="COLOR_SCHEME" name="COLOR_SCHEME">
+                        <option value="default">Default</option>
+                        <option value="deep_ocean">Deep Ocean</option>
+                        <option value="sunset_glow">Sunset Glow</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="BACKGROUND_TYPE">Background Type</label>
+                    <select id="BACKGROUND_TYPE" name="BACKGROUND_TYPE">
+                        <option value="particles">Particles</option>
+                        <option value="gradient">Animated Gradient</option>
+                        <option value="perlin">Perlin Noise</option>
+                        <option value="image">Image</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="BACKGROUND_IMAGE_URL">Background Image URL</label>
+                    <input type="url" id="BACKGROUND_IMAGE_URL" name="BACKGROUND_IMAGE_URL" placeholder="Enter URL if using image background">
+                </div>
+            </form>
+            <div class="builder-actions">
+                <button class="cta-button" onclick="generateJsonConfig(event)">Download Config</button>
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" accept=".json" onchange="handleFileUpload(event)">
+                    <label for="fileInput" class="cta-button">Upload Config</label>
+                </div>
+            </div>
+        </div>
+        <div class="preview-pane">
+            <iframe id="previewIframe"></iframe>
+        </div>
     </div>
-    <h2>
-     General Settings
-    </h2>
-    <label for="website_title">
-     Website Title:
-    </label>
-    <input id="website_title" name="WEBSITE_TITLE" required="" type="text" value="BitWorksLab - Digital Solutions"/>
-    <label for="color_scheme">
-     Color Scheme:
-    </label>
-    <select id="color_scheme" name="COLOR_SCHEME">
-     <option value="default">
-      Default (Blue & Green)
-     </option>
-     <option value="deep_ocean">
-      Deep Ocean (Dark Blue & Gold)
-     </option>
-     <option value="sunset_glow">
-      Sunset Glow (Orange & Purple)
-     </option>
-    </select>
-    <h2>
-     Header & Navigation
-    </h2>
-    <label for="logo_alt_text">
-     Logo Alt Text:
-    </label>
-    <input id="logo_alt_text" name="LOGO_ALT_TEXT" required="" type="text" value="BitWorksLab Logo"/>
-    <label for="logo_image_path">
-     Logo Image Path (e.g., logo.png or images/logo.png):
-    </label>
-    <input id="logo_image_path" name="LOGO_IMAGE_PATH" required="" type="text" value="logo.png"/>
-    <label for="header_cta_button_text">
-     Header CTA Button Text:
-    </label>
-    <input id="header_cta_button_text" name="HEADER_CTA_BUTTON_TEXT" required="" type="text" value="✨ Book Online"/>
-    <label for="mobile_nav_cta_button_text">
-     Mobile Navigation CTA Button Text:
-    </label>
-    <input id="mobile_nav_cta_button_text" name="MOBILE_NAV_CTA_BUTTON_TEXT" required="" type="text" value="✨ Get Started"/>
-    <div class="section-separator">
-    </div>
-    <h2>
-     Hero Section
-    </h2>
-    <label for="hero_heading">
-     Hero Heading (e.g., "🚀 Insert text1 here"):
-    </label>
-    <input id="hero_heading" name="HERO_HEADING" required="" type="text" value="🚀 Innovate, Build, Transform."/>
-    <label for="hero_paragraph">
-     Hero Paragraph (e.g., "Insert Text2 here"):
-    </label>
-    <textarea id="hero_paragraph" name="HERO_PARAGRAPH" required="">Your partner in custom software, IoT, and AI solutions. Bringing your boldest ideas to life.</textarea>
-    <label for="hero_cta_button_text">
-     Hero CTA Button Text:
-    </label>
-    <input id="hero_cta_button_text" name="HERO_CTA_BUTTON_TEXT" required="" type="text" value="✨ Book Online"/>
-    <div class="section-separator">
-    </div>
-    <h2>
-     Services Section
-    </h2>
-    <label for="services_section_heading">
-     Services Section Heading:
-    </label>
-    <input id="services_section_heading" name="SERVICES_SECTION_HEADING" required="" type="text" value="💡 Our Expertise & Services"/>
-    <h3>
-     Service 1: Custom Software Development
-    </h3>
-    <label for="service_1_icon_alt_text">
-     Service 1 Icon Alt Text:
-    </label>
-    <input id="service_1_icon_alt_text" name="SERVICE_1_ICON_ALT_TEXT" required="" type="text" value="Software Development Icon"/>
-    <label for="service_1_icon_path">
-     Service 1 Icon Path:
-    </label>
-    <input id="service_1_icon_path" name="SERVICE_1_ICON_PATH" required="" type="text" value="images/icon-software.png"/>
-    <label for="service_1_title">
-     Service 1 Title (e.g., "Insert text4 here"):
-    </label>
-    <input id="service_1_title" name="SERVICE_1_TITLE" required="" type="text" value="Custom Software Development"/>
-    <label for="service_1_description">
-     Service 1 Description (e.g., "Insert text5 here"):
-    </label>
-    <textarea id="service_1_description" name="SERVICE_1_DESCRIPTION" required="">Tailored software solutions designed to meet your unique business challenges and drive efficiency.</textarea>
-    <h3>
-     Service 2: Embedded Systems & IoT
-    </h3>
-    <label for="service_2_icon_alt_text">
-     Service 2 Icon Alt Text:
-    </label>
-    <input id="service_2_icon_alt_text" name="SERVICE_2_ICON_ALT_TEXT" required="" type="text" value="IoT Icon"/>
-    <label for="service_2_icon_path">
-     Service 2 Icon Path:
-    </label>
-    <input id="service_2_icon_path" name="SERVICE_2_ICON_PATH" required="" type="text" value="images/icon-iot.png"/>
-    <label for="service_2_title">
-     Service 2 Title (e.g., "Insert text6 here"):
-    </label>
-    <input id="service_2_title" name="SERVICE_2_TITLE" required="" type="text" value="Embedded Systems & IoT"/>
-    <label for="service_2_description">
-     Service 2 Description (e.g., "Insert text7 here"):
-    </label>
-    <textarea id="service_2_description" name="SERVICE_2_DESCRIPTION" required="">Connecting your world with intelligent, integrated embedded systems and IoT solutions for smart operations.</textarea>
-    <h3>
-     Service 3: AI & Data Analytics
-    </h3>
-    <label for="service_3_icon_alt_text">
-     Service 3 Icon Alt Text:
-    </label>
-    <input id="service_3_icon_alt_text" name="SERVICE_3_ICON_ALT_TEXT" required="" type="text" value="AI Icon"/>
-    <label for="service_3_icon_path">
-     Service 3 Icon Path:
-    </label>
-    <input id="service_3_icon_path" name="SERVICE_3_ICON_PATH" required="" type="text" value="images/icon-ai.png"/>
-    <label for="service_3_title">
-     Service 3 Title (e.g., "insert text8 here"):
-    </label>
-    <input id="service_3_title" name="SERVICE_3_TITLE" required="" type="text" value="AI & Data Analytics"/>
-    <label for="service_3_description">
-     Service 3 Description (e.g., "insert text9 here"):
-    </label>
-    <textarea id="service_3_description" name="SERVICE_3_DESCRIPTION" required="">Leveraging artificial intelligence and big data to provide actionable insights and automated solutions.</textarea>
-    <label for="explore_services_button_text">
-     Explore All Services Button Text:
-    </label>
-    <input id="explore_services_button_text" name="EXPLORE_SERVICES_BUTTON_TEXT" required="" type="text" value="Explore All Services"/>
-    <div class="section-separator">
-    </div>
-    <h2>
-     Testimonials Section
-    </h2>
-    <label for="testimonials_section_heading">
-     Testimonials Section Heading:
-    </label>
-    <input id="testimonials_section_heading" name="TESTIMONIALS_SECTION_HEADING" required="" type="text" value="🌟 What Our Clients Say"/>
-    <h3>
-     Testimonial 1
-    </h3>
-    <label for="testimonial_1_quote">
-     Quote:
-    </label>
-    <textarea id="testimonial_1_quote" name="TESTIMONIAL_1_QUOTE" required="">"BitWorksLab transformed our outdated system into a modern, efficient platform. Their attention to detail and innovative approach were exceptional!"</textarea>
-    <label for="testimonial_1_client_info">
-     Client Info:
-    </label>
-    <input id="testimonial_1_client_info" name="TESTIMONIAL_1_CLIENT_INFO" required="" type="text" value="- Jane Doe, CEO of Tech Innovations Inc."/>
-    <h3>
-     Testimonial 2
-    </h3>
-    <label for="testimonial_2_quote">
-     Quote:
-    </label>
-    <textarea id="testimonial_2_quote" name="TESTIMONIAL_2_QUOTE" required="">"The team at BitWorksLab delivered our IoT project ahead of schedule and beyond expectations. Highly recommend their expertise!"</textarea>
-    <label for="testimonial_2_client_info">
-     Client Info:
-    </label>
-    <input id="testimonial_2_client_info" name="TESTIMONIAL_2_CLIENT_INFO" required="" type="text" value="- John Smith, Operations Manager at Global Logistics"/>
-    <h3>
-     Testimonial 3
-    </h3>
-    <label for="testimonial_3_quote">
-     Quote:
-    </label>
-    <textarea id="testimonial_3_quote" name="TESTIMONIAL_3_QUOTE" required="">"Truly groundbreaking work! Their AI solutions provided us with insights we never thought possible, giving us a significant market edge."</textarea>
-    <label for="testimonial_3_client_info">
-     Client Info:
-    </label>
-    <input id="testimonial_3_client_info" name="TESTIMONIAL_3_CLIENT_INFO" required="" type="text" value="- Emily White, Head of Data at FutureCorp"/>
-    <div class="section-separator">
-    </div>
-    <h2>
-     Contact & Social Links
-    </h2>
-    <label for="workshop_address">
-     Workshop Address (for Map & Waze):
-    </label>
-    <input id="workshop_address" name="WORKSHOP_ADDRESS" required="" type="text" value="123 Tech Avenue, Innovation City, CA 90210"/>
-    <label for="facebook_url">
-     Facebook URL:
-    </label>
-    <input id="facebook_url" name="FACEBOOK_URL" type="url" value="https://facebook.com/example"/>
-    <label for="instagram_url">
-     Instagram URL:
-    </label>
-    <input id="instagram_url" name="INSTAGRAM_URL" type="url" value="https://instagram.com/example"/>
-    <label for="tiktok_url">
-     TikTok URL:
-    </label>
-    <input id="tiktok_url" name="TIKTOK_URL" type="url" value="https://tiktok.com/@example"/>
-    <div class="section-separator">
-    </div>
-    <h2>
-     Footer
-    </h2>
-    <label for="footer_text">
-     Footer Text:
-    </label>
-    <textarea id="footer_text" name="FOOTER_TEXT" required="">© 2025 BitWorksLab. Built with ❤️ and innovation.</textarea>
-    <div class="section-separator">
-    </div>
-    <h2>
-     Popup Forms Content
-    </h2>
-    <h3>
-     Booking/Project Popup
-    </h3>
-    <label for="popup_form_title">
-     Popup Form Title:
-    </label>
-    <input id="popup_form_title" name="POPUP_FORM_TITLE" required="" type="text" value="🚀 Start Your Project"/>
-    <label for="form_input_placeholder_name">
-     Form Name Placeholder:
-    </label>
-    <input id="form_input_placeholder_name" name="FORM_INPUT_PLACEHOLDER_NAME" required="" type="text" value="Your Name"/>
-    <label for="form_input_placeholder_email">
-     Form Email Placeholder:
-    </label>
-    <input id="form_input_placeholder_email" name="FORM_INPUT_PLACEHOLDER_EMAIL" required="" type="text" value="Your Email"/>
-    <label for="form_select_default_option">
-     Project Type Default Option:
-    </label>
-    <input id="form_select_default_option" name="FORM_SELECT_DEFAULT_OPTION" required="" type="text" value="Select Project Type"/>
-    <label for="form_select_option_1">
-     Project Type Option 1:
-    </label>
-    <input id="form_select_option_1" name="FORM_SELECT_OPTION_1" required="" type="text" value="Custom Software Development"/>
-    <label for="form_select_option_2">
-     Project Type Option 2:
-    </label>
-    <input id="form_select_option_2" name="FORM_SELECT_OPTION_2" required="" type="text" value="Embedded Systems & IoT"/>
-    <label for="form_select_option_3">
-     Project Type Option 3:
-    </label>
-    <input id="form_select_option_3" name="FORM_SELECT_OPTION_3" required="" type="text" value="AI & Data Analytics"/>
-    <label for="form_select_option_4">
-     Project Type Option 4:
-    </label>
-    <input id="form_select_option_4" name="FORM_SELECT_OPTION_4" required="" type="text" value="Cloud Solutions & DevOps"/>
-    <label for="form_select_option_5">
-     Project Type Option 5:
-    </label>
-    <input id="form_select_option_5" name="FORM_SELECT_OPTION_5" required="" type="text" value="Cybersecurity & Compliance"/>
-    <label for="form_select_option_6">
-     Project Type Option 6:
-    </label>
-    <input id="form_select_option_6" name="FORM_SELECT_OPTION_6" required="" type="text" value="Tech Strategy & Consulting"/>
-    <label for="form_textarea_placeholder_description">
-     Project Description Placeholder:
-    </label>
-    <textarea id="form_textarea_placeholder_description" name="FORM_TEXTAREA_PLACEHOLDER_DESCRIPTION" required="">Brief project description...</textarea>
-    <label for="form_submit_button_text">
-     Form Submit Button Text:
-    </label>
-    <input id="form_submit_button_text" name="FORM_SUBMIT_BUTTON_TEXT" required="" type="text" value="Submit Project"/>
-    <h3>
-     About Us Popup
-    </h3>
-    <label for="about_popup_heading">
-     About Popup Heading:
-    </label>
-    <input id="about_popup_heading" name="ABOUT_POPUP_HEADING" required="" type="text" value="👋 About BitWorksLab"/>
-    <label for="about_popup_paragraph">
-     About Popup Paragraph:
-    </label>
-    <textarea id="about_popup_paragraph" name="ABOUT_POPUP_PARAGRAPH" required="">At BitWorksLab, we are a team of dedicated innovators passionate about crafting cutting-edge digital solutions. From custom software and robust IoT systems to advanced AI and data analytics, we empower businesses to thrive in the modern technological landscape. Our commitment to excellence and client-centric approach ensures that every project transforms your vision into reality. We believe in building strong partnerships, delivering impactful results, and continuously pushing the boundaries of what's possible.</textarea>
-    <h3>
-     Contact Popup
-    </h3>
-    <label for="contact_popup_heading">
-     Contact Popup Heading:
-    </label>
-    <input id="contact_popup_heading" name="CONTACT_POPUP_HEADING" required="" type="text" value="📬 Get in Touch"/>
-    <label for="contact_email">
-     Contact Email:
-    </label>
-    <input id="contact_email" name="CONTACT_EMAIL" required="" type="email" value="info@bitworkslab.com"/>
-    <label for="contact_phone">
-     Contact Phone:
-    </label>
-    <input id="contact_phone" name="CONTACT_PHONE" required="" type="text" value="+1 (555) 123-4567"/>
-    <label for="contact_address">
-     Contact Address:
-    </label>
-    <textarea id="contact_address" name="CONTACT_ADDRESS" required="">123 Tech Avenue, Innovation City, CA 90210</textarea>
-    <div class="section-separator">
-    </div>
-    <h2>
-     Online Booking Settings
-    </h2>
-    <label for="booking_mode">
-     Booking Mode:
-    </label>
-    <select id="booking_mode" name="BOOKING_MODE">
-     <option value="calendar">
-      Calendar
-     </option>
-     <option value="form">
-      Simple Form
-     </option>
-    </select>
-    <label for="slot_interval">
-     Time Slot Interval (minutes):
-    </label>
-    <input id="slot_interval" min="5" name="SLOT_INTERVAL" step="5" type="number" value="60"/>
-    <h3>
-     Working Hours:
-    </h3>
-    <label for="monday_start">
-     Monday Start Time:
-    </label>
-    <input id="monday_start" name="MONDAY_START" type="time"/>
-    <label for="monday_end">
-     Monday End Time:
-    </label>
-    <input id="monday_end" name="MONDAY_END" type="time"/>
-    <label for="tuesday_start">
-     Tuesday Start Time:
-    </label>
-    <input id="tuesday_start" name="TUESDAY_START" type="time"/>
-    <label for="tuesday_end">
-     Tuesday End Time:
-    </label>
-    <input id="tuesday_end" name="TUESDAY_END" type="time"/>
-    <label for="wednesday_start">
-     Wednesday Start Time:
-    </label>
-    <input id="wednesday_start" name="WEDNESDAY_START" type="time"/>
-    <label for="wednesday_end">
-     Wednesday End Time:
-    </label>
-    <input id="wednesday_end" name="WEDNESDAY_END" type="time"/>
-    <label for="thursday_start">
-     Thursday Start Time:
-    </label>
-    <input id="thursday_start" name="THURSDAY_START" type="time"/>
-    <label for="thursday_end">
-     Thursday End Time:
-    </label>
-    <input id="thursday_end" name="THURSDAY_END" type="time"/>
-    <label for="friday_start">
-     Friday Start Time:
-    </label>
-    <input id="friday_start" name="FRIDAY_START" type="time"/>
-    <label for="friday_end">
-     Friday End Time:
-    </label>
-    <input id="friday_end" name="FRIDAY_END" type="time"/>
-    <label for="saturday_start">
-     Saturday Start Time:
-    </label>
-    <input id="saturday_start" name="SATURDAY_START" type="time"/>
-    <label for="saturday_end">
-     Saturday End Time:
-    </label>
-    <input id="saturday_end" name="SATURDAY_END" type="time"/>
-    <label for="sunday_start">
-     Sunday Start Time:
-    </label>
-    <input id="sunday_start" name="SUNDAY_START" type="time"/>
-    <label for="sunday_end">
-     Sunday End Time:
-    </label>
-    <input id="sunday_end" name="SUNDAY_END" type="time"/>
-    <button type="submit">
-     Generate Website ZIP
-    </button>
-   </form>
-  </div>
-  <div class="preview-pane">
-   <iframe id="previewIframe">
-   </iframe>
-  </div>
-  <script src="script.js">
-  </script>
- </body>
+    <script src="script.js"></script>
+</body>
 </html>

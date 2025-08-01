@@ -20,6 +20,10 @@
   --particles-background: #0f2027;
   --particles-links: #2c5364;
   --particles-color: #ffffff;
+
+  /* New variables for other backgrounds */
+  --background-image: none;
+  --background-image-overlay: rgba(0,0,0,0.5);
 }
 
 body {
@@ -27,7 +31,26 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   color: var(--text-color);
+  
+  /* Styling for the new background options */
+  background-image: var(--background-image);
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.5s ease;
 }
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-image-overlay);
+    z-index: -2;
+    pointer-events: none;
+}
+
 #tsparticles { /* Renamed from #particles-js to match script.js */
   position: fixed;
   top: 0; left: 0;
@@ -36,6 +59,42 @@ body {
   z-index: -1;
   background: var(--gradient-bg);
 }
+
+.animated-gradient-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(270deg, var(--dark-bg), var(--primary-color), var(--dark-bg));
+  background-size: 600% 600%;
+  animation: gradientAnimation 10s ease infinite;
+  display: none; /* Initially hidden */
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+#perlin-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  display: none; /* Initially hidden */
+}
+
 header {
   position: sticky;
   top: 0;

@@ -1,6 +1,4 @@
 // script.js
-
-// This holds the original HTML template as a string
 const indexHtmlTemplate = `
 <!DOCTYPE html>
 <html lang="en">
@@ -11,12 +9,12 @@ const indexHtmlTemplate = `
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
     <link href="style.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body>
     <div id="colorSchemeStyleTag"></div>
-    <div id="tsparticles"></div>
+    <div id="tsparticles" style="display: none;"></div>
+    <div class="animated-gradient-background" style="display: none;"></div>
+    <canvas id="perlin-canvas" style="display: none;"></canvas>
 
     <header>
         <div class="logo">
@@ -193,6 +191,9 @@ const indexHtmlTemplate = `
             </div>
         </div>
     </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </body>
 </html>
 `;
@@ -213,6 +214,8 @@ const colorSchemes = {
         '--particles-background': '#0f2027',
         '--particles-links': '#2c5364',
         '--particles-color': '#ffffff',
+        '--background-image': 'none',
+        '--background-image-overlay': 'rgba(0,0,0,0.5)',
     },
     'deep_ocean': {
         '--primary-color': '#1E3A8A',
@@ -254,200 +257,349 @@ const colorSchemes = {
 
 // This is the entire JavaScript content that will be embedded inside the iframe.
 const embeddedScript = `
-// Helper function to update the body's blur state
-function updateBodyBlurState() {
-    const mobileNavActive = document.getElementById('mobileNav').classList.contains('active');
-    const popupFormOpen = document.getElementById('popupForm').style.display === 'flex';
-    const aboutPopupOpen = document.getElementById('aboutPopup').style.display === 'flex';
-    const contactPopupOpen = document.getElementById('contactPopup').style.display === 'flex';
-    const bookingPopupOpen = document.getElementById('bookingPopup').style.display === 'flex';
+    // Helper function to update the body's blur state
+    function updateBodyBlurState() {
+        const mobileNavActive = document.getElementById('mobileNav').classList.contains('active');
+        const popupFormOpen = document.getElementById('popupForm').style.display === 'flex';
+        const aboutPopupOpen = document.getElementById('aboutPopup').style.display === 'flex';
+        const contactPopupOpen = document.getElementById('contactPopup').style.display === 'flex';
+        const bookingPopupOpen = document.getElementById('bookingPopup').style.display === 'flex';
 
-    if (mobileNavActive || popupFormOpen || aboutPopupOpen || contactPopupOpen || bookingPopupOpen) {
-        document.body.classList.add('menu-open');
-    } else {
-        document.body.classList.remove('menu-open');
-    }
-}
-
-// Function to close all popups (visual closing)
-function closeAllPopups() {
-    const popups = ['popupForm', 'aboutPopup', 'contactPopup', 'bookingPopup'];
-    popups.forEach(id => {
-        const popup = document.getElementById(id);
-        if (popup) {
-            popup.style.display = 'none';
+        if (mobileNavActive || popupFormOpen || aboutPopupOpen || contactPopupOpen || bookingPopupOpen) {
+            document.body.classList.add('menu-open');
+        } else {
+            document.body.classList.remove('menu-open');
         }
-    });
-    updateBodyBlurState();
-}
-
-// Popup toggle functions
-function togglePopup() {
-    const popup = document.getElementById('popupForm');
-    if (popup.style.display === 'flex') {
-        popup.style.display = 'none';
-    } else {
-        closeAllPopups();
-        closeMobileMenu();
-        popup.style.display = 'flex';
     }
-    updateBodyBlurState();
-}
 
-function toggleAbout() {
-    const popup = document.getElementById('aboutPopup');
-    if (popup.style.display === 'flex') {
-        popup.style.display = 'none';
-    } else {
-        closeAllPopups();
-        closeMobileMenu();
-        popup.style.display = 'flex';
+    // Function to close all popups (visual closing)
+    function closeAllPopups() {
+        const popups = ['popupForm', 'aboutPopup', 'contactPopup', 'bookingPopup'];
+        popups.forEach(id => {
+            const popup = document.getElementById(id);
+            if (popup) {
+                popup.style.display = 'none';
+            }
+        });
+        updateBodyBlurState();
     }
-    updateBodyBlurState();
-}
 
-function toggleContactPopup() {
-    const popup = document.getElementById('contactPopup');
-    if (popup.style.display === 'flex') {
-        popup.style.display = 'none';
-    } else {
-        closeAllPopups();
-        closeMobileMenu();
-        popup.style.display = 'flex';
+    // Popup toggle functions
+    function togglePopup() {
+        const popup = document.getElementById('popupForm');
+        if (popup.style.display === 'flex') {
+            popup.style.display = 'none';
+        } else {
+            closeAllPopups();
+            closeMobileMenu();
+            popup.style.display = 'flex';
+        }
+        updateBodyBlurState();
     }
-    updateBodyBlurState();
-}
 
-function toggleMobileMenu() {
-    const mobileNav = document.getElementById('mobileNav');
-    mobileNav.classList.toggle('active');
-    updateBodyBlurState();
-}
+    function toggleAbout() {
+        const popup = document.getElementById('aboutPopup');
+        if (popup.style.display === 'flex') {
+            popup.style.display = 'none';
+        } else {
+            closeAllPopups();
+            closeMobileMenu();
+            popup.style.display = 'flex';
+        }
+        updateBodyBlurState();
+    }
 
-function closeMobileMenu() {
-    const mobileNav = document.getElementById('mobileNav');
-    mobileNav.classList.remove('active');
-    updateBodyBlurState();
-}
+    function toggleContactPopup() {
+        const popup = document.getElementById('contactPopup');
+        if (popup.style.display === 'flex') {
+            popup.style.display = 'none';
+        } else {
+            closeAllPopups();
+            closeMobileMenu();
+            popup.style.display = 'flex';
+        }
+        updateBodyBlurState();
+    }
 
-function launchProjectType(type) {
-    const projectTypeSelect = document.getElementById('projectType');
-    if (projectTypeSelect) {
-        // Find the option with the matching text and select it
-        for (let i = 0; i < projectTypeSelect.options.length; i++) {
-            if (projectTypeSelect.options[i].text === type) {
-                projectTypeSelect.selectedIndex = i;
-                break;
+    function toggleMobileMenu() {
+        const mobileNav = document.getElementById('mobileNav');
+        mobileNav.classList.toggle('active');
+        updateBodyBlurState();
+    }
+
+    function closeMobileMenu() {
+        const mobileNav = document.getElementById('mobileNav');
+        mobileNav.classList.remove('active');
+        updateBodyBlurState();
+    }
+
+    function launchProjectType(type) {
+        const projectTypeSelect = document.getElementById('projectType');
+        if (projectTypeSelect) {
+            // Find the option with the matching text and select it
+            for (let i = 0; i < projectTypeSelect.options.length; i++) {
+                if (projectTypeSelect.options[i].text === type) {
+                    projectTypeSelect.selectedIndex = i;
+                    break;
+                }
+            }
+            togglePopup(); // Open the form popup
+        }
+    }
+
+    function toggleBookingPopup() {
+        const popup = document.getElementById('bookingPopup');
+        if (popup.style.display === 'flex') {
+            popup.style.display = 'none';
+        } else {
+            closeAllPopups();
+            closeMobileMenu();
+            popup.style.display = 'flex';
+        }
+        updateBodyBlurState();
+    }
+
+    function createPerlinNoiseBackground() {
+        const canvas = document.getElementById('perlin-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        // Perlin noise generation
+        const perlin = new Perlin();
+        perlin.seed();
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        function render() {
+            const imageData = ctx.createImageData(width, height);
+            const data = imageData.data;
+            const time = Date.now() * 0.0001;
+
+            for (let x = 0; x < width; x++) {
+                for (let y = 0; y < height; y++) {
+                    const value = perlin.noise(x * 0.01, y * 0.01, time);
+                    const colorValue = (value + 1) * 0.5 * 255;
+                    const index = (x + y * width) * 4;
+
+                    data[index] = colorValue;
+                    data[index + 1] = colorValue;
+                    data[index + 2] = colorValue;
+                    data[index + 3] = 255;
+                }
+            }
+            ctx.putImageData(imageData, 0, 0);
+            requestAnimationFrame(render);
+        }
+        
+        // Simple Perlin Noise implementation
+        function Perlin() {
+            this.perm = new Uint8Array(512);
+            this.grad = new Float32Array(512);
+            this.seed = () => {
+                const p = new Uint8Array(256);
+                for (let i = 0; i < 256; i++) p[i] = i;
+                for (let i = 0; i < 255; i++) {
+                    const j = Math.floor(Math.random() * (256 - i)) + i;
+                    [p[i], p[j]] = [p[j], p[i]];
+                }
+                for (let i = 0; i < 512; i++) {
+                    this.perm[i] = p[i & 255];
+                    this.grad[i] = Math.random() * 2 - 1;
+                }
+            };
+            this.fade = t => t * t * t * (t * (t * 6 - 15) + 10);
+            this.lerp = (t, a, b) => a + t * (b - a);
+            this.grad = (hash, x, y, z) => {
+                const h = hash & 15;
+                const u = h < 8 ? x : y;
+                const v = h < 4 ? y : h === 12 || h === 14 ? x : z;
+                return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
+            };
+            this.noise = (x, y, z) => {
+                let X = Math.floor(x) & 255,
+                    Y = Math.floor(y) & 255,
+                    Z = Math.floor(z) & 255;
+                x -= Math.floor(x);
+                y -= Math.floor(y);
+                z -= Math.floor(z);
+                let u = this.fade(x),
+                    v = this.fade(y),
+                    w = this.fade(z);
+                let A = this.perm[X] + Y,
+                    AA = this.perm[A] + Z,
+                    AB = this.perm[A + 1] + Z;
+                let B = this.perm[X + 1] + Y,
+                    BA = this.perm[B] + Z,
+                    BB = this.perm[B + 1] + Z;
+                return this.lerp(w,
+                    this.lerp(v,
+                        this.lerp(u,
+                            this.grad(this.perm[AA], x, y, z),
+                            this.grad(this.perm[BA], x - 1, y, z)),
+                        this.lerp(u,
+                            this.grad(this.perm[AB], x, y - 1, z),
+                            this.grad(this.perm[BB], x - 1, y - 1, z))),
+                    this.lerp(v,
+                        this.lerp(u,
+                            this.grad(this.perm[AA + 1], x, y, z - 1),
+                            this.grad(this.perm[BA + 1], x - 1, y, z - 1)),
+                        this.lerp(u,
+                            this.grad(this.perm[AB + 1], x, y - 1, z - 1),
+                            this.grad(this.perm[BB + 1], x - 1, y - 1, z - 1))));
+            };
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+        render();
+    }
+
+
+    function updateBackground(backgroundType, colorScheme) {
+        const body = document.body;
+        const particlesContainer = document.getElementById('tsparticles');
+        const animatedGradientContainer = document.querySelector('.animated-gradient-background');
+        const perlinCanvas = document.getElementById('perlin-canvas');
+        
+        // Hide all background elements first
+        if (particlesContainer) particlesContainer.style.display = 'none';
+        if (animatedGradientContainer) animatedGradientContainer.style.display = 'none';
+        if (perlinCanvas) perlinCanvas.style.display = 'none';
+        body.style.backgroundImage = 'none';
+        body.style.backgroundColor = 'transparent';
+
+        // Apply theme-specific background color to the body if not using an animated background
+        if (colorScheme && backgroundType !== 'particles' && backgroundType !== 'gradient' && backgroundType !== 'perlin') {
+            body.style.backgroundColor = colorScheme['--background-color'];
+        }
+
+        // Show the selected background
+        if (backgroundType === 'particles') {
+            if (particlesContainer && typeof tsParticles !== 'undefined') {
+                particlesContainer.style.display = 'block';
+                tsParticles.load({
+                    id: "tsparticles",
+                    options: {
+                        background: {
+                            color: {
+                                value: colorScheme['--particles-background'] || '#0f2027',
+                            },
+                        },
+                        fpsLimit: 120,
+                        interactivity: {
+                            events: {
+                                onClick: {
+                                    enable: false,
+                                    mode: "push",
+                                },
+                                onHover: {
+                                    enable: false,
+                                    mode: "repulse",
+                                },
+                                resize: true,
+                            },
+                            modes: {
+                                push: {
+                                    quantity: 4,
+                                },
+                                repulse: {
+                                    distance: 200,
+                                    duration: 0.4,
+                                },
+                            },
+                        },
+                        particles: {
+                            color: {
+                                value: colorScheme['--particles-color'] || '#ffffff',
+                            },
+                            links: {
+                                color: colorScheme['--particles-links'] || '#2c5364',
+                                distance: 150,
+                                enable: true,
+                                opacity: 0.5,
+                                width: 1,
+                            },
+                            move: {
+                                direction: "none",
+                                enable: true,
+                                outModes: {
+                                    default: "bounce",
+                                },
+                                random: false,
+                                speed: 1,
+                                straight: false,
+                            },
+                            number: {
+                                density: {
+                                    enable: true,
+                                    area: 800,
+                                },
+                                value: 80,
+                            },
+                            opacity: {
+                                value: 0.5,
+                            },
+                            shape: {
+                                type: "circle",
+                            },
+                            size: {
+                                value: { min: 1, max: 5 },
+                            },
+                        },
+                        detectRetina: true,
+                    },
+                });
+            }
+        } else if (backgroundType === 'gradient') {
+            if (animatedGradientContainer) {
+                animatedGradientContainer.style.display = 'block';
+            }
+        } else if (backgroundType === 'perlin') {
+            if (perlinCanvas) {
+                perlinCanvas.style.display = 'block';
+                createPerlinNoiseBackground();
+            }
+        } else if (backgroundType === 'image') {
+            const imageUrl = document.querySelector('input[name="BACKGROUND_IMAGE_URL"]').value;
+            if (imageUrl) {
+                body.style.backgroundImage = 'url(' + imageUrl + ')';
             }
         }
-        togglePopup(); // Open the form popup
-    }
-}
-
-function toggleBookingPopup() {
-    const popup = document.getElementById('bookingPopup');
-    if (popup.style.display === 'flex') {
-        popup.style.display = 'none';
-    } else {
-        closeAllPopups();
-        closeMobileMenu();
-        popup.style.display = 'flex';
-    }
-    updateBodyBlurState();
-}
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    // Only initialize flatpickr and tsparticles if the libraries are loaded
-    if (typeof flatpickr !== 'undefined') {
-        flatpickr("#flatpickrCalendar", {
-            inline: true,
-            minDate: "today"
-        });
     }
 
-    if (typeof tsParticles !== 'undefined') {
-        tsParticles.load({
-            id: "tsparticles",
-            options: {
-                background: {
-                    color: {
-                        value: getComputedStyle(document.documentElement).getPropertyValue('--particles-background').trim(),
-                    },
-                },
-                fpsLimit: 120,
-                interactivity: {
-                    events: {
-                        onClick: {
-                            enable: false,
-                            mode: "push",
-                        },
-                        onHover: {
-                            enable: false,
-                            mode: "repulse",
-                        },
-                        resize: true,
-                    },
-                    modes: {
-                        push: {
-                            quantity: 4,
-                        },
-                        repulse: {
-                            distance: 200,
-                            duration: 0.4,
-                        },
-                    },
-                },
-                particles: {
-                    color: {
-                        value: getComputedStyle(document.documentElement).getPropertyValue('--particles-color').trim(),
-                    },
-                    links: {
-                        color: getComputedStyle(document.documentElement).getPropertyValue('--particles-links').trim(),
-                        distance: 150,
-                        enable: true,
-                        opacity: 0.5,
-                        width: 1,
-                    },
-                    move: {
-                        direction: "none",
-                        enable: true,
-                        outModes: {
-                            default: "bounce",
-                        },
-                        random: false,
-                        speed: 1,
-                        straight: false,
-                    },
-                    number: {
-                        density: {
-                            enable: true,
-                            area: 800,
-                        },
-                        value: 80,
-                    },
-                    opacity: {
-                        value: 0.5,
-                    },
-                    shape: {
-                        type: "circle",
-                    },
-                    size: {
-                        value: { min: 1, max: 5 },
-                    },
-                },
-                detectRetina: true,
-            },
-        });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof flatpickr !== 'undefined') {
+            flatpickr("#flatpickrCalendar", {
+                inline: true,
+                minDate: "today"
+            });
+        }
+    });
+
+    window.applyConfiguration = function(config) {
+        const root = document.documentElement;
+        if (config.colorScheme) {
+            for (const [key, value] of Object.entries(config.colorScheme)) {
+                root.style.setProperty(key, value);
+            }
+        }
+        updateBackground(config.backgroundType, config.colorScheme);
     }
-});
 `;
 
 // Function to update the iframe with the current form data
 function updatePreview() {
-    const form = document.querySelector('form');
+    const form = document.getElementById('builderForm');
     const formData = new FormData(form);
-    const colorScheme = formData.get('COLOR_SCHEME');
+    const backgroundType = formData.get('BACKGROUND_TYPE');
+    const imageUrl = formData.get('BACKGROUND_IMAGE_URL');
+    const colorSchemeName = formData.get('COLOR_SCHEME');
+    const selectedColorScheme = colorSchemes[colorSchemeName];
     let htmlContent = indexHtmlTemplate;
 
     // Replace all placeholders in the template with form data
@@ -456,38 +608,34 @@ function updatePreview() {
         htmlContent = htmlContent.replace(placeholder, value);
     });
     
-    // Inject the selected color scheme's CSS variables into a style tag
-    let colorSchemeCss = '<style>:root {';
-    const scheme = colorSchemes[colorScheme];
-    if (scheme) {
-        for (const [key, value] of Object.entries(scheme)) {
-            colorSchemeCss += `${key}: ${value};`;
-        }
-    } else {
-         // Default to an empty style if no preset is selected, so the original CSS variables apply
-        colorSchemeCss += '';
-    }
-    colorSchemeCss += '}</style>';
-
-    // Remove the script.js placeholder from the template to avoid local file dependency
-    const finalHtml = htmlContent.replace(
-        '</head>',
-        `${colorSchemeCss}</head><body><script>${embeddedScript}</script>`
-    );
-
     const iframe = document.getElementById('previewIframe');
     if (iframe) {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
         iframeDoc.open();
-        iframeDoc.write(finalHtml);
+        iframeDoc.write(htmlContent);
+        
+        const script = iframeDoc.createElement('script');
+        script.textContent = embeddedScript;
+        iframeDoc.body.appendChild(script);
+        
         iframeDoc.close();
+
+        iframe.contentWindow.onload = () => {
+             if (iframe.contentWindow.applyConfiguration) {
+                 iframe.contentWindow.applyConfiguration({
+                     colorScheme: selectedColorScheme,
+                     backgroundType: backgroundType,
+                     backgroundImageUrl: imageUrl
+                 });
+             }
+        };
     }
 }
 
-// Event listeners for JSON
+
 function generateJsonConfig(event) {
     event.preventDefault(); 
-    const form = document.querySelector('form');
+    const form = document.getElementById('builderForm');
     const formData = new FormData(form);
     const data = {};
     formData.forEach((value, key) => {
@@ -515,7 +663,7 @@ function handleFileUpload(event) {
     reader.onload = function(e) {
         try {
             const config = JSON.parse(e.target.result);
-            const form = document.querySelector('form');
+            const form = document.getElementById('builderForm');
             for (const key in config) {
                 if (config.hasOwnProperty(key)) {
                     const input = form.querySelector(`[name="${key}"]`);
@@ -534,11 +682,9 @@ function handleFileUpload(event) {
     reader.readAsText(file);
 }
 
-// Event listeners to update the preview on any form change
-const form = document.querySelector('form');
+const form = document.getElementById('builderForm');
 if (form) {
     form.addEventListener('input', updatePreview);
     form.addEventListener('change', updatePreview);
-    
     window.addEventListener('load', updatePreview);
 }
