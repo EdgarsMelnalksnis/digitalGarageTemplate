@@ -4,14 +4,31 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>{{WEBSITE_TITLE}}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
     <link href="style.css" rel="stylesheet"/>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
+    <style>
+        /* Default Color Scheme */
+        :root {
+            --primary-color: #007bff;
+            --primary-hover-color: #0056b3;
+            --secondary-color: #28a745;
+            --secondary-hover-color: #218838;
+            --background-color: #f4f7f6;
+            --card-background-color: #ffffff;
+            --text-color: #333;
+            --sub-text-color: #555;
+            --border-color: #e0e0e0;
+            --cta-background-color: #007bff;
+            --cta-text-color: #ffffff;
+            --cta-hover-background-color: #0056b3;
+            --particles-background: #0f2027;
+            --particles-links: #2c5364;
+            --particles-color: #ffffff;
+        }
+    </style>
     <div id="tsparticles"></div>
 
     <header>
@@ -19,7 +36,6 @@
             <a class="logo-link" href="#top" onclick="closeAllPopups(); closeMobileMenu()">
                 <img alt="{{LOGO_ALT_TEXT}}" class="header-logo" src="{{LOGO_IMAGE_PATH}}"/>
             </a>
-</div>
         </div>
         <div class="nav-group">
             <nav>
@@ -29,7 +45,7 @@
                 <a href="javascript:void(0);" onclick="toggleContactPopup();">Contact</a>
             </nav>
             <button class="hamburger" onclick="toggleMobileMenu()">☰</button>
-            <button class="cta-button header-cta" onclick="togglePopup()">{{HEADER_CTA_BUTTON_TEXT}}</button>
+            <button class="cta-button header-cta" onclick="toggleBookingPopup()">{{HEADER_CTA_BUTTON_TEXT}}</button>
         </div>
     </header>
 
@@ -38,7 +54,7 @@
         <a href="javascript:void(0);" onclick="toggleAbout(); closeMobileMenu()">About</a>
         <a href="#services" onclick="closeAllPopups(); closeMobileMenu()">Services</a>
         <a href="javascript:void(0);" onclick="toggleContactPopup(); closeMobileMenu()">Contact</a>
-        <button class="cta-button" onclick="togglePopup(); closeMobileMenu()">{{MOBILE_NAV_CTA_BUTTON_TEXT}}</button>
+        <button class="cta-button" onclick="toggleBookingPopup(); closeMobileMenu()">{{MOBILE_NAV_CTA_BUTTON_TEXT}}</button>
     </div>
 
     <div id="mainContent">
@@ -66,19 +82,19 @@
                 allowfullscreen>
             </iframe>
             <div class="waze-button-wrapper">
-<a class="cta-button" href="https://waze.com/ul?ll=56.9496,24.1052&navigate=yes" target="_blank">
-                🚗 Navigate with Waze
-            </a>
+                <a class="cta-button" href="https://waze.com/ul?ll=56.9496,24.1052&navigate=yes" target="_blank">
+                    🚗 Navigate with Waze
+                </a>
+            </div>
         </section>
         <section class="social-section">
             <h2>📱 Follow Us</h2>
             <div class="social-icons">
-                <a href="https://facebook.com/example" target="_blank"><img src="images/facebook.svg" alt="Facebook"/></a>
-                <a href="https://instagram.com/example" target="_blank"><img src="images/instagram.svg" alt="Instagram"/></a>
-                <a href="https://tiktok.com/@example" target="_blank"><img src="images/tiktok.svg" alt="TikTok"/></a>
+                <a href="{{FACEBOOK_URL}}" target="_blank"><img src="images/facebook.svg" alt="Facebook"/></a>
+                <a href="{{INSTAGRAM_URL}}" target="_blank"><img src="images/instagram.svg" alt="Instagram"/></a>
+                <a href="{{TIKTOK_URL}}" target="_blank"><img src="images/tiktok.svg" alt="TikTok"/></a>
             </div>
         </section>
-
 
         <section class="services-section" id="services">
             <h2>{{SERVICES_SECTION_HEADING}}</h2>
@@ -88,12 +104,12 @@
                     <h3>{{SERVICE_1_TITLE}}</h3>
                     <p>{{SERVICE_1_DESCRIPTION}}</p>
                 </div>
-                <div class="service-item" onclick="launchProjectType('Embedded Systems &amp; IoT')" style="cursor: pointer;">
+                <div class="service-item" onclick="launchProjectType('Embedded Systems & IoT')" style="cursor: pointer;">
                     <img alt="{{SERVICE_2_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_2_ICON_PATH}}"/>
                     <h3>{{SERVICE_2_TITLE}}</h3>
                     <p>{{SERVICE_2_DESCRIPTION}}</p>
                 </div>
-                <div class="service-item" onclick="launchProjectType('AI &amp; Data Analytics')" style="cursor: pointer;">
+                <div class="service-item" onclick="launchProjectType('AI & Data Analytics')" style="cursor: pointer;">
                     <img alt="{{SERVICE_3_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_3_ICON_PATH}}"/>
                     <h3>{{SERVICE_3_TITLE}}</h3>
                     <p>{{SERVICE_3_DESCRIPTION}}</p>
@@ -135,11 +151,11 @@
                 <select id="projectType" required="">
                     <option value="">{{FORM_SELECT_DEFAULT_OPTION}}</option>
                     <option value="Custom Software Development">{{FORM_SELECT_OPTION_1}}</option>
-                    <option value="Embedded Systems &amp; IoT">{{FORM_SELECT_OPTION_2}}</option>
-                    <option value="AI &amp; Data Analytics">{{FORM_SELECT_OPTION_3}}</option>
-                    <option value="Cloud Solutions &amp; DevOps">{{FORM_SELECT_OPTION_4}}</option>
-                    <option value="Cybersecurity &amp; Compliance">{{FORM_SELECT_OPTION_5}}</option>
-                    <option value="Tech Strategy &amp; Consulting">{{FORM_SELECT_OPTION_6}}</option>
+                    <option value="Embedded Systems & IoT">{{FORM_SELECT_OPTION_2}}</option>
+                    <option value="AI & Data Analytics">{{FORM_SELECT_OPTION_3}}</option>
+                    <option value="Cloud Solutions & DevOps">{{FORM_SELECT_OPTION_4}}</option>
+                    <option value="Cybersecurity & Compliance">{{FORM_SELECT_OPTION_5}}</option>
+                    <option value="Tech Strategy & Consulting">{{FORM_SELECT_OPTION_6}}</option>
                 </select>
                 <textarea placeholder="{{FORM_TEXTAREA_PLACEHOLDER_DESCRIPTION}}" required=""></textarea>
                 <button class="cta-button" type="submit">{{FORM_SUBMIT_BUTTON_TEXT}}</button>
@@ -165,34 +181,34 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
-    <script src="script.js"></script>
-
-<div class="popup-overlay" id="bookingPopup" onclick="if (event.target === this) toggleBookingPopup()">
-  <div class="popup-card" style="max-width: 800px;">
-    <button class="close-button" onclick="toggleBookingPopup()">✖</button>
-    <h2 style="text-align: center;">📅 Select Your Appointment</h2>
-    <div class="calendar-time-grid">
-      <div class="calendar-column">
-        <div id="flatpickrCalendar"></div>
-      </div>
-      <div class="time-column">
-<div class="time-grid">
-  <button class="cta-button">9:00 AM</button>
-  <button class="cta-button">10:00 AM</button>
-  <button class="cta-button">11:00 AM</button>
-  <button class="cta-button">12:00 PM</button>
-  <button class="cta-button">1:00 PM</button>
-  <button class="cta-button">2:00 PM</button>
-  <button class="cta-button">3:00 PM</button>
-  <button class="cta-button">4:00 PM</button>
-  <button class="cta-button">5:00 PM</button>
-  <button class="cta-button">6:00 PM</button>
-</div>
-</div>
+    <div class="popup-overlay" id="bookingPopup" onclick="if (event.target === this) toggleBookingPopup()">
+        <div class="popup-card" style="max-width: 800px;">
+            <button class="close-button" onclick="toggleBookingPopup()">✖</button>
+            <h2 style="text-align: center;">📅 Select Your Appointment</h2>
+            <div class="calendar-time-grid">
+                <div class="calendar-column">
+                    <div id="flatpickrCalendar"></div>
+                </div>
+                <div class="time-column">
+                    <div class="time-grid">
+                        <button class="cta-button">9:00 AM</button>
+                        <button class="cta-button">10:00 AM</button>
+                        <button class="cta-button">11:00 AM</button>
+                        <button class="cta-button">12:00 PM</button>
+                        <button class="cta-button">1:00 PM</button>
+                        <button class="cta-button">2:00 PM</button>
+                        <button class="cta-button">3:00 PM</button>
+                        <button class="cta-button">4:00 PM</button>
+                        <button class="cta-button">5:00 PM</button>
+                        <button class="cta-button">6:00 PM</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="script.js"></script>
 </body>
 </html>
-

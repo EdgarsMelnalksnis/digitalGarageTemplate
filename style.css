@@ -1,3 +1,5 @@
+/* style.css */
+
 * {
   margin: 0;
   padding: 0;
@@ -15,7 +17,11 @@
   --border-color: rgba(255, 255, 255, 0.1);
   --light-text-opacity: 0.9;
   --dimmed-text-color: #bbbbbb; /* For better contrast on some elements */
+  --particles-background: #0f2027;
+  --particles-links: #2c5364;
+  --particles-color: #ffffff;
 }
+
 body {
   position: relative;
   min-height: 100vh;

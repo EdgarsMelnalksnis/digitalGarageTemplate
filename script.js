@@ -11,8 +11,11 @@ const indexHtmlTemplate = `
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
     <link href="style.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body>
+    <div id="colorSchemeStyleTag"></div>
     <div id="tsparticles"></div>
 
     <header>
@@ -190,91 +193,141 @@ const indexHtmlTemplate = `
             </div>
         </div>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="script.js"></script>
 </body>
 </html>
 `;
 
+// Define the color schemes as a JavaScript object
+const colorSchemes = {
+    'default': {
+        '--primary-color': '#00d2ff',
+        '--text-color': '#fff',
+        '--dark-bg': '#0f2027',
+        '--medium-bg': '#203a43',
+        '--light-bg': '#2c5364',
+        '--gradient-bg': 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',
+        '--card-bg': 'rgba(255, 255, 255, 0.05)',
+        '--border-color': 'rgba(255, 255, 255, 0.1)',
+        '--light-text-opacity': '0.9',
+        '--dimmed-text-color': '#bbbbbb',
+        '--particles-background': '#0f2027',
+        '--particles-links': '#2c5364',
+        '--particles-color': '#ffffff',
+    },
+    'deep_ocean': {
+        '--primary-color': '#1E3A8A',
+        '--primary-hover-color': '#172B68',
+        '--secondary-color': '#FBBF24',
+        '--secondary-hover-color': '#D97706',
+        '--background-color': '#0B1437',
+        '--card-background-color': '#111827',
+        '--text-color': '#E5E7EB',
+        '--sub-text-color': '#9CA3AF',
+        '--border-color': '#374151',
+        '--cta-background-color': '#FBBF24',
+        '--cta-text-color': '#111827',
+        '--cta-hover-background-color': '#D97706',
+        '--particles-background': '#0B1437',
+        '--particles-links': '#1E3A8A',
+        '--particles-color': '#FBBF24',
+        '--services-icon-filter': 'brightness(0) saturate(100%) invert(87%) sepia(21%) saturate(2283%) hue-rotate(334deg) brightness(101%) contrast(92%)',
+    },
+    'sunset_glow': {
+        '--primary-color': '#A855F7',
+        '--primary-hover-color': '#7E22CE',
+        '--secondary-color': '#F97316',
+        '--secondary-hover-color': '#EA580C',
+        '--background-color': '#FDF2F8',
+        '--card-background-color': '#FFFFFF',
+        '--text-color': '#1F2937',
+        '--sub-text-color': '#6B7280',
+        '--border-color': '#F3E8FF',
+        '--cta-background-color': '#A855F7',
+        '--cta-text-color': '#FFFFFF',
+        '--cta-hover-background-color': '#7E22CE',
+        '--particles-background': '#FDF2F8',
+        '--particles-links': '#A855F7',
+        '--particles-color': '#F97316',
+        '--services-icon-filter': 'none',
+    }
+};
 
-// This is the entire JavaScript content from your original script.js file.
-// We will embed this inside the iframe to make all functions available.
+// This is the entire JavaScript content that will be embedded inside the iframe.
 const embeddedScript = `
 // Helper function to update the body's blur state
 function updateBodyBlurState() {
-  const mobileNavActive = document.getElementById('mobileNav').classList.contains('active');
-  const popupFormOpen = document.getElementById('popupForm').style.display === 'flex';
-  const aboutPopupOpen = document.getElementById('aboutPopup').style.display === 'flex';
-  const contactPopupOpen = document.getElementById('contactPopup').style.display === 'flex';
+    const mobileNavActive = document.getElementById('mobileNav').classList.contains('active');
+    const popupFormOpen = document.getElementById('popupForm').style.display === 'flex';
+    const aboutPopupOpen = document.getElementById('aboutPopup').style.display === 'flex';
+    const contactPopupOpen = document.getElementById('contactPopup').style.display === 'flex';
+    const bookingPopupOpen = document.getElementById('bookingPopup').style.display === 'flex';
 
-  if (mobileNavActive || popupFormOpen || aboutPopupOpen || contactPopupOpen) {
-    document.body.classList.add('menu-open');
-  } else {
-    document.body.classList.remove('menu-open');
-  }
+    if (mobileNavActive || popupFormOpen || aboutPopupOpen || contactPopupOpen || bookingPopupOpen) {
+        document.body.classList.add('menu-open');
+    } else {
+        document.body.classList.remove('menu-open');
+    }
 }
 
 // Function to close all popups (visual closing)
 function closeAllPopups() {
-  const popups = ['popupForm', 'aboutPopup', 'contactPopup', 'bookingPopup'];
-  popups.forEach(id => {
-    const popup = document.getElementById(id);
-    if (popup) {
-      popup.style.display = 'none';
-    }
-  });
-  updateBodyBlurState();
+    const popups = ['popupForm', 'aboutPopup', 'contactPopup', 'bookingPopup'];
+    popups.forEach(id => {
+        const popup = document.getElementById(id);
+        if (popup) {
+            popup.style.display = 'none';
+        }
+    });
+    updateBodyBlurState();
 }
 
 // Popup toggle functions
 function togglePopup() {
-  const popup = document.getElementById('popupForm');
-  if (popup.style.display === 'flex') {
-    popup.style.display = 'none';
-  } else {
-    closeAllPopups();
-    closeMobileMenu();
-    popup.style.display = 'flex';
-  }
-  updateBodyBlurState();
+    const popup = document.getElementById('popupForm');
+    if (popup.style.display === 'flex') {
+        popup.style.display = 'none';
+    } else {
+        closeAllPopups();
+        closeMobileMenu();
+        popup.style.display = 'flex';
+    }
+    updateBodyBlurState();
 }
 
 function toggleAbout() {
-  const popup = document.getElementById('aboutPopup');
-  if (popup.style.display === 'flex') {
-    popup.style.display = 'none';
-  } else {
-    closeAllPopups();
-    closeMobileMenu();
-    popup.style.display = 'flex';
-  }
-  updateBodyBlurState();
+    const popup = document.getElementById('aboutPopup');
+    if (popup.style.display === 'flex') {
+        popup.style.display = 'none';
+    } else {
+        closeAllPopups();
+        closeMobileMenu();
+        popup.style.display = 'flex';
+    }
+    updateBodyBlurState();
 }
 
 function toggleContactPopup() {
-  const popup = document.getElementById('contactPopup');
-  if (popup.style.display === 'flex') {
-    popup.style.display = 'none';
-  } else {
-    closeAllPopups();
-    closeMobileMenu();
-    popup.style.display = 'flex';
-  }
-  updateBodyBlurState();
+    const popup = document.getElementById('contactPopup');
+    if (popup.style.display === 'flex') {
+        popup.style.display = 'none';
+    } else {
+        closeAllPopups();
+        closeMobileMenu();
+        popup.style.display = 'flex';
+    }
+    updateBodyBlurState();
 }
 
 function toggleMobileMenu() {
-  const mobileNav = document.getElementById('mobileNav');
-  mobileNav.classList.toggle('active');
-  updateBodyBlurState();
+    const mobileNav = document.getElementById('mobileNav');
+    mobileNav.classList.toggle('active');
+    updateBodyBlurState();
 }
 
 function closeMobileMenu() {
-  const mobileNav = document.getElementById('mobileNav');
-  mobileNav.classList.remove('active');
-  updateBodyBlurState();
+    const mobileNav = document.getElementById('mobileNav');
+    mobileNav.classList.remove('active');
+    updateBodyBlurState();
 }
 
 function launchProjectType(type) {
@@ -305,6 +358,7 @@ function toggleBookingPopup() {
 
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Only initialize flatpickr and tsparticles if the libraries are loaded
     if (typeof flatpickr !== 'undefined') {
         flatpickr("#flatpickrCalendar", {
             inline: true,
@@ -318,7 +372,7 @@ document.addEventListener('DOMContentLoaded', function () {
             options: {
                 background: {
                     color: {
-                        value: "#0f2027",
+                        value: getComputedStyle(document.documentElement).getPropertyValue('--particles-background').trim(),
                     },
                 },
                 fpsLimit: 120,
@@ -346,10 +400,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 particles: {
                     color: {
-                        value: "#ffffff",
+                        value: getComputedStyle(document.documentElement).getPropertyValue('--particles-color').trim(),
                     },
                     links: {
-                        color: "#2c5364",
+                        color: getComputedStyle(document.documentElement).getPropertyValue('--particles-links').trim(),
                         distance: 150,
                         enable: true,
                         opacity: 0.5,
@@ -393,6 +447,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function updatePreview() {
     const form = document.querySelector('form');
     const formData = new FormData(form);
+    const colorScheme = formData.get('COLOR_SCHEME');
     let htmlContent = indexHtmlTemplate;
 
     // Replace all placeholders in the template with form data
@@ -400,36 +455,31 @@ function updatePreview() {
         const placeholder = new RegExp(`{{${key}}}`, 'g');
         htmlContent = htmlContent.replace(placeholder, value);
     });
-
-    // Handle special cases not in form data directly, like select options
-    const select = document.getElementById('projectType');
-    if (select) {
-        htmlContent = htmlContent.replace(/{{FORM_SELECT_OPTION_1}}/g, select.options[1].textContent);
-        htmlContent = htmlContent.replace(/{{FORM_SELECT_OPTION_2}}/g, select.options[2].textContent);
-        htmlContent = htmlContent.replace(/{{FORM_SELECT_OPTION_3}}/g, select.options[3].textContent);
-        htmlContent = htmlContent.replace(/{{FORM_SELECT_OPTION_4}}/g, select.options[4].textContent);
-        htmlContent = htmlContent.replace(/{{FORM_SELECT_OPTION_5}}/g, select.options[5].textContent);
-        htmlContent = htmlContent.replace(/{{FORM_SELECT_OPTION_6}}/g, select.options[6].textContent);
-    }
     
-    // Inject all scripts and libraries directly into the HTML string
-    const fullHtml = htmlContent.replace(
-        '</body>',
-        `
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
-        <script>
-            ${embeddedScript}
-        </script>
-        </body>
-        `
+    // Inject the selected color scheme's CSS variables into a style tag
+    let colorSchemeCss = '<style>:root {';
+    const scheme = colorSchemes[colorScheme];
+    if (scheme) {
+        for (const [key, value] of Object.entries(scheme)) {
+            colorSchemeCss += `${key}: ${value};`;
+        }
+    } else {
+         // Default to an empty style if no preset is selected, so the original CSS variables apply
+        colorSchemeCss += '';
+    }
+    colorSchemeCss += '}</style>';
+
+    // Remove the script.js placeholder from the template to avoid local file dependency
+    const finalHtml = htmlContent.replace(
+        '</head>',
+        `${colorSchemeCss}</head><body><script>${embeddedScript}</script>`
     );
 
     const iframe = document.getElementById('previewIframe');
     if (iframe) {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
         iframeDoc.open();
-        iframeDoc.write(fullHtml);
+        iframeDoc.write(finalHtml);
         iframeDoc.close();
     }
 }
