@@ -152,7 +152,6 @@
             font-size: 0.9rem;
             color: #bbb;
         }
-
         .checkbox-group {
             display: flex;
             align-items: center;
@@ -167,8 +166,6 @@
             margin-bottom: 0;
             cursor: pointer;
         }
-
-
         @media (max-width: 900px) {
             body {
                 flex-direction: column;
@@ -248,7 +245,7 @@
                     <label for="HERO_CTA_BUTTON_TEXT">Hero CTA Button Text</label>
                     <input type="text" id="HERO_CTA_BUTTON_TEXT" name="HERO_CTA_BUTTON_TEXT" value="Book a Consultation">
                 </div>
-
+                
                 <div class="checkbox-group">
                     <input type="checkbox" id="aiAssistantToggle" name="AI_ASSISTANT_TOGGLE">
                     <label for="aiAssistantToggle">Add AI Assistant Section</label>
@@ -302,20 +299,59 @@
                         <label for="SERVICE_1_DESCRIPTION">Service 1 Description</label>
                         <textarea id="SERVICE_1_DESCRIPTION" name="SERVICE_1_DESCRIPTION">Building tailored software from the ground up to meet your unique business needs.</textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="SERVICE_2_TITLE">Service 2 Title</label>
+                        <input type="text" id="SERVICE_2_TITLE" name="SERVICE_2_TITLE" value="Embedded Systems & IoT">
+                    </div>
+                    <div class="form-group">
+                        <label for="SERVICE_2_DESCRIPTION">Service 2 Description</label>
+                        <textarea id="SERVICE_2_DESCRIPTION" name="SERVICE_2_DESCRIPTION">Designing and implementing smart, connected devices for the Internet of Things.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="SERVICE_3_TITLE">Service 3 Title</label>
+                        <input type="text" id="SERVICE_3_TITLE" name="SERVICE_3_TITLE" value="AI & Data Analytics">
+                    </div>
+                    <div class="form-group">
+                        <label for="SERVICE_3_DESCRIPTION">Service 3 Description</label>
+                        <textarea id="SERVICE_3_DESCRIPTION" name="SERVICE_3_DESCRIPTION">Leveraging machine learning to unlock insights and drive data-informed decisions.</textarea>
+                    </div>
                 </div>
-
-                <h2>Testimonials</h2>
-                <div class="form-group">
-                    <label for="TESTIMONIALS_SECTION_HEADING">Heading</label>
-                    <input type="text" id="TESTIMONIALS_SECTION_HEADING" name="TESTIMONIALS_SECTION_HEADING" value="What Our Clients Say">
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="testimonialsToggle" name="TESTIMONIALS_TOGGLE" checked>
+                    <label for="testimonialsToggle">Add Testimonials Section</label>
                 </div>
-                <div class="form-group">
-                    <label for="TESTIMONIAL_1_QUOTE">Testimonial 1 Quote</label>
-                    <textarea id="TESTIMONIAL_1_QUOTE" name="TESTIMONIAL_1_QUOTE">Their innovative solutions transformed our business. Highly recommend!</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="TESTIMONIAL_1_CLIENT_INFO">Testimonial 1 Client Info</label>
-                    <input type="text" id="TESTIMONIAL_1_CLIENT_INFO" name="TESTIMONIAL_1_CLIENT_INFO" value="Jane Doe, CEO">
+                
+                <div id="testimonialsOptions">
+                    <h2>Testimonials</h2>
+                    <div class="form-group">
+                        <label for="TESTIMONIALS_SECTION_HEADING">Heading</label>
+                        <input type="text" id="TESTIMONIALS_SECTION_HEADING" name="TESTIMONIALS_SECTION_HEADING" value="What Our Clients Say">
+                    </div>
+                    <div class="form-group">
+                        <label for="TESTIMONIAL_1_QUOTE">Testimonial 1 Quote</label>
+                        <textarea id="TESTIMONIAL_1_QUOTE" name="TESTIMONIAL_1_QUOTE">Their innovative solutions transformed our business. Highly recommend!</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="TESTIMONIAL_1_CLIENT_INFO">Testimonial 1 Client Info</label>
+                        <input type="text" id="TESTIMONIAL_1_CLIENT_INFO" name="TESTIMONIAL_1_CLIENT_INFO" value="Jane Doe, CEO">
+                    </div>
+                    <div class="form-group">
+                        <label for="TESTIMONIAL_2_QUOTE">Testimonial 2 Quote</label>
+                        <textarea id="TESTIMONIAL_2_QUOTE" name="TESTIMONIAL_2_QUOTE">A fantastic team to work with. They delivered a high-quality product ahead of schedule.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="TESTIMONIAL_2_CLIENT_INFO">Testimonial 2 Client Info</label>
+                        <input type="text" id="TESTIMONIAL_2_CLIENT_INFO" name="TESTIMONIAL_2_CLIENT_INFO" value="John Smith, CTO">
+                    </div>
+                    <div class="form-group">
+                        <label for="TESTIMONIAL_3_QUOTE">Testimonial 3 Quote</label>
+                        <textarea id="TESTIMONIAL_3_QUOTE" name="TESTIMONIAL_3_QUOTE">Professional, skilled, and excellent communication. We'll definitely use them again.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="TESTIMONIAL_3_CLIENT_INFO">Testimonial 3 Client Info</label>
+                        <input type="text" id="TESTIMONIAL_3_CLIENT_INFO" name="TESTIMONIAL_3_CLIENT_INFO" value="Sarah Chen, Founder">
+                    </div>
                 </div>
 
                 <h2>Contact Info</h2>

@@ -19,7 +19,7 @@ const indexHtmlTemplate = `
     <header>
         <div class="logo">
             <a class="logo-link" href="#top" onclick="closeAllPopups(); closeMobileMenu()">
-                <img alt="{{LOGO_ALT_TEXT}}" class="header-logo" src="{{LOGO_IMAGE_PATH}}"/>
+                <img alt="Logo" class="header-logo" src="{{LOGO_IMAGE_PATH}}"/>
             </a>
         </div>
         <div class="nav-group">
@@ -30,7 +30,7 @@ const indexHtmlTemplate = `
                 <a href="javascript:void(0);" onclick="toggleContactPopup();">Contact</a>
             </nav>
             <button class="hamburger" onclick="toggleMobileMenu()">☰</button>
-            <button class="cta-button header-cta" onclick="toggleBookingPopup()">{{HEADER_CTA_BUTTON_TEXT}}</button>
+            <button class="cta-button header-cta" onclick="toggleBookingPopup()">Book a Consultation</button>
         </div>
     </header>
 
@@ -39,7 +39,7 @@ const indexHtmlTemplate = `
         <a href="javascript:void(0);" onclick="toggleAbout(); closeMobileMenu()">About</a>
         <a href="#services" onclick="closeAllPopups(); closeMobileMenu()">Services</a>
         <a href="javascript:void(0);" onclick="toggleContactPopup(); closeMobileMenu()">Contact</a>
-        <button class="cta-button" onclick="toggleBookingPopup(); closeMobileMenu()">{{MOBILE_NAV_CTA_BUTTON_TEXT}}</button>
+        <button class="cta-button" onclick="toggleBookingPopup(); closeMobileMenu()">Book a Consultation</button>
     </div>
 
     <div id="mainContent">
@@ -54,6 +54,7 @@ const indexHtmlTemplate = `
         {{AI_ASSISTANT_SECTION}}
         {{MAP_SECTION}}
         {{SERVICES_SECTION}}
+        {{TESTIMONIALS_SECTION}}
 
         <section class="social-section">
             <h2>📱 Follow Us</h2>
@@ -64,47 +65,29 @@ const indexHtmlTemplate = `
             </div>
         </section>
 
-        <section class="testimonials-section">
-            <h2>{{TESTIMONIALS_SECTION_HEADING}}</h2>
-            <div class="testimonial-grid">
-                <div class="testimonial-item">
-                    <p>"{{TESTIMONIAL_1_QUOTE}}"</p>
-                    <p class="client-info">- {{TESTIMONIAL_1_CLIENT_INFO}}</p>
-                </div>
-                <div class="testimonial-item">
-                    <p>"{{TESTIMONIAL_2_QUOTE}}"</p>
-                    <p class="client-info">- {{TESTIMONIAL_2_CLIENT_INFO}}</p>
-                </div>
-                <div class="testimonial-item">
-                    <p>"{{TESTIMONIAL_3_QUOTE}}"</p>
-                    <p class="client-info">- {{TESTIMONIAL_3_CLIENT_INFO}}</p>
-                </div>
-            </div>
-        </section>
-
         <footer>
-            {{FOOTER_TEXT}}
+            <p>&copy; 2024 {{WEBSITE_TITLE}}. All rights reserved.</p>
         </footer>
     </div>
 
     <div class="popup-overlay" id="popupForm" onclick="if (event.target === this) togglePopup()">
         <div class="popup-card">
             <button class="close-button" onclick="togglePopup()">✖</button>
-            <h2 id="popupTitle">{{POPUP_FORM_TITLE}}</h2>
+            <h2 id="popupTitle">Get a Quote</h2>
             <form>
-                <input placeholder="{{FORM_INPUT_PLACEHOLDER_NAME}}" required="" type="text"/>
-                <input placeholder="{{FORM_INPUT_PLACEHOLDER_EMAIL}}" required="" type="email"/>
+                <input placeholder="Your Name" required="" type="text"/>
+                <input placeholder="Your Email" required="" type="email"/>
                 <select id="projectType" required="">
-                    <option value="">{{FORM_SELECT_DEFAULT_OPTION}}</option>
-                    <option value="Custom Software Development">{{FORM_SELECT_OPTION_1}}</option>
-                    <option value="Embedded Systems & IoT">{{FORM_SELECT_OPTION_2}}</option>
-                    <option value="AI & Data Analytics">{{FORM_SELECT_OPTION_3}}</option>
-                    <option value="Cloud Solutions & DevOps">{{FORM_SELECT_OPTION_4}}</option>
-                    <option value="Cybersecurity & Compliance">{{FORM_SELECT_OPTION_5}}</option>
-                    <option value="Tech Strategy & Consulting">{{FORM_SELECT_OPTION_6}}</option>
+                    <option value="">Select a Service</option>
+                    <option value="Custom Software Development">Custom Software Development</option>
+                    <option value="Embedded Systems & IoT">Embedded Systems & IoT</option>
+                    <option value="AI & Data Analytics">AI & Data Analytics</option>
+                    <option value="Cloud Solutions & DevOps">Cloud Solutions & DevOps</option>
+                    <option value="Cybersecurity & Compliance">Cybersecurity & Compliance</option>
+                    <option value="Tech Strategy & Consulting">Tech Strategy & Consulting</option>
                 </select>
-                <textarea placeholder="{{FORM_TEXTAREA_PLACEHOLDER_DESCRIPTION}}" required=""></textarea>
-                <button class="cta-button" type="submit">{{FORM_SUBMIT_BUTTON_TEXT}}</button>
+                <textarea placeholder="Describe your project" required=""></textarea>
+                <button class="cta-button" type="submit">Submit</button>
             </form>
         </div>
     </div>
@@ -112,15 +95,15 @@ const indexHtmlTemplate = `
     <div class="popup-overlay" id="aboutPopup" onclick="if (event.target === this) toggleAbout()">
         <div class="popup-card">
             <button class="close-button" onclick="toggleAbout()">✖</button>
-            <h2>{{ABOUT_POPUP_HEADING}}</h2>
-            <p>{{ABOUT_POPUP_PARAGRAPH}}</p>
+            <h2>About Us</h2>
+            <p>We are a team of passionate technologists dedicated to building innovative solutions that solve real-world problems. With expertise in software development, AI, and IoT, we help businesses of all sizes achieve their goals.</p>
         </div>
     </div>
 
     <div class="popup-overlay" id="contactPopup" onclick="if (event.target === this) toggleContactPopup()">
         <div class="popup-card">
             <button class="close-button" onclick="toggleContactPopup()">✖</button>
-            <h2>{{CONTACT_POPUP_HEADING}}</h2>
+            <h2>Contact Us</h2>
             <p><strong>Email:</strong> {{CONTACT_EMAIL}}</p>
             <p><strong>Phone:</strong> {{CONTACT_PHONE}}</p>
             <p><strong>Address:</strong> {{CONTACT_ADDRESS}}</p>
@@ -195,22 +178,43 @@ const servicesSection = `
     <h2>{{SERVICES_SECTION_HEADING}}</h2>
     <div class="services-grid">
         <div class="service-item" onclick="launchProjectType('Custom Software Development')" style="cursor: pointer;">
-            <img alt="{{SERVICE_1_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_1_ICON_PATH}}"/>
+            <img alt="Service 1 Icon" class="service-icon" src="images/code.svg"/>
             <h3>{{SERVICE_1_TITLE}}</h3>
             <p>{{SERVICE_1_DESCRIPTION}}</p>
         </div>
         <div class="service-item" onclick="launchProjectType('Embedded Systems & IoT')" style="cursor: pointer;">
-            <img alt="{{SERVICE_2_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_2_ICON_PATH}}"/>
+            <img alt="Service 2 Icon" class="service-icon" src="images/chip.svg"/>
             <h3>{{SERVICE_2_TITLE}}</h3>
             <p>{{SERVICE_2_DESCRIPTION}}</p>
         </div>
         <div class="service-item" onclick="launchProjectType('AI & Data Analytics')" style="cursor: pointer;">
-            <img alt="{{SERVICE_3_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_3_ICON_PATH}}"/>
+            <img alt="Service 3 Icon" class="service-icon" src="images/brain.svg"/>
             <h3>{{SERVICE_3_TITLE}}</h3>
             <p>{{SERVICE_3_DESCRIPTION}}</p>
         </div>
     </div>
-    <button class="cta-button secondary-cta">{{EXPLORE_SERVICES_BUTTON_TEXT}}</button>
+    <button class="cta-button secondary-cta">Explore Services</button>
+</section>
+`;
+
+// Testimonials Section HTML
+const testimonialsSection = `
+<section class="testimonials-section">
+    <h2>{{TESTIMONIALS_SECTION_HEADING}}</h2>
+    <div class="testimonial-grid">
+        <div class="testimonial-item">
+            <p>"{{TESTIMONIAL_1_QUOTE}}"</p>
+            <p class="client-info">- {{TESTIMONIAL_1_CLIENT_INFO}}</p>
+        </div>
+        <div class="testimonial-item">
+            <p>"{{TESTIMONIAL_2_QUOTE}}"</p>
+            <p class="client-info">- {{TESTIMONIAL_2_CLIENT_INFO}}</p>
+        </div>
+        <div class="testimonial-item">
+            <p>"{{TESTIMONIAL_3_QUOTE}}"</p>
+            <p class="client-info">- {{TESTIMONIAL_3_CLIENT_INFO}}</p>
+        </div>
+    </div>
 </section>
 `;
 
@@ -617,6 +621,7 @@ const embeddedScript = `
     }
 `;
 
+
 // Function to update the iframe with the current form data
 function updatePreview() {
     const form = document.getElementById('builderForm');
@@ -627,6 +632,7 @@ function updatePreview() {
     const aiAssistantEnabled = document.getElementById('aiAssistantToggle').checked;
     const mapEnabled = document.getElementById('mapToggle').checked;
     const servicesEnabled = document.getElementById('servicesToggle').checked;
+    const testimonialsEnabled = document.getElementById('testimonialsToggle').checked;
     
     let htmlContent = indexHtmlTemplate;
 
@@ -651,11 +657,39 @@ function updatePreview() {
         htmlContent = htmlContent.replace('{{SERVICES_SECTION}}', '');
     }
 
+    // Conditionally include the Testimonials section
+    if (testimonialsEnabled) {
+        htmlContent = htmlContent.replace('{{TESTIMONIALS_SECTION}}', testimonialsSection);
+    } else {
+        htmlContent = htmlContent.replace('{{TESTIMONIALS_SECTION}}', '');
+    }
 
     // Use the global variables for paths, which are updated by the file inputs
     formData.set('LOGO_IMAGE_PATH', logoImagePath);
     formData.set('BACKGROUND_IMAGE_URL', backgroundImageURL);
-
+    
+    // Add default values for Services and Testimonials if they are not enabled
+    // This prevents errors if the user disables a section.
+    if (!servicesEnabled) {
+        htmlContent = htmlContent.replace(/{{SERVICE_1_TITLE}}/g, '');
+        htmlContent = htmlContent.replace(/{{SERVICE_1_DESCRIPTION}}/g, '');
+        htmlContent = htmlContent.replace(/{{SERVICE_2_TITLE}}/g, '');
+        htmlContent = htmlContent.replace(/{{SERVICE_2_DESCRIPTION}}/g, '');
+        htmlContent = htmlContent.replace(/{{SERVICE_3_TITLE}}/g, '');
+        htmlContent = htmlContent.replace(/{{SERVICE_3_DESCRIPTION}}/g, '');
+        htmlContent = htmlContent.replace(/{{SERVICES_SECTION_HEADING}}/g, '');
+    }
+    
+    if (!testimonialsEnabled) {
+        htmlContent = htmlContent.replace(/{{TESTIMONIAL_1_QUOTE}}/g, '');
+        htmlContent = htmlContent.replace(/{{TESTIMONIAL_1_CLIENT_INFO}}/g, '');
+        htmlContent = htmlContent.replace(/{{TESTIMONIAL_2_QUOTE}}/g, '');
+        htmlContent = htmlContent.replace(/{{TESTIMONIAL_2_CLIENT_INFO}}/g, '');
+        htmlContent = htmlContent.replace(/{{TESTIMONIAL_3_QUOTE}}/g, '');
+        htmlContent = htmlContent.replace(/{{TESTIMONIAL_3_CLIENT_INFO}}/g, '');
+        htmlContent = htmlContent.replace(/{{TESTIMONIALS_SECTION_HEADING}}/g, '');
+    }
+    
     // Replace all placeholders in the template with form data
     formData.forEach((value, key) => {
         const placeholder = new RegExp(`{{${key}}}`, 'g');
@@ -710,6 +744,14 @@ function toggleServicesOptions() {
     }
 }
 
+function toggleTestimonialsOptions() {
+    const testimonialsOptions = document.getElementById('testimonialsOptions');
+    const testimonialsToggle = document.getElementById('testimonialsToggle');
+    if (testimonialsOptions && testimonialsToggle) {
+        testimonialsOptions.style.display = testimonialsToggle.checked ? 'block' : 'none';
+    }
+}
+
 // Function to handle logo file upload
 document.getElementById('logoUpload').addEventListener('change', function(event) {
     const file = event.target.files[0];
@@ -759,6 +801,7 @@ function generateJsonConfig(event) {
     data['AI_ASSISTANT_TOGGLE'] = document.getElementById('aiAssistantToggle').checked;
     data['MAP_TOGGLE'] = document.getElementById('mapToggle').checked;
     data['SERVICES_TOGGLE'] = document.getElementById('servicesToggle').checked;
+    data['TESTIMONIALS_TOGGLE'] = document.getElementById('testimonialsToggle').checked;
 
     const jsonString = JSON.stringify(data, null, 2);
     const blob = new Blob([jsonString], { type: 'application/json' });
@@ -799,6 +842,7 @@ function handleFileUpload(event) {
             toggleAiAssistantOptions();
             toggleMapOptions();
             toggleServicesOptions();
+            toggleTestimonialsOptions();
             updatePreview();
         } catch (error) {
             alert('Error parsing JSON file. Please ensure it is a valid JSON file.');
@@ -823,10 +867,15 @@ if (form) {
         toggleServicesOptions();
         updatePreview();
     });
+    document.getElementById('testimonialsToggle').addEventListener('change', function() {
+        toggleTestimonialsOptions();
+        updatePreview();
+    });
     window.addEventListener('load', () => {
         toggleAiAssistantOptions();
         toggleMapOptions();
         toggleServicesOptions();
+        toggleTestimonialsOptions();
         updatePreview();
     });
 }
