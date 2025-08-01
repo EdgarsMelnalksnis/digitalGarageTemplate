@@ -52,21 +52,9 @@ const indexHtmlTemplate = `
         </section>
         
         {{AI_ASSISTANT_SECTION}}
+        {{MAP_SECTION}}
+        {{SERVICES_SECTION}}
 
-        <section class="map-section">
-            <h2>📍 Find Our Workshop</h2>
-            <iframe
-                src="https://maps.google.com/maps?q=Riga&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                frameborder="0"
-                style="width:100%; height:300px; border-radius:10px;"
-                allowfullscreen>
-            </iframe>
-            <div class="waze-button-wrapper">
-                <a class="cta-button" href="https://waze.com/ul?ll=56.9496,24.1052&navigate=yes" target="_blank">
-                    🚗 Navigate with Waze
-                </a>
-            </div>
-        </section>
         <section class="social-section">
             <h2>📱 Follow Us</h2>
             <div class="social-icons">
@@ -74,28 +62,6 @@ const indexHtmlTemplate = `
                 <a href="{{INSTAGRAM_URL}}" target="_blank"><img src="images/instagram.svg" alt="Instagram"/></a>
                 <a href="{{TIKTOK_URL}}" target="_blank"><img src="images/tiktok.svg" alt="TikTok"/></a>
             </div>
-        </section>
-
-        <section class="services-section" id="services">
-            <h2>{{SERVICES_SECTION_HEADING}}</h2>
-            <div class="services-grid">
-                <div class="service-item" onclick="launchProjectType('Custom Software Development')" style="cursor: pointer;">
-                    <img alt="{{SERVICE_1_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_1_ICON_PATH}}"/>
-                    <h3>{{SERVICE_1_TITLE}}</h3>
-                    <p>{{SERVICE_1_DESCRIPTION}}</p>
-                </div>
-                <div class="service-item" onclick="launchProjectType('Embedded Systems & IoT')" style="cursor: pointer;">
-                    <img alt="{{SERVICE_2_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_2_ICON_PATH}}"/>
-                    <h3>{{SERVICE_2_TITLE}}</h3>
-                    <p>{{SERVICE_2_DESCRIPTION}}</p>
-                </div>
-                <div class="service-item" onclick="launchProjectType('AI & Data Analytics')" style="cursor: pointer;">
-                    <img alt="{{SERVICE_3_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_3_ICON_PATH}}"/>
-                    <h3>{{SERVICE_3_TITLE}}</h3>
-                    <p>{{SERVICE_3_DESCRIPTION}}</p>
-                </div>
-            </div>
-            <button class="cta-button secondary-cta">{{EXPLORE_SERVICES_BUTTON_TEXT}}</button>
         </section>
 
         <section class="testimonials-section">
@@ -202,6 +168,49 @@ const aiAssistantSection = `
         <input type="text" placeholder="Ask a question..." />
         <button class="cta-button">Send</button>
     </div>
+</section>
+`;
+
+// Map and Waze Section HTML
+const mapSection = `
+<section class="map-section">
+    <h2>{{MAP_HEADING}}</h2>
+    <iframe
+        src="https://maps.google.com/maps?q=Riga&t=&z=13&ie=UTF8&iwloc=&output=embed"
+        frameborder="0"
+        style="width:100%; height:300px; border-radius:10px;"
+        allowfullscreen>
+    </iframe>
+    <div class="waze-button-wrapper">
+        <a class="cta-button" href="https://waze.com/ul?ll=56.9496,24.1052&navigate=yes" target="_blank">
+            🚗 Navigate with Waze
+        </a>
+    </div>
+</section>
+`;
+
+// Services Section HTML
+const servicesSection = `
+<section class="services-section" id="services">
+    <h2>{{SERVICES_SECTION_HEADING}}</h2>
+    <div class="services-grid">
+        <div class="service-item" onclick="launchProjectType('Custom Software Development')" style="cursor: pointer;">
+            <img alt="{{SERVICE_1_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_1_ICON_PATH}}"/>
+            <h3>{{SERVICE_1_TITLE}}</h3>
+            <p>{{SERVICE_1_DESCRIPTION}}</p>
+        </div>
+        <div class="service-item" onclick="launchProjectType('Embedded Systems & IoT')" style="cursor: pointer;">
+            <img alt="{{SERVICE_2_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_2_ICON_PATH}}"/>
+            <h3>{{SERVICE_2_TITLE}}</h3>
+            <p>{{SERVICE_2_DESCRIPTION}}</p>
+        </div>
+        <div class="service-item" onclick="launchProjectType('AI & Data Analytics')" style="cursor: pointer;">
+            <img alt="{{SERVICE_3_ICON_ALT_TEXT}}" class="service-icon" src="{{SERVICE_3_ICON_PATH}}"/>
+            <h3>{{SERVICE_3_TITLE}}</h3>
+            <p>{{SERVICE_3_DESCRIPTION}}</p>
+        </div>
+    </div>
+    <button class="cta-button secondary-cta">{{EXPLORE_SERVICES_BUTTON_TEXT}}</button>
 </section>
 `;
 
@@ -616,6 +625,8 @@ function updatePreview() {
     const colorSchemeName = formData.get('COLOR_SCHEME');
     const selectedColorScheme = colorSchemes[colorSchemeName];
     const aiAssistantEnabled = document.getElementById('aiAssistantToggle').checked;
+    const mapEnabled = document.getElementById('mapToggle').checked;
+    const servicesEnabled = document.getElementById('servicesToggle').checked;
     
     let htmlContent = indexHtmlTemplate;
 
@@ -625,6 +636,21 @@ function updatePreview() {
     } else {
         htmlContent = htmlContent.replace('{{AI_ASSISTANT_SECTION}}', '');
     }
+
+    // Conditionally include the Map section
+    if (mapEnabled) {
+        htmlContent = htmlContent.replace('{{MAP_SECTION}}', mapSection);
+    } else {
+        htmlContent = htmlContent.replace('{{MAP_SECTION}}', '');
+    }
+
+    // Conditionally include the Services section
+    if (servicesEnabled) {
+        htmlContent = htmlContent.replace('{{SERVICES_SECTION}}', servicesSection);
+    } else {
+        htmlContent = htmlContent.replace('{{SERVICES_SECTION}}', '');
+    }
+
 
     // Use the global variables for paths, which are updated by the file inputs
     formData.set('LOGO_IMAGE_PATH', logoImagePath);
@@ -665,6 +691,22 @@ function toggleAiAssistantOptions() {
     const aiAssistantToggle = document.getElementById('aiAssistantToggle');
     if (aiAssistantOptions && aiAssistantToggle) {
         aiAssistantOptions.style.display = aiAssistantToggle.checked ? 'block' : 'none';
+    }
+}
+
+function toggleMapOptions() {
+    const mapOptions = document.getElementById('mapOptions');
+    const mapToggle = document.getElementById('mapToggle');
+    if (mapOptions && mapToggle) {
+        mapOptions.style.display = mapToggle.checked ? 'block' : 'none';
+    }
+}
+
+function toggleServicesOptions() {
+    const servicesOptions = document.getElementById('servicesOptions');
+    const servicesToggle = document.getElementById('servicesToggle');
+    if (servicesOptions && servicesToggle) {
+        servicesOptions.style.display = servicesToggle.checked ? 'block' : 'none';
     }
 }
 
@@ -713,8 +755,10 @@ function generateJsonConfig(event) {
         data[key] = value;
     });
 
-    // Add the AI assistant toggle state to the config
+    // Add the AI assistant and Map toggle states to the config
     data['AI_ASSISTANT_TOGGLE'] = document.getElementById('aiAssistantToggle').checked;
+    data['MAP_TOGGLE'] = document.getElementById('mapToggle').checked;
+    data['SERVICES_TOGGLE'] = document.getElementById('servicesToggle').checked;
 
     const jsonString = JSON.stringify(data, null, 2);
     const blob = new Blob([jsonString], { type: 'application/json' });
@@ -751,8 +795,10 @@ function handleFileUpload(event) {
                 }
             }
             alert('Configuration loaded successfully!');
-            // After loading, update the visibility of the AI assistant options
+            // After loading, update the visibility of the options
             toggleAiAssistantOptions();
+            toggleMapOptions();
+            toggleServicesOptions();
             updatePreview();
         } catch (error) {
             alert('Error parsing JSON file. Please ensure it is a valid JSON file.');
@@ -769,8 +815,18 @@ if (form) {
         toggleAiAssistantOptions();
         updatePreview();
     });
+    document.getElementById('mapToggle').addEventListener('change', function() {
+        toggleMapOptions();
+        updatePreview();
+    });
+    document.getElementById('servicesToggle').addEventListener('change', function() {
+        toggleServicesOptions();
+        updatePreview();
+    });
     window.addEventListener('load', () => {
         toggleAiAssistantOptions();
+        toggleMapOptions();
+        toggleServicesOptions();
         updatePreview();
     });
 }
