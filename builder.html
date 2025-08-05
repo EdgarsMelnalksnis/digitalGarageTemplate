@@ -187,49 +187,49 @@
                 height: 50vh;
             }
         }
-    
+        
 /* Collapsible Sections */
 .section-container {
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 15px;
 }
 .section-header {
-  display: flex;
-  align-items: center;
-  background: var(--card-bg);
-  padding: 8px 12px;
-  cursor: pointer;
-  user-select: none;
+    display: flex;
+    align-items: center;
+    background: var(--card-bg);
+    padding: 8px 12px;
+    cursor: pointer;
+    user-select: none;
 }
 .section-header h2 {
-  flex: 1;
-  margin: 0;
-  font-size: 1.1rem;
-  color: var(--primary-color);
+    flex: 1;
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--primary-color);
 }
 .section-toggle {
-  background: none;
-  border: none;
-  color: var(--primary-color);
-  font-size: 1.2rem;
-  width: 1.4em;
-  text-align: center;
-  margin-right: 8px;
-  cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    width: 1.4em;
+    text-align: center;
+    margin-right: 8px;
+    cursor: pointer;
 }
 .section-content {
-  display: none;
-  padding: 10px 12px 15px;
+    display: none;
+    padding: 10px 12px 15px;
 }
 .section-container.expanded .section-content {
-  display: block;
+    display: block;
 }
 .section-container.expanded .section-toggle {
-  transform: rotate(45deg);
+    transform: rotate(45deg);
 }
-</style>
+    </style>
 </head>
 <body>
     <div class="builder-container">
@@ -237,284 +237,261 @@
             <h1>Website Builder</h1>
             <form id="builderForm">
                 <div class="section-container">
-  <div class="section-header">
-    <button class="section-toggle">+</button>
-    <h2>General</h2>
-  </div>
-  <div class="section-content">
-
-                <div class="form-group">
-                    <label for="WEBSITE_TITLE">Website Title</label>
-                    <input type="text" id="WEBSITE_TITLE" name="WEBSITE_TITLE" value="Tech Solutions">
-                </div>
-                
-                <div class="file-upload-group">
-                    <label for="logoUpload" class="upload-label">Upload Logo</label>
-                    <input type="file" id="logoUpload" name="logoUpload" accept="image/*">
-                    <input type="hidden" id="LOGO_IMAGE_PATH" name="LOGO_IMAGE_PATH" value="images/logo.png">
-                    <span>(Uses default or uploaded)</span>
-                </div>
-                
-                  </div>
-</div>
-<div class="section-container">
-  <div class="section-header">
-    <button class="section-toggle">+</button>
-    <h2>Theme and Background</h2>
-  </div>
-  <div class="section-content">
-
-                <div class="form-group">
-                    <label for="COLOR_SCHEME">Color Scheme</label>
-                    <select id="COLOR_SCHEME" name="COLOR_SCHEME">
-                        <option value="default">Default</option>
-                        <option value="deep_ocean">Deep Ocean</option>
-                        <option value="sunset_glow">Sunset Glow</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="BACKGROUND_TYPE">Background Type</label>
-                    <select id="BACKGROUND_TYPE" name="BACKGROUND_TYPE">
-                        <option value="particles">Particles</option>
-                        <option value="gradient">Animated Gradient</option>
-                        <option value="perlin">Perlin Noise</option>
-                        <option value="image">Image</option>
-                    </select>
-                </div>
-                <div class="file-upload-group">
-                    <label for="backgroundUpload" class="upload-label">Upload Background Image</label>
-                    <input type="file" id="backgroundUpload" name="backgroundUpload" accept="image/*">
-                    <input type="hidden" id="BACKGROUND_IMAGE_URL" name="BACKGROUND_IMAGE_URL" placeholder="Enter URL if using image background">
-                    <span>(Uses default or uploaded)</span>
-                </div>
-                
-                  </div>
-</div>
-<div class="section-container">
-  <div class="section-header">
-    <button class="section-toggle">+</button>
-    <h2>Hero Section</h2>
-  </div>
-  <div class="section-content">
-
-                <div class="form-group">
-                    <label for="HERO_HEADING">Hero Heading</label>
-                    <input type="text" id="HERO_HEADING" name="HERO_HEADING" value="Innovate, Integrate, Inspire">
-                </div>
-                <div class="form-group">
-                    <label for="HERO_PARAGRAPH">Hero Paragraph</label>
-                    <textarea id="HERO_PARAGRAPH" name="HERO_PARAGRAPH">We specialize in developing cutting-edge software and IoT solutions that drive innovation and empower businesses to thrive in the digital age.</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="HERO_CTA_BUTTON_TEXT">Hero CTA Button Text</label>
-                    <input type="text" id="HERO_CTA_BUTTON_TEXT" name="HERO_CTA_BUTTON_TEXT" value="Book a Consultation">
-                </div>
-                
-                <div class="checkbox-group">
-                    <input type="checkbox" id="aiAssistantToggle" name="AI_ASSISTANT_TOGGLE">
-                    <label for="aiAssistantToggle">Add AI Assistant Section</label>
-                </div>
-                
-                <div id="aiAssistantOptions" style="display: none;">
-                      </div>
-</div>
-<div class="section-container">
-  <div class="section-header">
-    <button class="section-toggle">+</button>
-    <h2>AI Assistant Section</h2>
-  </div>
-  <div class="section-content">
-
-                    <div class="form-group">
-                        <label for="AI_ASSISTANT_HEADING">Heading</label>
-                        <input type="text" id="AI_ASSISTANT_HEADING" name="AI_ASSISTANT_HEADING" value="🤖 Ask Our Assistant">
+                    <div class="section-header">
+                        <button class="section-toggle">+</button>
+                        <h2>General</h2>
                     </div>
-                    <div class="form-group">
-                        <label for="AI_ASSISTANT_PARAGRAPH">Paragraph</label>
-                        <textarea id="AI_ASSISTANT_PARAGRAPH" name="AI_ASSISTANT_PARAGRAPH">Chat with our virtual assistant to get service help or quick quotes.</textarea>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="WEBSITE_TITLE">Website Title</label>
+                            <input type="text" id="WEBSITE_TITLE" name="WEBSITE_TITLE" value="Tech Solutions">
+                        </div>
+                        <div class="file-upload-group">
+                            <label for="logoUpload" class="upload-label">Upload Logo</label>
+                            <input type="file" id="logoUpload" name="logoUpload" accept="image/*">
+                            <input type="hidden" id="LOGO_IMAGE_PATH" name="LOGO_IMAGE_PATH" value="images/logo.png">
+                            <span>(Uses default or uploaded)</span>
+                        </div>
                     </div>
                 </div>
-
+                <div class="section-container">
+                    <div class="section-header">
+                        <button class="section-toggle">+</button>
+                        <h2>Theme and Background</h2>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="COLOR_SCHEME">Color Scheme</label>
+                            <select id="COLOR_SCHEME" name="COLOR_SCHEME">
+                                <option value="default">Default</option>
+                                <option value="deep_ocean">Deep Ocean</option>
+                                <option value="sunset_glow">Sunset Glow</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="BACKGROUND_TYPE">Background Type</label>
+                            <select id="BACKGROUND_TYPE" name="BACKGROUND_TYPE">
+                                <option value="particles">Particles</option>
+                                <option value="gradient">Animated Gradient</option>
+                                <option value="perlin">Perlin Noise</option>
+                                <option value="image">Image</option>
+                            </select>
+                        </div>
+                        <div class="file-upload-group">
+                            <label for="backgroundUpload" class="upload-label">Upload Background Image</label>
+                            <input type="file" id="backgroundUpload" name="backgroundUpload" accept="image/*">
+                            <input type="hidden" id="BACKGROUND_IMAGE_URL" name="BACKGROUND_IMAGE_URL" placeholder="Enter URL if using image background">
+                            <span>(Uses default or uploaded)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-container">
+                    <div class="section-header">
+                        <button class="section-toggle">+</button>
+                        <h2>Hero Section</h2>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="HERO_HEADING">Hero Heading</label>
+                            <input type="text" id="HERO_HEADING" name="HERO_HEADING" value="Innovate, Integrate, Inspire">
+                        </div>
+                        <div class="form-group">
+                            <label for="HERO_PARAGRAPH">Hero Paragraph</label>
+                            <textarea id="HERO_PARAGRAPH" name="HERO_PARAGRAPH">We specialize in developing cutting-edge software and IoT solutions that drive innovation and empower businesses to thrive in the digital age.</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="HERO_CTA_BUTTON_TEXT">Hero CTA Button Text</label>
+                            <input type="text" id="HERO_CTA_BUTTON_TEXT" name="HERO_CTA_BUTTON_TEXT" value="Book a Consultation">
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="aiAssistantToggle" name="AI_ASSISTANT_TOGGLE">
+                            <label for="aiAssistantToggle">Add AI Assistant Section</label>
+                        </div>
+                        <div id="aiAssistantOptions" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+                <div class="section-container">
+                    <div class="section-header">
+                        <button class="section-toggle">+</button>
+                        <h2>AI Assistant Section</h2>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="AI_ASSISTANT_HEADING">Heading</label>
+                            <input type="text" id="AI_ASSISTANT_HEADING" name="AI_ASSISTANT_HEADING" value="🤖 Ask Our Assistant">
+                        </div>
+                        <div class="form-group">
+                            <label for="AI_ASSISTANT_PARAGRAPH">Paragraph</label>
+                            <textarea id="AI_ASSISTANT_PARAGRAPH" name="AI_ASSISTANT_PARAGRAPH">Chat with our virtual assistant to get service help or quick quotes.</textarea>
+                        </div>
+                    </div>
+                </div>
                 <div class="checkbox-group">
                     <input type="checkbox" id="mapToggle" name="MAP_TOGGLE" checked>
                     <label for="mapToggle">Add Find Our Workshop Section</label>
                 </div>
-                
                 <div id="mapOptions">
-                      </div>
-</div>
-<div class="section-container">
-  <div class="section-header">
-    <button class="section-toggle">+</button>
-    <h2>Find Our Workshop Section</h2>
-  </div>
-  <div class="section-content">
-
-                    <div class="form-group">
-                        <label for="MAP_HEADING">Heading</label>
-                        <input type="text" id="MAP_HEADING" name="MAP_HEADING" value="📍 Find Our Workshop">
+                </div>
+                <div class="section-container">
+                    <div class="section-header">
+                        <button class="section-toggle">+</button>
+                        <h2>Find Our Workshop Section</h2>
                     </div>
-                    <div class="form-group">
-                        <label for="CONTACT_ADDRESS">Contact Address</label>
-                        <input type="text" id="CONTACT_ADDRESS" name="CONTACT_ADDRESS" value="123 Tech Avenue, Silicon Valley, CA 90210">
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="MAP_HEADING">Heading</label>
+                            <input type="text" id="MAP_HEADING" name="MAP_HEADING" value="📍 Find Our Workshop">
+                        </div>
+                        <div class="form-group">
+                            <label for="CONTACT_ADDRESS">Contact Address</label>
+                            <input type="text" id="CONTACT_ADDRESS" name="CONTACT_ADDRESS" value="123 Tech Avenue, Silicon Valley, CA 90210">
+                        </div>
                     </div>
                 </div>
-                
                 <div class="checkbox-group">
                     <input type="checkbox" id="servicesToggle" name="SERVICES_TOGGLE" checked>
                     <label for="servicesToggle">Add Services Section</label>
                 </div>
-                
                 <div id="servicesOptions">
-                      </div>
-</div>
-<div class="section-container">
-  <div class="section-header">
-    <button class="section-toggle">+</button>
-    <h2>Services Section</h2>
-  </div>
-  <div class="section-content">
-
-                    <div class="form-group">
-                        <label for="SERVICES_SECTION_HEADING">Heading</label>
-                        <input type="text" id="SERVICES_SECTION_HEADING" name="SERVICES_SECTION_HEADING" value="Our Expertise">
+                </div>
+                <div class="section-container">
+                    <div class="section-header">
+                        <button class="section-toggle">+</button>
+                        <h2>Services Section</h2>
                     </div>
-                    <div class="form-group">
-                        <label for="SERVICE_1_TITLE">Service 1 Title</label>
-                        <input type="text" id="SERVICE_1_TITLE" name="SERVICE_1_TITLE" value="Custom Software Development">
-                    </div>
-                    <div class="form-group">
-                        <label for="SERVICE_1_DESCRIPTION">Service 1 Description</label>
-                        <textarea id="SERVICE_1_DESCRIPTION" name="SERVICE_1_DESCRIPTION">Building tailored software from the ground up to meet your unique business needs.</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="SERVICE_2_TITLE">Service 2 Title</label>
-                        <input type="text" id="SERVICE_2_TITLE" name="SERVICE_2_TITLE" value="Embedded Systems & IoT">
-                    </div>
-                    <div class="form-group">
-                        <label for="SERVICE_2_DESCRIPTION">Service 2 Description</label>
-                        <textarea id="SERVICE_2_DESCRIPTION" name="SERVICE_2_DESCRIPTION">Designing and implementing smart, connected devices for the Internet of Things.</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="SERVICE_3_TITLE">Service 3 Title</label>
-                        <input type="text" id="SERVICE_3_TITLE" name="SERVICE_3_TITLE" value="AI & Data Analytics">
-                    </div>
-                    <div class="form-group">
-                        <label for="SERVICE_3_DESCRIPTION">Service 3 Description</label>
-                        <textarea id="SERVICE_3_DESCRIPTION" name="SERVICE_3_DESCRIPTION">Leveraging machine learning to unlock insights and drive data-informed decisions.</textarea>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="SERVICES_SECTION_HEADING">Heading</label>
+                            <input type="text" id="SERVICES_SECTION_HEADING" name="SERVICES_SECTION_HEADING" value="Our Expertise">
+                        </div>
+                        <div class="form-group">
+                            <label for="SERVICE_1_TITLE">Service 1 Title</label>
+                            <input type="text" id="SERVICE_1_TITLE" name="SERVICE_1_TITLE" value="Custom Software Development">
+                        </div>
+                        <div class="form-group">
+                            <label for="SERVICE_1_DESCRIPTION">Service 1 Description</label>
+                            <textarea id="SERVICE_1_DESCRIPTION" name="SERVICE_1_DESCRIPTION">Building tailored software from the ground up to meet your unique business needs.</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="SERVICE_2_TITLE">Service 2 Title</label>
+                            <input type="text" id="SERVICE_2_TITLE" name="SERVICE_2_TITLE" value="Embedded Systems & IoT">
+                        </div>
+                        <div class="form-group">
+                            <label for="SERVICE_2_DESCRIPTION">Service 2 Description</label>
+                            <textarea id="SERVICE_2_DESCRIPTION" name="SERVICE_2_DESCRIPTION">Designing and implementing smart, connected devices for the Internet of Things.</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="SERVICE_3_TITLE">Service 3 Title</label>
+                            <input type="text" id="SERVICE_3_TITLE" name="SERVICE_3_TITLE" value="AI & Data Analytics">
+                        </div>
+                        <div class="form-group">
+                            <label for="SERVICE_3_DESCRIPTION">Service 3 Description</label>
+                            <textarea id="SERVICE_3_DESCRIPTION" name="SERVICE_3_DESCRIPTION">Leveraging machine learning to unlock insights and drive data-informed decisions.</textarea>
+                        </div>
                     </div>
                 </div>
-                
                 <div class="checkbox-group">
                     <input type="checkbox" id="testimonialsToggle" name="TESTIMONIALS_TOGGLE" checked>
                     <label for="testimonialsToggle">Add Testimonials Section</label>
                 </div>
-                
                 <div id="testimonialsOptions">
-                      </div>
-</div>
-<div class="section-container">
-  <div class="section-header">
-    <button class="section-toggle">+</button>
-    <h2>Testimonials</h2>
-  </div>
-  <div class="section-content">
-
-                    <div class="form-group">
-                        <label for="TESTIMONIALS_SECTION_HEADING">Heading</label>
-                        <input type="text" id="TESTIMONIALS_SECTION_HEADING" name="TESTIMONIALS_SECTION_HEADING" value="What Our Clients Say">
+                </div>
+                <div class="section-container">
+                    <div class="section-header">
+                        <button class="section-toggle">+</button>
+                        <h2>Testimonials</h2>
                     </div>
-                    <div class="form-group">
-                        <label for="TESTIMONIAL_1_QUOTE">Testimonial 1 Quote</label>
-                        <textarea id="TESTIMONIAL_1_QUOTE" name="TESTIMONIAL_1_QUOTE">Their innovative solutions transformed our business. Highly recommend!</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="TESTIMONIAL_1_CLIENT_INFO">Testimonial 1 Client Info</label>
-                        <input type="text" id="TESTIMONIAL_1_CLIENT_INFO" name="TESTIMONIAL_1_CLIENT_INFO" value="Jane Doe, CEO">
-                    </div>
-                    <div class="form-group">
-                        <label for="TESTIMONIAL_2_QUOTE">Testimonial 2 Quote</label>
-                        <textarea id="TESTIMONIAL_2_QUOTE" name="TESTIMONIAL_2_QUOTE">A fantastic team to work with. They delivered a high-quality product ahead of schedule.</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="TESTIMONIAL_2_CLIENT_INFO">Testimonial 2 Client Info</label>
-                        <input type="text" id="TESTIMONIAL_2_CLIENT_INFO" name="TESTIMONIAL_2_CLIENT_INFO" value="John Smith, CTO">
-                    </div>
-                    <div class="form-group">
-                        <label for="TESTIMONIAL_3_QUOTE">Testimonial 3 Quote</label>
-                        <textarea id="TESTIMONIAL_3_QUOTE" name="TESTIMONIAL_3_QUOTE">Professional, skilled, and excellent communication. We'll definitely use them again.</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="TESTIMONIAL_3_CLIENT_INFO">Testimonial 3 Client Info</label>
-                        <input type="text" id="TESTIMONIAL_3_CLIENT_INFO" name="TESTIMONIAL_3_CLIENT_INFO" value="Sarah Chen, Founder">
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="TESTIMONIALS_SECTION_HEADING">Heading</label>
+                            <input type="text" id="TESTIMONIALS_SECTION_HEADING" name="TESTIMONIALS_SECTION_HEADING" value="What Our Clients Say">
+                        </div>
+                        <div class="form-group">
+                            <label for="TESTIMONIAL_1_QUOTE">Testimonial 1 Quote</label>
+                            <textarea id="TESTIMONIAL_1_QUOTE" name="TESTIMONIAL_1_QUOTE">Their innovative solutions transformed our business. Highly recommend!</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="TESTIMONIAL_1_CLIENT_INFO">Testimonial 1 Client Info</label>
+                            <input type="text" id="TESTIMONIAL_1_CLIENT_INFO" name="TESTIMONIAL_1_CLIENT_INFO" value="Jane Doe, CEO">
+                        </div>
+                        <div class="form-group">
+                            <label for="TESTIMONIAL_2_QUOTE">Testimonial 2 Quote</label>
+                            <textarea id="TESTIMONIAL_2_QUOTE" name="TESTIMONIAL_2_QUOTE">A fantastic team to work with. They delivered a high-quality product ahead of schedule.</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="TESTIMONIAL_2_CLIENT_INFO">Testimonial 2 Client Info</label>
+                            <input type="text" id="TESTIMONIAL_2_CLIENT_INFO" name="TESTIMONIAL_2_CLIENT_INFO" value="John Smith, CTO">
+                        </div>
+                        <div class="form-group">
+                            <label for="TESTIMONIAL_3_QUOTE">Testimonial 3 Quote</label>
+                            <textarea id="TESTIMONIAL_3_QUOTE" name="TESTIMONIAL_3_QUOTE">Professional, skilled, and excellent communication. We'll definitely use them again.</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="TESTIMONIAL_3_CLIENT_INFO">Testimonial 3 Client Info</label>
+                            <input type="text" id="TESTIMONIAL_3_CLIENT_INFO" name="TESTIMONIAL_3_CLIENT_INFO" value="Sarah Chen, Founder">
+                        </div>
                     </div>
                 </div>
-
                 <div class="checkbox-group">
                     <input type="checkbox" id="socialMediaToggle" name="SOCIAL_MEDIA_TOGGLE" checked>
                     <label for="socialMediaToggle">Add Social Media Section</label>
                 </div>
-
                 <div id="socialMediaOptions">
-                      </div>
-</div>
-<div class="section-container">
-  <div class="section-header">
-    <button class="section-toggle">+</button>
-    <h2>Social Media</h2>
-  </div>
-  <div class="section-content">
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="facebookToggle" name="FACEBOOK_TOGGLE" checked>
-                        <label for="facebookToggle">Facebook</label>
+                </div>
+                <div class="section-container">
+                    <div class="section-header">
+                        <button class="section-toggle">+</button>
+                        <h2>Social Media</h2>
                     </div>
-                    <div id="facebookOptions">
-                        <div class="form-group">
-                            <label for="FACEBOOK_USERNAME">Facebook Username</label>
-                            <input type="text" id="FACEBOOK_USERNAME" name="FACEBOOK_USERNAME" value="techsolutions">
+                    <div class="section-content">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="facebookToggle" name="FACEBOOK_TOGGLE" checked>
+                            <label for="facebookToggle">Facebook</label>
                         </div>
-                    </div>
-                    
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="instagramToggle" name="INSTAGRAM_TOGGLE" checked>
-                        <label for="instagramToggle">Instagram</label>
-                    </div>
-                    <div id="instagramOptions">
-                        <div class="form-group">
-                            <label for="INSTAGRAM_USERNAME">Instagram Username</label>
-                            <input type="text" id="INSTAGRAM_USERNAME" name="INSTAGRAM_USERNAME" value="techsolutions">
+                        <div id="facebookOptions">
+                            <div class="form-group">
+                                <label for="FACEBOOK_USERNAME">Facebook Username</label>
+                                <input type="text" id="FACEBOOK_USERNAME" name="FACEBOOK_USERNAME" value="techsolutions">
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="tiktokToggle" name="TIKTOK_TOGGLE" checked>
-                        <label for="tiktokToggle">TikTok</label>
-                    </div>
-                    <div id="tiktokOptions">
-                        <div class="form-group">
-                            <label for="TIKTOK_USERNAME">TikTok Username</label>
-                            <input type="text" id="TIKTOK_USERNAME" name="TIKTOK_USERNAME" value="@techsolutions">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="instagramToggle" name="INSTAGRAM_TOGGLE" checked>
+                            <label for="instagramToggle">Instagram</label>
+                        </div>
+                        <div id="instagramOptions">
+                            <div class="form-group">
+                                <label for="INSTAGRAM_USERNAME">Instagram Username</label>
+                                <input type="text" id="INSTAGRAM_USERNAME" name="INSTAGRAM_USERNAME" value="techsolutions">
+                            </div>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="tiktokToggle" name="TIKTOK_TOGGLE" checked>
+                            <label for="tiktokToggle">TikTok</label>
+                        </div>
+                        <div id="tiktokOptions">
+                            <div class="form-group">
+                                <label for="TIKTOK_USERNAME">TikTok Username</label>
+                                <input type="text" id="TIKTOK_USERNAME" name="TIKTOK_USERNAME" value="@techsolutions">
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                  </div>
-</div>
-<div class="section-container">
-  <div class="section-header">
-    <button class="section-toggle">+</button>
-    <h2>Contact Info</h2>
-  </div>
-  <div class="section-content">
-
-                <div class="form-group">
-                    <label for="CONTACT_EMAIL">Contact Email</label>
-                    <input type="email" id="CONTACT_EMAIL" name="CONTACT_EMAIL" value="contact@techsolutions.com">
-                </div>
-                <div class="form-group">
-                    <label for="CONTACT_PHONE">Contact Phone</label>
-                    <input type="text" id="CONTACT_PHONE" name="CONTACT_PHONE" value="+1 (555) 123-4567">
+                <div class="section-container">
+                    <div class="section-header">
+                        <button class="section-toggle">+</button>
+                        <h2>Contact Info</h2>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label for="CONTACT_EMAIL">Contact Email</label>
+                            <input type="email" id="CONTACT_EMAIL" name="CONTACT_EMAIL" value="contact@techsolutions.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="CONTACT_PHONE">Contact Phone</label>
+                            <input type="text" id="CONTACT_PHONE" name="CONTACT_PHONE" value="+1 (555) 123-4567">
+                        </div>
+                    </div>
                 </div>
             </form>
             <div class="builder-actions">
@@ -532,5 +509,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-  </div>
-</div>
