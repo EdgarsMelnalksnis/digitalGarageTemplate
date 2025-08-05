@@ -733,7 +733,7 @@ function updatePreview() {
         htmlContent = htmlContent.replace(placeholder, value);
     });
     
-    const iframe = document.getElementById('previewIframe');
+const iframe = document.getElementById('previewIframe');
     if (iframe) {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
         iframeDoc.open();
@@ -986,3 +986,11 @@ if (form) {
         updatePreview();
     });
 }
+
+// Collapsible sections functionality
+document.querySelectorAll('.section-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const container = header.parentElement;
+    container.classList.toggle('expanded');
+  });
+});

@@ -752,3 +752,45 @@ header {
 .time-grid .cta-button {
   width: 100%;
 }
+
+/* Collapsible Sections */
+.section-container {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  background: var(--card-bg);
+  padding: 8px 12px;
+  cursor: pointer;
+  user-select: none;
+}
+.section-header h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
+.section-toggle {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  width: 1.4em;
+  text-align: center;
+  margin-right: 8px;
+  cursor: pointer;
+}
+.section-content {
+  display: none;
+  padding: 10px 12px 15px;
+}
+.section-container.expanded .section-content {
+  display: block;
+}
+.section-container.expanded .section-toggle {
+  transform: rotate(45deg);
+}

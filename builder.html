@@ -187,14 +187,62 @@
                 height: 50vh;
             }
         }
-    </style>
+    
+/* Collapsible Sections */
+.section-container {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  background: var(--card-bg);
+  padding: 8px 12px;
+  cursor: pointer;
+  user-select: none;
+}
+.section-header h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
+.section-toggle {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  width: 1.4em;
+  text-align: center;
+  margin-right: 8px;
+  cursor: pointer;
+}
+.section-content {
+  display: none;
+  padding: 10px 12px 15px;
+}
+.section-container.expanded .section-content {
+  display: block;
+}
+.section-container.expanded .section-toggle {
+  transform: rotate(45deg);
+}
+</style>
 </head>
 <body>
     <div class="builder-container">
         <div class="builder-form">
             <h1>Website Builder</h1>
             <form id="builderForm">
-                <h2>General</h2>
+                <div class="section-container">
+  <div class="section-header">
+    <button class="section-toggle">+</button>
+    <h2>General</h2>
+  </div>
+  <div class="section-content">
+
                 <div class="form-group">
                     <label for="WEBSITE_TITLE">Website Title</label>
                     <input type="text" id="WEBSITE_TITLE" name="WEBSITE_TITLE" value="Tech Solutions">
@@ -207,7 +255,15 @@
                     <span>(Uses default or uploaded)</span>
                 </div>
                 
-                <h2>Theme and Background</h2>
+                  </div>
+</div>
+<div class="section-container">
+  <div class="section-header">
+    <button class="section-toggle">+</button>
+    <h2>Theme and Background</h2>
+  </div>
+  <div class="section-content">
+
                 <div class="form-group">
                     <label for="COLOR_SCHEME">Color Scheme</label>
                     <select id="COLOR_SCHEME" name="COLOR_SCHEME">
@@ -232,7 +288,15 @@
                     <span>(Uses default or uploaded)</span>
                 </div>
                 
-                <h2>Hero Section</h2>
+                  </div>
+</div>
+<div class="section-container">
+  <div class="section-header">
+    <button class="section-toggle">+</button>
+    <h2>Hero Section</h2>
+  </div>
+  <div class="section-content">
+
                 <div class="form-group">
                     <label for="HERO_HEADING">Hero Heading</label>
                     <input type="text" id="HERO_HEADING" name="HERO_HEADING" value="Innovate, Integrate, Inspire">
@@ -252,7 +316,15 @@
                 </div>
                 
                 <div id="aiAssistantOptions" style="display: none;">
-                    <h2>AI Assistant Section</h2>
+                      </div>
+</div>
+<div class="section-container">
+  <div class="section-header">
+    <button class="section-toggle">+</button>
+    <h2>AI Assistant Section</h2>
+  </div>
+  <div class="section-content">
+
                     <div class="form-group">
                         <label for="AI_ASSISTANT_HEADING">Heading</label>
                         <input type="text" id="AI_ASSISTANT_HEADING" name="AI_ASSISTANT_HEADING" value="🤖 Ask Our Assistant">
@@ -269,7 +341,15 @@
                 </div>
                 
                 <div id="mapOptions">
-                    <h2>Find Our Workshop Section</h2>
+                      </div>
+</div>
+<div class="section-container">
+  <div class="section-header">
+    <button class="section-toggle">+</button>
+    <h2>Find Our Workshop Section</h2>
+  </div>
+  <div class="section-content">
+
                     <div class="form-group">
                         <label for="MAP_HEADING">Heading</label>
                         <input type="text" id="MAP_HEADING" name="MAP_HEADING" value="📍 Find Our Workshop">
@@ -286,7 +366,15 @@
                 </div>
                 
                 <div id="servicesOptions">
-                    <h2>Services Section</h2>
+                      </div>
+</div>
+<div class="section-container">
+  <div class="section-header">
+    <button class="section-toggle">+</button>
+    <h2>Services Section</h2>
+  </div>
+  <div class="section-content">
+
                     <div class="form-group">
                         <label for="SERVICES_SECTION_HEADING">Heading</label>
                         <input type="text" id="SERVICES_SECTION_HEADING" name="SERVICES_SECTION_HEADING" value="Our Expertise">
@@ -323,7 +411,15 @@
                 </div>
                 
                 <div id="testimonialsOptions">
-                    <h2>Testimonials</h2>
+                      </div>
+</div>
+<div class="section-container">
+  <div class="section-header">
+    <button class="section-toggle">+</button>
+    <h2>Testimonials</h2>
+  </div>
+  <div class="section-content">
+
                     <div class="form-group">
                         <label for="TESTIMONIALS_SECTION_HEADING">Heading</label>
                         <input type="text" id="TESTIMONIALS_SECTION_HEADING" name="TESTIMONIALS_SECTION_HEADING" value="What Our Clients Say">
@@ -360,7 +456,15 @@
                 </div>
 
                 <div id="socialMediaOptions">
-                    <h2>Social Media</h2>
+                      </div>
+</div>
+<div class="section-container">
+  <div class="section-header">
+    <button class="section-toggle">+</button>
+    <h2>Social Media</h2>
+  </div>
+  <div class="section-content">
+
                     <div class="checkbox-group">
                         <input type="checkbox" id="facebookToggle" name="FACEBOOK_TOGGLE" checked>
                         <label for="facebookToggle">Facebook</label>
@@ -395,7 +499,15 @@
                     </div>
                 </div>
 
-                <h2>Contact Info</h2>
+                  </div>
+</div>
+<div class="section-container">
+  <div class="section-header">
+    <button class="section-toggle">+</button>
+    <h2>Contact Info</h2>
+  </div>
+  <div class="section-content">
+
                 <div class="form-group">
                     <label for="CONTACT_EMAIL">Contact Email</label>
                     <input type="email" id="CONTACT_EMAIL" name="CONTACT_EMAIL" value="contact@techsolutions.com">
@@ -420,3 +532,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+  </div>
+</div>
