@@ -155,7 +155,6 @@
         .checkbox-group {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
             gap: 10px;
         }
         .checkbox-group input[type="checkbox"] {
@@ -188,47 +187,57 @@
             }
         }
         
-/* Collapsible Sections */
-.section-container {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 15px;
-}
-.section-header {
-    display: flex;
-    align-items: center;
-    background: var(--card-bg);
-    padding: 8px 12px;
-    cursor: pointer;
-    user-select: none;
-}
-.section-header h2 {
-    flex: 1;
-    margin: 0;
-    font-size: 1.1rem;
-    color: var(--primary-color);
-}
-.section-toggle {
-    background: none;
-    border: none;
-    color: var(--primary-color);
-    font-size: 1.2rem;
-    width: 1.4em;
-    text-align: center;
-    margin-right: 8px;
-    cursor: pointer;
-}
-.section-content {
-    display: none;
-    padding: 10px 12px 15px;
-}
-.section-container.expanded .section-content {
-    display: block;
-}
-.section-container.expanded .section-toggle {
-    transform: rotate(45deg);
-}
+        /* Collapsible Sections */
+        .section-container {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 8px 12px;
+            cursor: pointer;
+            user-select: none;
+            gap: 10px;
+        }
+        .section-header h2 {
+            flex: 1;
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+        .section-toggle {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            width: 1.4em;
+            text-align: center;
+            cursor: pointer;
+            order: 3;
+        }
+        .section-content {
+            display: none;
+            padding: 10px 12px 15px;
+        }
+        .section-container.expanded .section-content {
+            display: block;
+        }
+        .section-container.expanded .section-toggle {
+            transform: rotate(45deg);
+        }
+        /* Style for checkbox to be on the right */
+        .section-header .checkbox-group {
+            margin-left: auto;
+            margin-right: 10px;
+            order: 2;
+        }
+        .section-header h2 {
+            order: 1;
+        }
     </style>
 </head>
 <body>
@@ -303,18 +312,16 @@
                             <label for="HERO_CTA_BUTTON_TEXT">Hero CTA Button Text</label>
                             <input type="text" id="HERO_CTA_BUTTON_TEXT" name="HERO_CTA_BUTTON_TEXT" value="Book a Consultation">
                         </div>
-                        <div class="checkbox-group">
-                            <input type="checkbox" id="aiAssistantToggle" name="AI_ASSISTANT_TOGGLE">
-                            <label for="aiAssistantToggle">Add AI Assistant Section</label>
-                        </div>
-                        <div id="aiAssistantOptions" style="display: none;">
-                        </div>
                     </div>
                 </div>
                 <div class="section-container">
                     <div class="section-header">
-                        <button class="section-toggle">+</button>
                         <h2>AI Assistant Section</h2>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="aiAssistantToggle" name="AI_ASSISTANT_TOGGLE">
+                            <label for="aiAssistantToggle"></label>
+                        </div>
+                        <button class="section-toggle">+</button>
                     </div>
                     <div class="section-content">
                         <div class="form-group">
@@ -327,16 +334,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="checkbox-group">
-                    <input type="checkbox" id="mapToggle" name="MAP_TOGGLE" checked>
-                    <label for="mapToggle">Add Find Our Workshop Section</label>
-                </div>
-                <div id="mapOptions">
-                </div>
                 <div class="section-container">
                     <div class="section-header">
-                        <button class="section-toggle">+</button>
                         <h2>Find Our Workshop Section</h2>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="mapToggle" name="MAP_TOGGLE" checked>
+                            <label for="mapToggle"></label>
+                        </div>
+                        <button class="section-toggle">+</button>
                     </div>
                     <div class="section-content">
                         <div class="form-group">
@@ -349,16 +354,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="checkbox-group">
-                    <input type="checkbox" id="servicesToggle" name="SERVICES_TOGGLE" checked>
-                    <label for="servicesToggle">Add Services Section</label>
-                </div>
-                <div id="servicesOptions">
-                </div>
                 <div class="section-container">
                     <div class="section-header">
-                        <button class="section-toggle">+</button>
                         <h2>Services Section</h2>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="servicesToggle" name="SERVICES_TOGGLE" checked>
+                            <label for="servicesToggle"></label>
+                        </div>
+                        <button class="section-toggle">+</button>
                     </div>
                     <div class="section-content">
                         <div class="form-group">
@@ -391,16 +394,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="checkbox-group">
-                    <input type="checkbox" id="testimonialsToggle" name="TESTIMONIALS_TOGGLE" checked>
-                    <label for="testimonialsToggle">Add Testimonials Section</label>
-                </div>
-                <div id="testimonialsOptions">
-                </div>
                 <div class="section-container">
                     <div class="section-header">
-                        <button class="section-toggle">+</button>
                         <h2>Testimonials</h2>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="testimonialsToggle" name="TESTIMONIALS_TOGGLE" checked>
+                            <label for="testimonialsToggle"></label>
+                        </div>
+                        <button class="section-toggle">+</button>
                     </div>
                     <div class="section-content">
                         <div class="form-group">
@@ -433,47 +434,39 @@
                         </div>
                     </div>
                 </div>
-                <div class="checkbox-group">
-                    <input type="checkbox" id="socialMediaToggle" name="SOCIAL_MEDIA_TOGGLE" checked>
-                    <label for="socialMediaToggle">Add Social Media Section</label>
-                </div>
-                <div id="socialMediaOptions">
-                </div>
                 <div class="section-container">
                     <div class="section-header">
-                        <button class="section-toggle">+</button>
                         <h2>Social Media</h2>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="socialMediaToggle" name="SOCIAL_MEDIA_TOGGLE" checked>
+                            <label for="socialMediaToggle"></label>
+                        </div>
+                        <button class="section-toggle">+</button>
                     </div>
                     <div class="section-content">
                         <div class="checkbox-group">
                             <input type="checkbox" id="facebookToggle" name="FACEBOOK_TOGGLE" checked>
                             <label for="facebookToggle">Facebook</label>
                         </div>
-                        <div id="facebookOptions">
-                            <div class="form-group">
-                                <label for="FACEBOOK_USERNAME">Facebook Username</label>
-                                <input type="text" id="FACEBOOK_USERNAME" name="FACEBOOK_USERNAME" value="techsolutions">
-                            </div>
+                        <div class="form-group">
+                            <label for="FACEBOOK_USERNAME">Facebook Username</label>
+                            <input type="text" id="FACEBOOK_USERNAME" name="FACEBOOK_USERNAME" value="techsolutions">
                         </div>
                         <div class="checkbox-group">
                             <input type="checkbox" id="instagramToggle" name="INSTAGRAM_TOGGLE" checked>
                             <label for="instagramToggle">Instagram</label>
                         </div>
-                        <div id="instagramOptions">
-                            <div class="form-group">
-                                <label for="INSTAGRAM_USERNAME">Instagram Username</label>
-                                <input type="text" id="INSTAGRAM_USERNAME" name="INSTAGRAM_USERNAME" value="techsolutions">
-                            </div>
+                        <div class="form-group">
+                            <label for="INSTAGRAM_USERNAME">Instagram Username</label>
+                            <input type="text" id="INSTAGRAM_USERNAME" name="INSTAGRAM_USERNAME" value="techsolutions">
                         </div>
                         <div class="checkbox-group">
                             <input type="checkbox" id="tiktokToggle" name="TIKTOK_TOGGLE" checked>
                             <label for="tiktokToggle">TikTok</label>
                         </div>
-                        <div id="tiktokOptions">
-                            <div class="form-group">
-                                <label for="TIKTOK_USERNAME">TikTok Username</label>
-                                <input type="text" id="TIKTOK_USERNAME" name="TIKTOK_USERNAME" value="@techsolutions">
-                            </div>
+                        <div class="form-group">
+                            <label for="TIKTOK_USERNAME">TikTok Username</label>
+                            <input type="text" id="TIKTOK_USERNAME" name="TIKTOK_USERNAME" value="@techsolutions">
                         </div>
                     </div>
                 </div>
@@ -506,6 +499,66 @@
             <iframe id="previewIframe"></iframe>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section-container');
+            
+            sections.forEach(section => {
+                const header = section.querySelector('.section-header');
+                const toggle = section.querySelector('.section-toggle');
+                
+                // Add click event listener to the header, excluding the toggle button
+                header.addEventListener('click', (event) => {
+                    // Check if the click target is the toggle button or its child
+                    if (!toggle.contains(event.target)) {
+                        section.classList.toggle('expanded');
+                    }
+                });
+                
+                // Add click event to the toggle button to handle expand/collapse
+                toggle.addEventListener('click', (event) => {
+                    event.stopPropagation(); // Prevent the header's click event from firing
+                    section.classList.toggle('expanded');
+                });
+                
+                const checkbox = header.querySelector('input[type="checkbox"]');
+                if (checkbox) {
+                    checkbox.addEventListener('click', (event) => {
+                        event.stopPropagation(); // Prevent the header's click event from firing
+                        // You can add more logic here for when a checkbox is toggled
+                    });
+                }
+            });
+
+            // Initial state for sections with a checkbox
+            const toggledSections = document.querySelectorAll('.section-container .section-header .checkbox-group input[type="checkbox"]');
+            toggledSections.forEach(checkbox => {
+                const section = checkbox.closest('.section-container');
+                if (checkbox.checked) {
+                    section.classList.add('expanded');
+                } else {
+                    section.classList.remove('expanded');
+                }
+                
+                checkbox.addEventListener('change', () => {
+                    if (checkbox.checked) {
+                        section.classList.add('expanded');
+                    } else {
+                        section.classList.remove('expanded');
+                    }
+                });
+            });
+        });
+        
+        // The following functions are placeholders from the original file
+        function generateJsonConfig(event) {
+            event.preventDefault();
+            alert('Download config logic goes here.');
+        }
+
+        function handleFileUpload(event) {
+            alert('Upload config logic goes here.');
+        }
+    </script>
 </body>
 </html>
