@@ -247,7 +247,7 @@
             <form id="builderForm">
                 <div class="section-container">
                     <div class="section-header">
-                        <button class="section-toggle">+</button>
+                        <button type="button" class="section-toggle">+</button>
                         <h2>General</h2>
                     </div>
                     <div class="section-content">
@@ -265,7 +265,7 @@
                 </div>
                 <div class="section-container">
                     <div class="section-header">
-                        <button class="section-toggle">+</button>
+                        <button type="button" class="section-toggle">+</button>
                         <h2>Theme and Background</h2>
                     </div>
                     <div class="section-content">
@@ -296,7 +296,7 @@
                 </div>
                 <div class="section-container">
                     <div class="section-header">
-                        <button class="section-toggle">+</button>
+                        <button type="button" class="section-toggle">+</button>
                         <h2>Hero Section</h2>
                     </div>
                     <div class="section-content">
@@ -321,7 +321,7 @@
                             <input type="checkbox" id="aiAssistantToggle" name="AI_ASSISTANT_TOGGLE">
                             <label for="aiAssistantToggle"></label>
                         </div>
-                        <button class="section-toggle">+</button>
+                        <button type="button" class="section-toggle">+</button>
                     </div>
                     <div class="section-content">
                         <div class="form-group">
@@ -341,7 +341,7 @@
                             <input type="checkbox" id="mapToggle" name="MAP_TOGGLE" checked>
                             <label for="mapToggle"></label>
                         </div>
-                        <button class="section-toggle">+</button>
+                        <button type="button" class="section-toggle">+</button>
                     </div>
                     <div class="section-content">
                         <div class="form-group">
@@ -361,7 +361,7 @@
                             <input type="checkbox" id="servicesToggle" name="SERVICES_TOGGLE" checked>
                             <label for="servicesToggle"></label>
                         </div>
-                        <button class="section-toggle">+</button>
+                        <button type="button" class="section-toggle">+</button>
                     </div>
                     <div class="section-content">
                         <div class="form-group">
@@ -401,7 +401,7 @@
                             <input type="checkbox" id="testimonialsToggle" name="TESTIMONIALS_TOGGLE" checked>
                             <label for="testimonialsToggle"></label>
                         </div>
-                        <button class="section-toggle">+</button>
+                        <button type="button" class="section-toggle">+</button>
                     </div>
                     <div class="section-content">
                         <div class="form-group">
@@ -441,7 +441,7 @@
                             <input type="checkbox" id="socialMediaToggle" name="SOCIAL_MEDIA_TOGGLE" checked>
                             <label for="socialMediaToggle"></label>
                         </div>
-                        <button class="section-toggle">+</button>
+                        <button type="button" class="section-toggle">+</button>
                     </div>
                     <div class="section-content">
                         <div class="checkbox-group">
@@ -472,7 +472,7 @@
                 </div>
                 <div class="section-container">
                     <div class="section-header">
-                        <button class="section-toggle">+</button>
+                        <button type="button" class="section-toggle">+</button>
                         <h2>Contact Info</h2>
                     </div>
                     <div class="section-content">
@@ -516,8 +516,7 @@
                 });
                 
                 // Add click event to the toggle button to handle expand/collapse
-                toggle.addEventListener('click', (event) => {
-                    event.stopPropagation(); // Prevent the header's click event from firing
+                toggle.addEventListener('click', (event) => { event.preventDefault(); event.stopPropagation(); // Prevent the header's click event from firing
                     section.classList.toggle('expanded');
                 });
                 
@@ -560,5 +559,7 @@
             alert('Upload config logic goes here.');
         }
     </script>
+
+    <script src="script.js"></script>
 </body>
 </html>

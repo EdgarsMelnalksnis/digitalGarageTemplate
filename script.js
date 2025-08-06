@@ -373,7 +373,7 @@ const embeddedScript = `
             togglePopup(); // Open the form popup
         }
     }
-
+    
     function toggleBookingPopup() {
         const popup = document.getElementById('bookingPopup');
         if (popup.style.display === 'flex') {
@@ -382,17 +382,97 @@ const embeddedScript = `
             closeAllPopups();
             closeMobileMenu();
             popup.style.display = 'flex';
+            initializeCalendar();
         }
         updateBodyBlurState();
     }
 
+    function initializeCalendar() {
+        flatpickr("#flatpickrCalendar", {
+            inline: true,
+            minDate: "today",
+            dateFormat: "Y-m-d",
+        });
+    }
+
+    // This is the new function to handle dropdowns
+    function setupDropdowns() {
+        const sectionHeaders = document.querySelectorAll('.section-header');
+        sectionHeaders.forEach(header => {
+            const toggleButton = header.querySelector('.section-toggle');
+            if (toggleButton) {
+                toggleButton.addEventListener('click', (event) => {
+                    event.preventDefault(); // This prevents the form submission
+                    // Find the closest parent with the class 'section-container' and toggle the 'expanded' class
+                    const sectionContainer = event.target.closest('.section-container');
+                    if (sectionContainer) {
+                        sectionContainer.classList.toggle('expanded');
+                    }
+                });
+            }
+        });
+    }
+
+    // Ensure this function is called when the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', setupDropdowns);
+    
+    // Perlin Noise implementation
+    function Perlin() {
+        this.perm = new Uint8Array(512);
+        this.grad = new Float32Array(512);
+        this.seed = () => {
+            const p = new Uint8Array(256);
+            for (let i = 0; i < 256; i++) p[i] = i;
+            for (let i = 0; i < 255; i++) {
+                const j = Math.floor(Math.random() * (256 - i)) + i;
+                [p[i], p[j]] = [p[j], p[i]];
+            }
+            for (let i = 0; i < 512; i++) {
+                this.perm[i] = p[i & 255];
+                this.grad[i] = Math.random() * 2 - 1;
+            }
+        };
+        this.fade = t => t * t * t * (t * (t * 6 - 15) + 10);
+        this.lerp = (t, a, b) => a + t * (b - a);
+        this.grad = (hash, x, y, z) => {
+            const h = hash & 15;
+            const u = h < 8 ? x : y;
+            const v = h < 4 ? y : h === 12 || h === 14 ? x : z;
+            return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
+        };
+        this.noise = (x, y, z) => {
+            const X = Math.floor(x) & 255;
+            const Y = Math.floor(y) & 255;
+            const Z = Math.floor(z) & 255;
+            x -= Math.floor(x);
+            y -= Math.floor(y);
+            z -= Math.floor(z);
+            const u = this.fade(x);
+            const v = this.fade(y);
+            const w = this.fade(z);
+            const p = this.perm;
+            const n000 = this.grad(p[X + p[Y + p[Z]]], x, y, z);
+            const n100 = this.grad(p[X + 1 + p[Y + p[Z]]], x - 1, y, z);
+            const n010 = this.grad(p[X + p[Y + 1 + p[Z]]], x, y - 1, z);
+            const n110 = this.grad(p[X + 1 + p[Y + 1 + p[Z]]], x - 1, y - 1, z);
+            const n001 = this.grad(p[X + p[Y + p[Z + 1]]], x, y, z - 1);
+            const n101 = this.grad(p[X + 1 + p[Y + p[Z + 1]]], x - 1, y, z - 1);
+            const n011 = this.grad(p[X + p[Y + 1 + p[Z + 1]]], x, y - 1, z - 1);
+            const n111 = this.grad(p[X + 1 + p[Y + 1 + p[Z + 1]]], x - 1, y - 1, z - 1);
+            const nx0 = this.lerp(u, n000, n100);
+            const nx1 = this.lerp(u, n010, n110);
+            const ny0 = this.lerp(v, nx0, nx1);
+            const ny1 = this.lerp(v, this.lerp(u, n001, n101), this.lerp(u, n011, n111));
+            return this.lerp(w, ny0, ny1);
+        };
+    }
+    
     function createPerlinNoiseBackground() {
         const canvas = document.getElementById('perlin-canvas');
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
         let width, height;
 
-        // Perlin noise generation
         const perlin = new Perlin();
         perlin.seed();
 
@@ -411,7 +491,6 @@ const embeddedScript = `
                     const value = perlin.noise(x * 0.01, y * 0.01, time);
                     const colorValue = (value + 1) * 0.5 * 255;
                     const index = (x + y * width) * 4;
-
                     data[index] = colorValue;
                     data[index + 1] = colorValue;
                     data[index + 2] = colorValue;
@@ -421,576 +500,226 @@ const embeddedScript = `
             ctx.putImageData(imageData, 0, 0);
             requestAnimationFrame(render);
         }
-        
-        // Simple Perlin Noise implementation
-        function Perlin() {
-            this.perm = new Uint8Array(512);
-            this.grad = new Float32Array(512);
-            this.seed = () => {
-                const p = new Uint8Array(256);
-                for (let i = 0; i < 256; i++) p[i] = i;
-                for (let i = 0; i < 255; i++) {
-                    const j = Math.floor(Math.random() * (256 - i)) + i;
-                    [p[i], p[j]] = [p[j], p[i]];
-                }
-                for (let i = 0; i < 512; i++) {
-                    this.perm[i] = p[i & 255];
-                    this.grad[i] = Math.random() * 2 - 1;
-                }
-            };
-            this.fade = t => t * t * t * (t * (t * 6 - 15) + 10);
-            this.lerp = (t, a, b) => a + t * (b - a);
-            this.grad = (hash, x, y, z) => {
-                const h = hash & 15;
-                const u = h < 8 ? x : y;
-                const v = h < 4 ? y : h === 12 || h === 14 ? x : z;
-                return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
-            };
-            this.noise = (x, y, z) => {
-                let X = Math.floor(x) & 255,
-                    Y = Math.floor(y) & 255,
-                    Z = Math.floor(z) & 255;
-                x -= Math.floor(x);
-                y -= Math.floor(y);
-                z -= Math.floor(z);
-                let u = this.fade(x),
-                    v = this.fade(y),
-                    w = this.fade(z);
-                let A = this.perm[X] + Y,
-                    AA = this.perm[A] + Z,
-                    AB = this.perm[A + 1] + Z;
-                let B = this.perm[X + 1] + Y,
-                    BA = this.perm[B] + Z,
-                    BB = this.perm[B + 1] + Z;
-                return this.lerp(w,
-                    this.lerp(v,
-                        this.lerp(u,
-                            this.grad(this.perm[AA], x, y, z),
-                            this.grad(this.perm[BA], x - 1, y, z)),
-                        this.lerp(u,
-                            this.grad(this.perm[AB], x, y - 1, z),
-                            this.grad(this.perm[BB], x - 1, y - 1, z))),
-                    this.lerp(v,
-                        this.lerp(u,
-                            this.grad(this.perm[AA + 1], x, y, z - 1),
-                            this.grad(this.perm[BA + 1], x - 1, y, z - 1)),
-                        this.lerp(u,
-                            this.grad(this.perm[AB + 1], x, y - 1, z - 1),
-                            this.grad(this.perm[BB + 1], x - 1, y - 1, z - 1))));
-            };
-        }
-        
-        window.addEventListener('resize', resize);
+
         resize();
+        window.addEventListener('resize', resize);
         render();
     }
+    
+    const form = document.getElementById('builderForm');
+    const previewIframe = document.querySelector('.preview-pane iframe');
+    const logoUpload = document.getElementById('logoUpload');
+    const backgroundUpload = document.getElementById('backgroundUpload');
+    const builderForm = document.getElementById('builderForm');
 
-
-    function updateBackground(backgroundType, colorScheme) {
-        const body = document.body;
-        const particlesContainer = document.getElementById('tsparticles');
-        const animatedGradientContainer = document.querySelector('.animated-gradient-background');
-        const perlinCanvas = document.getElementById('perlin-canvas');
-        
-        // Hide all background elements first
-        if (particlesContainer) particlesContainer.style.display = 'none';
-        if (animatedGradientContainer) animatedGradientContainer.style.display = 'none';
-        if (perlinCanvas) perlinCanvas.style.display = 'none';
-        body.style.backgroundImage = 'none';
-        body.style.backgroundColor = 'transparent';
-
-        // Apply theme-specific background color to the body if not using an animated background
-        if (colorScheme && backgroundType !== 'particles' && backgroundType !== 'gradient' && backgroundType !== 'perlin') {
-            body.style.backgroundColor = colorScheme['--background-color'];
-        }
-
-        // Show the selected background
-        if (backgroundType === 'particles') {
-            if (particlesContainer && typeof tsParticles !== 'undefined') {
-                particlesContainer.style.display = 'block';
-                tsParticles.load({
-                    id: "tsparticles",
-                    options: {
-                        background: {
-                            color: {
-                                value: colorScheme['--particles-background'] || '#0f2027',
-                            },
-                        },
-                        fpsLimit: 120,
-                        interactivity: {
-                            events: {
-                                onClick: {
-                                    enable: false,
-                                    mode: "push",
-                                },
-                                onHover: {
-                                    enable: false,
-                                    mode: "repulse",
-                                },
-                                resize: true,
-                            },
-                            modes: {
-                                push: {
-                                    quantity: 4,
-                                },
-                                repulse: {
-                                    distance: 200,
-                                    duration: 0.4,
-                                },
-                            },
-                        },
-                        particles: {
-                            color: {
-                                value: colorScheme['--particles-color'] || '#ffffff',
-                            },
-                            links: {
-                                color: colorScheme['--particles-links'] || '#2c5364',
-                                distance: 150,
-                                enable: true,
-                                opacity: 0.5,
-                                width: 1,
-                            },
-                            move: {
-                                direction: "none",
-                                enable: true,
-                                outModes: {
-                                    default: "bounce",
-                                },
-                                random: false,
-                                speed: 1,
-                                straight: false,
-                            },
-                            number: {
-                                density: {
-                                    enable: true,
-                                    area: 800,
-                                },
-                                value: 80,
-                            },
-                            opacity: {
-                                value: 0.5,
-                            },
-                            shape: {
-                                type: "circle",
-                            },
-                            size: {
-                                value: { min: 1, max: 5 },
-                            },
-                        },
-                        detectRetina: true,
-                    },
-                });
-            }
-        } else if (backgroundType === 'gradient') {
-            if (animatedGradientContainer) {
-                animatedGradientContainer.style.display = 'block';
-            }
-        } else if (backgroundType === 'perlin') {
-            if (perlinCanvas) {
-                perlinCanvas.style.display = 'block';
-                createPerlinNoiseBackground();
-            }
-        } else if (backgroundType === 'image') {
-            const imageUrl = document.body.getAttribute('data-background-image-url');
-            if (imageUrl) {
-                body.style.backgroundImage = 'url(' + imageUrl + ')';
-            }
-        }
-    }
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-        if (typeof flatpickr !== 'undefined') {
-            flatpickr("#flatpickrCalendar", {
-                inline: true,
-                minDate: "today"
-            });
-        }
+    // Add this to prevent form submission
+    builderForm.addEventListener('submit', (e) => {
+        e.preventDefault();
     });
 
-    window.applyConfiguration = function(config) {
-        const root = document.documentElement;
-        if (config.colorScheme) {
-            for (const [key, value] of Object.entries(config.colorScheme)) {
-                root.style.setProperty(key, value);
+    const fileReaders = {};
+
+    function handleFile(input, variableName, updateFunction) {
+        input.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Revoke previous object URL if it exists
+            if (fileReaders[variableName] && fileReaders[variableName].url) {
+                URL.revokeObjectURL(fileReaders[variableName].url);
             }
-        }
-        // Set the background image URL on the body element for retrieval in updateBackground
-        if (config.backgroundImageUrl) {
-            document.body.setAttribute('data-background-image-url', config.backgroundImageUrl);
+
+            // Create a new URL for the selected file
+            const objectUrl = URL.createObjectURL(file);
+            
+            // Store the new URL
+            fileReaders[variableName] = { url: objectUrl, file: file };
+            
+            // Update the variable and the preview
+            updateFunction(objectUrl);
+            updatePreview();
+        });
+    }
+
+    handleFile(logoUpload, 'logoImagePath', (url) => {
+        logoImagePath = url;
+    });
+
+    handleFile(backgroundUpload, 'backgroundImageURL', (url) => {
+        backgroundImageURL = url;
+    });
+
+    function updatePreview() {
+        const formData = new FormData(builderForm);
+        const formObject = Object.fromEntries(formData.entries());
+
+        // Override form data with file URLs if files were uploaded
+        if (fileReaders.logoImagePath) {
+            formObject['LOGO_IMAGE_PATH'] = fileReaders.logoImagePath.url;
         } else {
-            document.body.removeAttribute('data-background-image-url');
+            // If no new file, use the default from the hidden input
+            formObject['LOGO_IMAGE_PATH'] = document.getElementById('LOGO_IMAGE_PATH').value;
         }
-        updateBackground(config.backgroundType, config.colorScheme);
-    }
-`;
 
-
-// Function to update the iframe with the current form data
-function updatePreview() {
-    const form = document.getElementById('builderForm');
-    const formData = new FormData(form);
-    const backgroundType = formData.get('BACKGROUND_TYPE');
-    const colorSchemeName = formData.get('COLOR_SCHEME');
-    const selectedColorScheme = colorSchemes[colorSchemeName];
-    const aiAssistantEnabled = document.getElementById('aiAssistantToggle').checked;
-    const mapEnabled = document.getElementById('mapToggle').checked;
-    const servicesEnabled = document.getElementById('servicesToggle').checked;
-    const testimonialsEnabled = document.getElementById('testimonialsToggle').checked;
-    const socialMediaEnabled = document.getElementById('socialMediaToggle').checked;
-    
-    let htmlContent = indexHtmlTemplate;
-
-    // Conditionally include the AI Assistant section
-    if (aiAssistantEnabled) {
-        htmlContent = htmlContent.replace('{{AI_ASSISTANT_SECTION}}', aiAssistantSection);
-    } else {
-        htmlContent = htmlContent.replace('{{AI_ASSISTANT_SECTION}}', '');
-    }
-
-    // Conditionally include the Map section
-    if (mapEnabled) {
-        htmlContent = htmlContent.replace('{{MAP_SECTION}}', mapSection);
-    } else {
-        htmlContent = htmlContent.replace('{{MAP_SECTION}}', '');
-    }
-
-    // Conditionally include the Services section
-    if (servicesEnabled) {
-        htmlContent = htmlContent.replace('{{SERVICES_SECTION}}', servicesSection);
-    } else {
-        htmlContent = htmlContent.replace('{{SERVICES_SECTION}}', '');
-    }
-
-    // Conditionally include the Testimonials section
-    if (testimonialsEnabled) {
-        htmlContent = htmlContent.replace('{{TESTIMONIALS_SECTION}}', testimonialsSection);
-    } else {
-        htmlContent = htmlContent.replace('{{TESTIMONIALS_SECTION}}', '');
-    }
-    
-    // Conditionally include the Social Media section and populate links
-    if (socialMediaEnabled) {
-        let finalSocialMediaSection = socialMediaSection;
-        const facebookEnabled = document.getElementById('facebookToggle').checked;
-        const instagramEnabled = document.getElementById('instagramToggle').checked;
-        const tiktokEnabled = document.getElementById('tiktokToggle').checked;
-        
-        let facebookLink = '';
-        if (facebookEnabled && document.getElementById('FACEBOOK_USERNAME').value) {
-            const username = document.getElementById('FACEBOOK_USERNAME').value;
-            facebookLink = `<a href="https://facebook.com/${username}" target="_blank"><img src="images/facebook.svg" alt="Facebook"/></a>`;
+        if (fileReaders.backgroundImageURL) {
+            formObject['BACKGROUND_IMAGE_URL'] = fileReaders.backgroundImageURL.url;
+        } else {
+            formObject['BACKGROUND_IMAGE_URL'] = document.getElementById('BACKGROUND_IMAGE_URL').value;
         }
-        finalSocialMediaSection = finalSocialMediaSection.replace('{{FACEBOOK_LINK}}', facebookLink);
 
-        let instagramLink = '';
-        if (instagramEnabled && document.getElementById('INSTAGRAM_USERNAME').value) {
-            const username = document.getElementById('INSTAGRAM_USERNAME').value;
-            instagramLink = `<a href="https://instagram.com/${username}" target="_blank"><img src="images/instagram.svg" alt="Instagram"/></a>`;
-        }
-        finalSocialMediaSection = finalSocialMediaSection.replace('{{INSTAGRAM_LINK}}', instagramLink);
+        let tempHtml = indexHtmlTemplate;
 
-        let tiktokLink = '';
-        if (tiktokEnabled && document.getElementById('TIKTOK_USERNAME').value) {
-            const username = document.getElementById('TIKTOK_USERNAME').value;
-            tiktokLink = `<a href="https://tiktok.com/${username.replace('@', '')}" target="_blank"><img src="images/tiktok.svg" alt="TikTok"/></a>`;
-        }
-        finalSocialMediaSection = finalSocialMediaSection.replace('{{TIKTOK_LINK}}', tiktokLink);
-
-        htmlContent = htmlContent.replace('{{SOCIAL_MEDIA_SECTION}}', finalSocialMediaSection);
-    } else {
-        htmlContent = htmlContent.replace('{{SOCIAL_MEDIA_SECTION}}', '');
-    }
-
-    // Use the global variables for paths, which are updated by the file inputs
-    formData.set('LOGO_IMAGE_PATH', logoImagePath);
-    formData.set('BACKGROUND_IMAGE_URL', backgroundImageURL);
-    
-    // Add default values for sections if they are not enabled
-    if (!servicesEnabled) {
-        htmlContent = htmlContent.replace(/{{SERVICE_1_TITLE}}/g, '');
-        htmlContent = htmlContent.replace(/{{SERVICE_1_DESCRIPTION}}/g, '');
-        htmlContent = htmlContent.replace(/{{SERVICE_2_TITLE}}/g, '');
-        htmlContent = htmlContent.replace(/{{SERVICE_2_DESCRIPTION}}/g, '');
-        htmlContent = htmlContent.replace(/{{SERVICE_3_TITLE}}/g, '');
-        htmlContent = htmlContent.replace(/{{SERVICE_3_DESCRIPTION}}/g, '');
-        htmlContent = htmlContent.replace(/{{SERVICES_SECTION_HEADING}}/g, '');
-    }
-    
-    if (!testimonialsEnabled) {
-        htmlContent = htmlContent.replace(/{{TESTIMONIAL_1_QUOTE}}/g, '');
-        htmlContent = htmlContent.replace(/{{TESTIMONIAL_1_CLIENT_INFO}}/g, '');
-        htmlContent = htmlContent.replace(/{{TESTIMONIAL_2_QUOTE}}/g, '');
-        htmlContent = htmlContent.replace(/{{TESTIMONIAL_2_CLIENT_INFO}}/g, '');
-        htmlContent = htmlContent.replace(/{{TESTIMONIAL_3_QUOTE}}/g, '');
-        htmlContent = htmlContent.replace(/{{TESTIMONIAL_3_CLIENT_INFO}}/g, '');
-        htmlContent = htmlContent.replace(/{{TESTIMONIALS_SECTION_HEADING}}/g, '');
-    }
-    
-    // Replace all placeholders in the template with form data
-    formData.forEach((value, key) => {
-        const placeholder = new RegExp(`{{${key}}}`, 'g');
-        htmlContent = htmlContent.replace(placeholder, value);
-    });
-    
-const iframe = document.getElementById('previewIframe');
-    if (iframe) {
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-        iframeDoc.open();
-        iframeDoc.write(htmlContent);
-        
-        const script = iframeDoc.createElement('script');
-        script.textContent = embeddedScript;
-        iframeDoc.body.appendChild(script);
-        
-        iframeDoc.close();
-
-        iframe.contentWindow.onload = () => {
-             if (iframe.contentWindow.applyConfiguration) {
-                 iframe.contentWindow.applyConfiguration({
-                     colorScheme: selectedColorScheme,
-                     backgroundType: backgroundType,
-                     backgroundImageUrl: backgroundImageURL // Pass the image URL
-                 });
-             }
-        };
-    }
-}
-
-function toggleAiAssistantOptions() {
-    const aiAssistantOptions = document.getElementById('aiAssistantOptions');
-    const aiAssistantToggle = document.getElementById('aiAssistantToggle');
-    if (aiAssistantOptions && aiAssistantToggle) {
-        aiAssistantOptions.style.display = aiAssistantToggle.checked ? 'block' : 'none';
-    }
-}
-
-function toggleMapOptions() {
-    const mapOptions = document.getElementById('mapOptions');
-    const mapToggle = document.getElementById('mapToggle');
-    if (mapOptions && mapToggle) {
-        mapOptions.style.display = mapToggle.checked ? 'block' : 'none';
-    }
-}
-
-function toggleServicesOptions() {
-    const servicesOptions = document.getElementById('servicesOptions');
-    const servicesToggle = document.getElementById('servicesToggle');
-    if (servicesOptions && servicesToggle) {
-        servicesOptions.style.display = servicesToggle.checked ? 'block' : 'none';
-    }
-}
-
-function toggleTestimonialsOptions() {
-    const testimonialsOptions = document.getElementById('testimonialsOptions');
-    const testimonialsToggle = document.getElementById('testimonialsToggle');
-    if (testimonialsOptions && testimonialsToggle) {
-        testimonialsOptions.style.display = testimonialsToggle.checked ? 'block' : 'none';
-    }
-}
-
-function toggleSocialMediaOptions() {
-    const socialMediaOptions = document.getElementById('socialMediaOptions');
-    const socialMediaToggle = document.getElementById('socialMediaToggle');
-    if (socialMediaOptions && socialMediaToggle) {
-        socialMediaOptions.style.display = socialMediaToggle.checked ? 'block' : 'none';
-        // Also ensure individual options are toggled if the main one is checked
-        if (socialMediaToggle.checked) {
-            toggleFacebookOptions();
-            toggleInstagramOptions();
-            toggleTiktokOptions();
-        }
-    } else {
-        socialMediaOptions.style.display = 'none';
-    }
-}
-
-function toggleFacebookOptions() {
-    const facebookOptions = document.getElementById('facebookOptions');
-    const facebookToggle = document.getElementById('facebookToggle');
-    if (facebookOptions && facebookToggle) {
-        facebookOptions.style.display = facebookToggle.checked ? 'block' : 'none';
-    }
-}
-
-function toggleInstagramOptions() {
-    const instagramOptions = document.getElementById('instagramOptions');
-    const instagramToggle = document.getElementById('instagramToggle');
-    if (instagramOptions && instagramToggle) {
-        instagramOptions.style.display = instagramToggle.checked ? 'block' : 'none';
-    }
-}
-
-function toggleTiktokOptions() {
-    const tiktokOptions = document.getElementById('tiktokOptions');
-    const tiktokToggle = document.getElementById('tiktokToggle');
-    if (tiktokOptions && tiktokToggle) {
-        tiktokOptions.style.display = tiktokToggle.checked ? 'block' : 'none';
-    }
-}
-
-
-// Function to handle logo file upload
-document.getElementById('logoUpload').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            logoImagePath = e.target.result; // Use Data URL for the logo
-            updatePreview();
-        };
-        reader.readAsDataURL(file);
-    } else {
-        logoImagePath = "images/logo.png"; // Revert to default if no file selected
-        updatePreview();
-    }
-});
-
-// Function to handle background file upload
-document.getElementById('backgroundUpload').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            backgroundImageURL = e.target.result; // Use Data URL for the background
-            document.getElementById('BACKGROUND_IMAGE_URL').value = backgroundImageURL;
-            document.getElementById('BACKGROUND_TYPE').value = 'image'; // Automatically switch to image background
-            updatePreview();
-        };
-        reader.readAsDataURL(file);
-    } else {
-        backgroundImageURL = ""; // Clear if no file selected
-        document.getElementById('BACKGROUND_IMAGE_URL').value = "";
-        updatePreview();
-    }
-});
-
-
-function generateJsonConfig(event) {
-    event.preventDefault(); 
-    const form = document.getElementById('builderForm');
-    const formData = new FormData(form);
-    const data = {};
-    formData.forEach((value, key) => {
-        data[key] = value;
-    });
-
-    // Add the toggle states to the config
-    data['AI_ASSISTANT_TOGGLE'] = document.getElementById('aiAssistantToggle').checked;
-    data['MAP_TOGGLE'] = document.getElementById('mapToggle').checked;
-    data['SERVICES_TOGGLE'] = document.getElementById('servicesToggle').checked;
-    data['TESTIMONIALS_TOGGLE'] = document.getElementById('testimonialsToggle').checked;
-    data['SOCIAL_MEDIA_TOGGLE'] = document.getElementById('socialMediaToggle').checked;
-    data['FACEBOOK_TOGGLE'] = document.getElementById('facebookToggle').checked;
-    data['INSTAGRAM_TOGGLE'] = document.getElementById('instagramToggle').checked;
-    data['TIKTOK_TOGGLE'] = document.getElementById('tiktokToggle').checked;
-
-
-    const jsonString = JSON.stringify(data, null, 2);
-    const blob = new Blob([jsonString], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'website_config.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
-
-function handleFileUpload(event) {
-    const file = event.target.files[0];
-    if (!file) {
-        return;
-    }
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const config = JSON.parse(e.target.result);
-            const form = document.getElementById('builderForm');
-            for (const key in config) {
-                if (config.hasOwnProperty(key)) {
-                    const input = form.querySelector(`[name="${key}"]`);
-                    if (input) {
-                        if (input.type === 'checkbox') {
-                            input.checked = config[key];
-                        } else {
-                            input.value = config[key];
-                        }
-                    }
-                }
+        // Apply theme color variables
+        const selectedColorScheme = colorSchemes[formObject.COLOR_SCHEME];
+        let colorSchemeCss = '';
+        if (selectedColorScheme) {
+            for (const [key, value] of Object.entries(selectedColorScheme)) {
+                colorSchemeCss += `${key}: \${value};`;
             }
-            alert('Configuration loaded successfully!');
-            // After loading, update the visibility of the options
-            toggleAiAssistantOptions();
-            toggleMapOptions();
-            toggleServicesOptions();
-            toggleTestimonialsOptions();
-            toggleSocialMediaOptions();
-            toggleFacebookOptions();
-            toggleInstagramOptions();
-            toggleTiktokOptions();
-            updatePreview();
-        } catch (error) {
-            alert('Error parsing JSON file. Please ensure it is a valid JSON file.');
-            console.error('Error parsing JSON:', error);
         }
-    };
-    reader.readAsText(file);
-}
+        
+        // Handle AI Assistant Section
+        let aiAssistantHtml = '';
+        if (formObject.AI_ASSISTANT_TOGGLE) {
+            aiAssistantHtml = aiAssistantSection;
+        }
 
-const form = document.getElementById('builderForm');
-if (form) {
-    form.addEventListener('input', updatePreview);
-    document.getElementById('aiAssistantToggle').addEventListener('change', function() {
-        toggleAiAssistantOptions();
-        updatePreview();
-    });
-    document.getElementById('mapToggle').addEventListener('change', function() {
-        toggleMapOptions();
-        updatePreview();
-    });
-    document.getElementById('servicesToggle').addEventListener('change', function() {
-        toggleServicesOptions();
-        updatePreview();
-    });
-    document.getElementById('testimonialsToggle').addEventListener('change', function() {
-        toggleTestimonialsOptions();
-        updatePreview();
-    });
-    document.getElementById('socialMediaToggle').addEventListener('change', function() {
-        toggleSocialMediaOptions();
-        updatePreview();
-    });
-    document.getElementById('facebookToggle').addEventListener('change', function() {
-        toggleFacebookOptions();
-        updatePreview();
-    });
-    document.getElementById('instagramToggle').addEventListener('change', function() {
-        toggleInstagramOptions();
-        updatePreview();
-    });
-    document.getElementById('tiktokToggle').addEventListener('change', function() {
-        toggleTiktokOptions();
-        updatePreview();
-    });
-    window.addEventListener('load', () => {
-        toggleAiAssistantOptions();
-        toggleMapOptions();
-        toggleServicesOptions();
-        toggleTestimonialsOptions();
-        toggleSocialMediaOptions();
-        toggleFacebookOptions();
-        toggleInstagramOptions();
-        toggleTiktokOptions();
-        updatePreview();
-    });
-}
+        // Handle Map Section
+        let mapHtml = '';
+        if (formObject.MAP_TOGGLE) {
+            mapHtml = mapSection;
+        }
 
-// Collapsible sections functionality
-document.querySelectorAll('.section-header').forEach(header => {
-  header.addEventListener('click', () => {
-    const container = header.parentElement;
-    container.classList.toggle('expanded');
-  });
-});
+        // Handle Services Section
+        let servicesHtml = '';
+        if (formObject.SERVICES_TOGGLE) {
+            servicesHtml = servicesSection;
+        }
+
+        // Handle Testimonials Section
+        let testimonialsHtml = '';
+        if (formObject.TESTIMONIALS_TOGGLE) {
+            testimonialsHtml = testimonialsSection;
+        }
+        
+        // Handle Social Media Links
+        let socialMediaLinks = '';
+        if (formObject.SOCIAL_MEDIA_TOGGLE) {
+            let tempLinks = '';
+            if (formObject.FACEBOOK_URL) {
+                tempLinks += `<a href="\${formObject.FACEBOOK_URL}" target="_blank">
+                    <img alt="Facebook" src="images/facebook.svg" class="social-icon">
+                </a>`;
+            }
+            if (formObject.INSTAGRAM_URL) {
+                tempLinks += `<a href="\${formObject.INSTAGRAM_URL}" target="_blank">
+                    <img alt="Instagram" src="images/instagram.svg" class="social-icon">
+                </a>`;
+            }
+            if (formObject.TIKTOK_URL) {
+                tempLinks += `<a href="\${formObject.TIKTOK_URL}" target="_blank">
+                    <img alt="TikTok" src="images/tiktok.svg" class="social-icon">
+                </a>`;
+            }
+            socialMediaHtml = socialMediaSection.replace('{{FACEBOOK_LINK}}{{INSTAGRAM_LINK}}{{TIKTOK_LINK}}', tempLinks);
+        } else {
+            socialMediaHtml = '';
+        }
+
+        // Replace placeholders with form values
+        for (const key in formObject) {
+            if (formObject.hasOwnProperty(key)) {
+                const regex = new RegExp(`{{${key}}}`, 'g');
+                tempHtml = tempHtml.replace(regex, formObject[key]);
+            }
+        }
+        
+        // Replace sections based on toggles
+        tempHtml = tempHtml.replace('{{AI_ASSISTANT_SECTION}}', aiAssistantHtml);
+        tempHtml = tempHtml.replace('{{MAP_SECTION}}', mapHtml);
+        tempHtml = tempHtml.replace('{{SERVICES_SECTION}}', servicesHtml);
+        tempHtml = tempHtml.replace('{{TESTIMONIALS_SECTION}}', testimonialsHtml);
+        tempHtml = tempHtml.replace('{{SOCIAL_MEDIA_SECTION}}', socialMediaHtml);
+
+        const iframeDocument = previewIframe.contentDocument;
+        if (iframeDocument) {
+            iframeDocument.open();
+            iframeDocument.write(tempHtml);
+            iframeDocument.close();
+
+            // After the iframe content is loaded, apply styles and scripts
+            previewIframe.onload = () => {
+                const innerDoc = previewIframe.contentDocument;
+
+                // Create and apply style for color scheme
+                const colorSchemeStyleTag = innerDoc.getElementById('colorSchemeStyleTag');
+                if (colorSchemeStyleTag) {
+                    colorSchemeStyleTag.innerHTML = `<style> :root { \${colorSchemeCss} } </style>`;
+                }
+
+                // Call the setupDropdowns function inside the iframe
+                const scriptElement = innerDoc.createElement('script');
+                scriptElement.text = embeddedScript;
+                innerDoc.head.appendChild(scriptElement);
+                
+                // Initialize the correct background based on the selection
+                const backgroundType = formObject.BACKGROUND_TYPE;
+                const tsparticles = innerDoc.getElementById('tsparticles');
+                const animatedGradient = innerDoc.querySelector('.animated-gradient-background');
+                const perlinCanvas = innerDoc.getElementById('perlin-canvas');
+                const body = innerDoc.body;
+                
+                // Reset all backgrounds first
+                if (tsparticles) tsparticles.style.display = 'none';
+                if (animatedGradient) animatedGradient.style.display = 'none';
+                if (perlinCanvas) perlinCanvas.style.display = 'none';
+                body.style.backgroundImage = 'none';
+                
+                if (backgroundType === 'particles') {
+                    if (tsparticles) tsparticles.style.display = 'block';
+                    // Load particles.js
+                    if (window.tsParticles) {
+                        window.tsParticles.load('tsparticles', {
+                            particles: {
+                                number: { value: 80, density: { enable: true, value_area: 800 } },
+                                color: { value: selectedColorScheme['--particles-color'] },
+                                shape: { type: 'circle', stroke: { width: 0, color: '#000000' }, polygon: { nb_sides: 5 } },
+                                opacity: { value: 0.5, random: false, anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false } },
+                                size: { value: 3, random: true, anim: { enable: false, speed: 40, size_min: 0.1, sync: false } },
+                                line_linked: { enable: true, distance: 150, color: selectedColorScheme['--particles-links'], opacity: 0.4, width: 1 },
+                                move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false, attract: { enable: false, rotateX: 600, rotateY: 1200 } }
+                            },
+                            interactivity: {
+                                detect_on: 'canvas',
+                                events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                                modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 }, remove: { particles_nb: 2 } }
+                            },
+                            retina_detect: true,
+                            background: { color: selectedColorScheme['--particles-background'] }
+                        });
+                    }
+                } else if (backgroundType === 'gradient') {
+                    if (animatedGradient) animatedGradient.style.display = 'block';
+                } else if (backgroundType === 'perlin') {
+                    if (perlinCanvas) {
+                        perlinCanvas.style.display = 'block';
+                        // Perlin noise is handled by the embedded script
+                        createPerlinNoiseBackground();
+                    }
+                } else if (backgroundType === 'image' && formObject.BACKGROUND_IMAGE_URL) {
+                    body.style.backgroundImage = `url('\${formObject.BACKGROUND_IMAGE_URL}')`;
+                }
+            };
+        }
+    }
+    
+    builderForm.addEventListener('change', updatePreview);
+    updatePreview();
+    
+    // Add this to prevent form submission on all button clicks
+    document.querySelectorAll('.builder-form button').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+        });
+    });
+`;
