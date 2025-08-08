@@ -973,16 +973,26 @@ if (form) {
         toggleTiktokOptions();
         updatePreview();
     });
-    window.addEventListener('load', () => {
-        toggleAiAssistantOptions();
-        toggleMapOptions();
-        toggleServicesOptions();
-        toggleTestimonialsOptions();
-        toggleSocialMediaOptions();
-        toggleFacebookOptions();
-        toggleInstagramOptions();
-        toggleTiktokOptions();
-        updatePreview();
-    });
-}
+    }
 
+window.addEventListener('load', () => {
+    // Check ALL section checkboxes by default
+    document.querySelectorAll('.section-header input[type="checkbox"]').forEach(cb => { cb.checked = true; });
+
+    // Ensure AI Assistant is checked explicitly (matches your markup)
+    const aiCb = document.getElementById('aiAssistantToggle');
+    if (aiCb) aiCb.checked = true;
+
+    // Run existing option-togglers so UI reflects checked state
+    try { toggleAiAssistantOptions && toggleAiAssistantOptions(); } catch(e) {}
+    try { toggleMapOptions && toggleMapOptions(); } catch(e) {}
+    try { toggleServicesOptions && toggleServicesOptions(); } catch(e) {}
+    try { toggleTestimonialsOptions && toggleTestimonialsOptions(); } catch(e) {}
+    try { toggleSocialMediaOptions && toggleSocialMediaOptions(); } catch(e) {}
+    try { toggleFacebookOptions && toggleFacebookOptions(); } catch(e) {}
+    try { toggleInstagramOptions && toggleInstagramOptions(); } catch(e) {}
+    try { toggleTiktokOptions && toggleTiktokOptions(); } catch(e) {}
+
+    // Finally, refresh preview
+    try { updatePreview && updatePreview(); } catch(e) {}
+});

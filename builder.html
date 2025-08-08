@@ -245,7 +245,7 @@
         <div class="builder-form">
             <h1>Website Builder</h1>
             <form id="builderForm">
-                <div class="section-container expanded">
+                <div class="section-container">
                     <div class="section-header">
                         <button type="button" class="section-toggle">+</button>
                         <h2>General</h2>
@@ -318,7 +318,7 @@
                     <div class="section-header">
                         <h2>AI Assistant Section</h2>
                         <div class="checkbox-group">
-                            <input type="checkbox" id="aiAssistantToggle" name="AI_ASSISTANT_TOGGLE" checked>
+                            <input type="checkbox" id="aiAssistantToggle" name="AI_ASSISTANT_TOGGLE">
                             <label for="aiAssistantToggle"></label>
                         </div>
                         <button type="button" class="section-toggle">+</button>
@@ -500,65 +500,119 @@
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const sections = document.querySelectorAll('.section-container');
-            
-            sections.forEach(section => {
-                const header = section.querySelector('.section-header');
-                const toggle = section.querySelector('.section-toggle');
-                
-                // Add click event listener to the header, excluding the toggle button
-                header.addEventListener('click', (event) => {
-                    // Check if the click target is the toggle button or its child
-                    if (!toggle.contains(event.target)) {
-                        section.classList.toggle('expanded');
-                    }
-                });
-                
-                // Add click event to the toggle button to handle expand/collapse
-                toggle.addEventListener('click', (event) => { event.preventDefault(); event.stopPropagation(); // Prevent the header's click event from firing
-                    section.classList.toggle('expanded');
-                });
-                
-                const checkbox = header.querySelector('input[type="checkbox"]');
-                if (checkbox) {
-                    checkbox.addEventListener('click', (event) => {
-                        event.stopPropagation(); // Prevent the header's click event from firing
-                        // You can add more logic here for when a checkbox is toggled
-                    });
-                }
-            });
 
-            // Initial state for sections with a checkbox
-            const toggledSections = document.querySelectorAll('.section-container .section-header .checkbox-group input[type="checkbox"]');
-            toggledSections.forEach(checkbox => {
-                const section = checkbox.closest('.section-container');
-                if (checkbox.checked) {
-                    section.classList.add('expanded');
-                } else {
-                    section.classList.remove('expanded');
-                }
-                
-                checkbox.addEventListener('change', () => {
-                    if (checkbox.checked) {
-                        section.classList.add('expanded');
-                    } else {
-                        section.classList.remove('expanded');
-                    }
-                });
-            });
+document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('.section-container');
+
+    function expandSection(section) {
+        const content = section.querySelector('.section-content');
+        if (!content || section.classList.contains('expanded')) return;
+
+        // Show and measure
+        content.style.display = 'block';
+        // reset any inline padding overrides from previous collapse
+        content.style.removeProperty('padding-top');
+        content.style.removeProperty('padding-bottom');
+        content.style.opacity = '1';
+
+        const target = content.scrollHeight;
+        content.style.height = '0px';
+
+        requestAnimationFrame(() => {
+            section.classList.add('expanded');
+            content.style.height = target + 'px';
+            const onEnd = (e) => {
+                if (e.propertyName !== 'height') return;
+                content.style.height = 'auto'; // natural height
+                content.removeEventListener('transitionend', onEnd);
+            };
+            content.addEventListener('transitionend', onEnd);
         });
-        
-        // The following functions are placeholders from the original file
-        function generateJsonConfig(event) {
-            event.preventDefault();
-            alert('Download config logic goes here.');
+    }
+
+    function collapseSection(section) {
+        const content = section.querySelector('.section-content');
+        if (!content || !section.classList.contains('expanded')) return;
+
+        // Fix current height (includes padding). Keep .expanded during the whole animation.
+        content.style.display = 'block';
+        const start = content.scrollHeight;
+        content.style.height = start + 'px';
+
+        requestAnimationFrame(() => {
+            // Prevent any vertical padding from showing when height -> 0
+            content.style.paddingTop = '0px';
+            content.style.paddingBottom = '0px';
+            content.style.opacity = '0';
+            content.style.height = '0px';
+
+            const onEnd = (e) => {
+                if (e.propertyName !== 'height') return;
+                // Now it's fully collapsed -> hide and clean up
+                content.style.display = 'none';
+                content.style.removeProperty('padding-top');
+                content.style.removeProperty('padding-bottom');
+                section.classList.remove('expanded');
+                content.removeEventListener('transitionend', onEnd);
+            };
+            content.addEventListener('transitionend', onEnd);
+        });
+    }
+
+    function toggleSection(section) {
+        if (section.classList.contains('expanded')) collapseSection(section);
+        else expandSection(section);
+    }
+
+    sections.forEach(section => {
+        const header = section.querySelector('.section-header');
+        const toggle = section.querySelector('.section-toggle');
+        const content = section.querySelector('.section-content');
+
+        if (content) {
+            // initial collapsed visuals
+            content.style.display = 'none';
+            content.style.height = '0px';
+            content.style.opacity = '0';
+            content.style.overflow = 'hidden';
+            content.style.transition = 'height 260ms ease, opacity 200ms ease';
         }
 
-        function handleFileUpload(event) {
-            alert('Upload config logic goes here.');
+        if (header) {
+            header.addEventListener('click', (event) => {
+                if (!toggle || !toggle.contains(event.target)) {
+                    toggleSection(section);
+                }
+            });
         }
-    </script>
+
+        if (toggle) {
+            toggle.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                toggleSection(section);
+            });
+        }
+
+        const checkbox = header ? header.querySelector('input[type="checkbox"]') : null;
+        if (checkbox) {
+            checkbox.addEventListener('click', (event) => event.stopPropagation());
+            checkbox.addEventListener('change', (event) => {
+                if (event.isTrusted && checkbox.checked) expandSection(section);
+            });
+        }
+    });
+
+    // Force closed state on load
+    document.querySelectorAll('.section-container.expanded').forEach(s => s.classList.remove('expanded'));
+    document.querySelectorAll('.section-content').forEach(c => {
+        c.style.display = 'none';
+        c.style.height = '0px';
+        c.style.opacity = '0';
+    });
+});
+
+</script>
 
     <script src="script.js"></script>
 </body>

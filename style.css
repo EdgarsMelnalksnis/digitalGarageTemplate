@@ -794,3 +794,73 @@ header {
 .section-container.expanded .section-toggle {
   transform: rotate(45deg);
 }
+
+
+/* === Smooth dropdown animations === */
+.section-content {
+  overflow: hidden;
+  height: 0;              /* Collapsed */
+  opacity: 0;
+  transition: height 260ms ease, opacity 200ms ease;
+}
+
+/* When expanded via JS, height animates to its scrollHeight and opacity to 1 */
+.section-container.expanded .section-content {
+  opacity: 1;
+}
+
+/* Rotate the + icon when expanded */
+.section-toggle { transition: transform 250ms ease; display: inline-flex; align-items: center; }
+.section-container.expanded .section-toggle { transform: rotate(45deg); }
+
+
+/* --- Dropdown visibility defaults (animated) --- */
+.section-content {
+  display: none;        /* hidden by default */
+  overflow: hidden;
+  height: 0;
+  opacity: 0;
+  transition: height 260ms ease, opacity 200ms ease;
+}
+.section-container.expanded .section-content {
+  display: block;       /* shown when expanded */
+  opacity: 1;
+}
+.section-toggle { transition: transform 250ms ease; display: inline-flex; align-items: center; }
+.section-container.expanded .section-toggle { transform: rotate(45deg); }
+
+
+/* --- Fix: fully collapse section content without peek-through --- */
+.section-content {
+  box-sizing: border-box;
+  overflow: hidden;
+  height: 0;
+  opacity: 0;
+  display: none;              /* hidden by default */
+  padding: 0 !important;      /* no padding when collapsed */
+  transition: height 260ms ease, opacity 200ms ease;
+}
+
+/* When expanded, show content with padding; prevent margin-collapsing */
+.section-container.expanded .section-content {
+  display: block;
+  opacity: 1;
+  padding: 12px 16px !important;
+}
+
+/* Prevent the first child's top margin from "leaking" when collapsed */
+.section-content > *:first-child { margin-top: 0; }
+
+
+/* --- Strong collapsed state to prevent any peek-through --- */
+.section-container:not(.expanded) .section-content {
+  padding: 0 !important;
+  border: 0 !important;
+}
+.section-container:not(.expanded) .section-content * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+}
+
