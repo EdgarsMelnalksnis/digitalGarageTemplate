@@ -986,10 +986,3 @@ if (form) {
     });
 }
 
-// Collapsible sections functionality
-document.querySelectorAll('.section-header').forEach(header => {
-  header.addEventListener('click', () => {
-    const container = header.parentElement;
-    container.classList.toggle('expanded');
-  });
-});
