@@ -238,9 +238,82 @@
         .section-header h2 {
             order: 1;
         }
-    </style>
+    
+/* DG scoped header/footer */
+:root { --dg-h: 72px; --dg-pad: 12px; }
+.dg-hf{ position: fixed; left: 0; right: 0; z-index: 1000; pointer-events: none; }
+.dg-hf > .dg-wrap{ max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.dg-hf .dg-bar{
+  display:flex; align-items:center; justify-content:space-between;
+  background: rgba(0,0,0,.25); border:1px solid var(--border-color);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-radius:16px; box-shadow: 0 20px 40px rgba(0,0,0,.25);
+  height: var(--dg-h); padding: 0 16px; pointer-events: auto;
+}
+.dg-hf .logo{font-weight:700} .dg-hf .logo span{color: var(--primary-color);}
+.dg-hf nav a{color: var(--text-color); text-decoration:none; margin-left:18px; opacity:.9}
+.dg-hf nav a:hover{opacity:1}
+.dg-hf .btn{
+  background: var(--primary-color); color:#001014; padding:10px 16px; border-radius:10px;
+  text-decoration:none; font-weight:600; display:inline-block;
+  box-shadow:0 10px 30px rgba(0,210,255,.15);
+}
+/* top header position */
+.dg-header{ top: var(--dg-pad); }
+/* bottom footer position */
+.dg-footer{ bottom: var(--dg-pad); }
+.dg-footer .dg-bar{ height: 56px; justify-content:center; }
+
+/* offsets so content doesn't hide under fixed bars */
+body{ padding-top: calc(20px + var(--dg-h) + var(--dg-pad)); padding-bottom: calc(20px + 56px + var(--dg-pad)); }
+/* DG modal styles */
+.dg-hf .logo{ text-decoration: none; color: var(--text-color); font-weight:700; }
+.dg-hf .logo:visited{ color: var(--text-color); }
+.dg-hf .logo span{ color: var(--primary-color); }
+
+.dg-modal-backdrop{
+  position:fixed; inset:0;
+  background: rgba(0,0,0,.4);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  display:none; align-items:center; justify-content:center;
+  z-index: 2000;
+}
+.dg-modal{
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 16px;
+  width: min(92vw, 420px);
+  color: var(--text-color);
+  box-shadow: 0 20px 40px rgba(0,0,0,.35);
+}
+.dg-modal h3{ margin:0 0 8px; }
+.dg-modal p{ margin:0 0 16px; opacity:.9; }
+.dg-actions{ display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; }
+.dg-btn{
+  background: transparent; color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px; padding: 10px 14px; cursor: pointer;
+}
+.dg-btn.primary{ background: var(--primary-color); color:#001014; border:none; }
+</style>
 </head>
 <body>
+
+<div class="dg-hf dg-header">
+  <div class="dg-wrap">
+    <div class="dg-bar">
+      <a href="index.html" class="logo dg-home-link" id="dgHomeLink">Digital<span>Garage</span></a>
+      <nav>
+        <a href="#" onclick="generateJsonConfig(event); return false;">Save Progress</a>
+        <a href="index.html#how">Get Help</a>
+        <a class="btn" href="builder.html">Deploy Webpage</a>
+      </nav>
+    </div>
+  </div>
+</div>
+
     <div class="builder-container">
         <div class="builder-form">
             <h1>Website Builder</h1>
@@ -615,5 +688,80 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
     <script src="script.js"></script>
+
+<div class="dg-hf dg-footer">
+  <div class="dg-wrap">
+    <div class="dg-bar">© 2025 Digital Garage</div>
+  </div>
+</div>
+
+
+
+
+
+<!-- DG Leave Modal -->
+<div class="dg-modal-backdrop" id="dgLeaveModal" aria-hidden="true">
+  <div class="dg-modal" role="dialog" aria-modal="true" aria-labelledby="dgLeaveTitle">
+    <h3 id="dgLeaveTitle">Leave builder?</h3>
+    <p>Do you want to save your progress before returning to the main page?</p>
+    <div class="dg-actions">
+      <button class="dg-btn" id="dgLeaveCancel">Cancel</button>
+      <button class="dg-btn" id="dgLeaveNoSave">Exit without Saving</button>
+      <button class="dg-btn primary" id="dgLeaveSave">Save & Exit</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+(function(){
+  var link = document.getElementById('dgHomeLink');
+  var modal = document.getElementById('dgLeaveModal');
+  var btnCancel = document.getElementById('dgLeaveCancel');
+  var btnNoSave = document.getElementById('dgLeaveNoSave');
+  var btnSave = document.getElementById('dgLeaveSave');
+
+  function openModal(){
+    if(!modal) return;
+    modal.style.display = 'flex';
+  }
+  function closeModal(){
+    if(!modal) return;
+    modal.style.display = 'none';
+  }
+
+  if(link){
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      openModal();
+    });
+  }
+  if(btnCancel){ btnCancel.addEventListener('click', closeModal); }
+  if(btnNoSave){
+    btnNoSave.addEventListener('click', function(){
+      // Navigate without saving
+      window.location.href = 'index.html';
+    });
+  }
+  if(btnSave){
+    btnSave.addEventListener('click', function(e){
+      try {
+        if (typeof generateJsonConfig === 'function') {
+          try { generateJsonConfig(e); } catch(_) { try { generateJsonConfig(); } catch(__) {} }
+        }
+      } catch(err) { console.warn('Save before leave failed:', err); }
+      setTimeout(function(){ window.location.href = 'index.html'; }, 400);
+    });
+  }
+
+  // Close modal on backdrop click
+  if(modal){
+    modal.addEventListener('click', function(ev){
+      if(ev.target === modal){ closeModal(); }
+    });
+  }
+})();
+</script>
+
 </body>
 </html>
